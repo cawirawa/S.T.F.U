@@ -6,6 +6,7 @@ Sports Team For U back-end repository
 1. create a virtual environment
 All the libraries will be stored in the virtual environment.
 Go to the next step if the venv is created.
+
 To make the virtual environment:
 
     python3 -m venv venv 
@@ -34,12 +35,14 @@ Type in command:
     pip install django djangorestframework django-cors-headers pillow django-image-cropping easy-thumbnails django_mysql
 
 4. Change your directory:
+
 Bash command:
 
     cd STFU
 
 5. Start virtual server (Do this every time you are editing the back-end):
 Make sure you are on the right directory (the directory that contains manage.py)
+
 command:
 
     python manage.py runserver
@@ -49,6 +52,7 @@ or
     python3 manage.py runserver
 
 5. Create git branch to avoid conflict
+
 command:
 
     git branch -m "ENTER BRANCH NAME"
