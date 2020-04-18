@@ -33,7 +33,12 @@ Type in command:
     
     pip install django djangorestframework django-cors-headers pillow django-image-cropping easy-thumbnails django_mysql
 
-4. Start virtual server (Do this every time you are editing the back-end):
+4. Change your directory:
+Bash command:
+
+    cd STFU
+
+5. Start virtual server (Do this every time you are editing the back-end):
 Make sure you are on the right directory (the directory that contains manage.py)
 command:
 
@@ -43,8 +48,14 @@ or
 
     python3 manage.py runserver
 
+5. Create git branch to avoid conflict
+command:
 
-## Do step 2 and step 4 everytime you want to edit the files
+    git branch -m "ENTER BRANCH NAME"
+
+ Do step 2, step 4, step 5 everytime you want to edit the files, test API, run the app etc!!
+
+
 
 ## Other commands:
 ### Start Project (You don't have to do this):
@@ -75,3 +86,13 @@ command:
 or
 
     python manage.py migrate --run-syncdb
+
+### Checkout to other branches
+command:
+
+    git checkout BRANCHNAME
+
+If everything seems right, and make sure before you push consult WOOSUNG:
+merge the branches from your branch to master:
+
+    git merge origin/master
