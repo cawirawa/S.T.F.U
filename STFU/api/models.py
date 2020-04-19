@@ -28,11 +28,6 @@ class Match(models.Model):
     lon = models.FloatField(default=-117.2361)
     time = models.DateTimeField(default=now)
     maxPlayers = models.IntegerField(default=11)
-    # ArrayField documentation: https://docs.djangoproject.com/en/3.0/ref/contrib/postgres/fields/
-    roster = models.ManyToManyField(User)
-
-# class Roster(models.Model):
-#     User = models.ForeignKey(User, )
-    
+    roster = models.ManyToManyField(User)    
 
 
