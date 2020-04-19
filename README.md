@@ -32,7 +32,7 @@ For Mac:
     
 Type in command:
     
-    pip install django djangorestframework django-cors-headers pillow django-image-cropping easy-thumbnails django_mysql
+    pip install django djangorestframework django-cors-headers pillow django-image-cropping easy-thumbnails django_mysql psycopg2
 
 4. Change your directory:
 
