@@ -1,10 +1,11 @@
 from base64 import b32encode
 from hashlib import sha1
-from random import random
+from random import randint
 
 
 def pkgen():
-    first = b32encode(sha1(str(random())).digest()).lower()[:3]
-    second = b32encode(sha1(str(random())).digest()).lower()[:4]
+    first = str(randint(100, 999))
+    second = str(randint(1000, 9999))
+
     pk = first + '-' + second
     return pk

@@ -19,7 +19,7 @@ AGE_RANGE = (
 )
 
 class Match(models.Model):
-    id = models.CharField(max_length=6, primary_key=True, default=pkgen)
+    id = models.CharField(max_length=8, primary_key=True, default=pkgen)
     name = models.CharField(max_length=20)
     type = models.CharField(choices=SPORTS_TYPE, max_length=15, default="SC")
     age = models.CharField(choices=AGE_RANGE, max_length=5, default="1" )
@@ -29,7 +29,10 @@ class Match(models.Model):
     time = models.DateTimeField(default=now)
     maxPlayers = models.IntegerField(default=11)
     # ArrayField documentation: https://docs.djangoproject.com/en/3.0/ref/contrib/postgres/fields/
-    roster = models.ManyToManyField(User, blank=True)
+    roster = models.ManyToManyField(User)
+
+# class Roster(models.Model):
+#     User = models.ForeignKey(User, )
     
 
 
