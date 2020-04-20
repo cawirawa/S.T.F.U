@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.postgres.fields',
     'rest_framework',
     'rest_framework.authtoken',
     'rest_framework.authentication', 
@@ -45,9 +44,12 @@ INSTALLED_APPS = [
     'PIL',
     'easy_thumbnails',
     'image_cropping',
-    'api',
+    'phonenumber_field',
+    'multiselectfield',
+    'api'
 ]
 
+AUTH_USER_MODEL="api.User"
 
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',

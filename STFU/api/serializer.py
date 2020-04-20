@@ -1,14 +1,20 @@
 from rest_framework import serializers
-from django.contrib.auth.models import User
-from .models import Match
+from .models import Match, Profile, User
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email')
+        fields = ('username', 'first_name', 'email', 'password')
+        extra_kwargs = {'password': {'write_only': True, 'required': True}}
 
 class MatchSerializer(serializers.ModelSerializer):
     roster = UserSerializer(many=True)
     class Meta:
         model = Match
+        fields = '__all__'
+
+class ProfileSerializer(serializers.ModelSerializer):
+    user = UserSerializer(many=False)
+    class Meta:
+        model = Profile
         fields = '__all__'
