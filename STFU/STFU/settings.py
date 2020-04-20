@@ -25,7 +25,9 @@ SECRET_KEY = '!jw@#qxa5skn8jn)7gpu%)-*rgf8r$n5+lv-6u5f#$=yo%pbj1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'http://54.203.198.90:8000',
+]
 
 
 # Application definition
@@ -53,7 +55,7 @@ AUTH_USER_MODEL="api.User"
 
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
-    'http://54.203.198.90',
+    
 )
 
 CORS_ALLOW_HEADERS = [

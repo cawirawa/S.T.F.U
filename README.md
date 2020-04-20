@@ -100,3 +100,10 @@ If everything seems right, and make sure before you push consult WOOSUNG:
 merge the branches from your branch to master:
 
     git merge origin/master
+
+
+
+Disregard this:
+"""
+ssh -i '/c/Users/carlo/Documents/STFU/LightsailDefaultKey-us-west-2 (1).pem' ubuntu@34.216.76.189
+"""
