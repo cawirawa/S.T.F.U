@@ -53,7 +53,7 @@ AUTH_USER_MODEL="api.User"
 
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
-    'http://54.203.198.90/',
+    'http://54.203.198.90',
 )
 
 CORS_ALLOW_HEADERS = [
