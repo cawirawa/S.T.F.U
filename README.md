@@ -32,7 +32,7 @@ For Mac:
     
 Type in command:
     
-    pip install django djangorestframework django-cors-headers pillow django-image-cropping easy-thumbnails django_mysql  django-phonenumber-field[phonenumberslite] django-multiselectfield psycopg2
+    pip install django djangorestframework django-cors-headers pillow django-image-cropping easy-thumbnails django_mysql  django-phonenumber-field[phonenumberslite] django-multiselectfield psycopg2-binary psycopg2
 
 4. Change your directory:
 
@@ -102,8 +102,3 @@ merge the branches from your branch to master:
     git merge origin/master
 
 
-
-Disregard this:
-"""
-ssh -i '/c/Users/carlo/Documents/STFU/LightsailDefaultKey-us-west-2 (1).pem' ubuntu@34.216.76.189
-"""
