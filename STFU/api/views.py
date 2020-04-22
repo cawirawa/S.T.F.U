@@ -1,10 +1,11 @@
 from rest_framework import viewsets, status, permissions
+from django.db import IntegrityError
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from .models import Match, Profile, User
-from .serializer import MatchSerializer, ProfileSerializer
+from .serializer import MatchSerializer, ProfileSerializer, UserSerializer
 
 class MatchViewSet(viewsets.ModelViewSet):
     queryset = Match.objects.all()
@@ -77,7 +78,29 @@ class ProfileViewSet(viewsets.ModelViewSet):
     # authentication_classes = (TokenAuthentication, )
     permission_classes = (permissions.AllowAny, )
 
-    @action(detail=False, methods=['POST'])
-    def create_user(self, request, pk=None):
-        if 'username' in request.data and 'email' in request.data and 'name' in request.data and 'password' in request.data:
-            print("woiks")
+    @action(detail=False, methods=['GET'])
+    def get_profile(self, request, pk=None):
+        if 'email' in request.headers:
+            try:
+                user = User.objects.get(email=request.headers['email'])
+                obj = Profile.objects.get(user=user)
+            except User.DoesNotExist:
+                response = {'message': 'User does not exist!'}
+                return Response(response, status=status.HTTP_404_NOT_FOUND)
+            except Profile.DoesNotExist:
+                response = {'message': 'Profile does not exist!'}
+                return Response(response, status=status.HTTP_404_NOT_FOUND)
+            serializer = ProfileSerializer(obj, many=False)
+            response = {'result': serializer.data}
+            return Response(response, status=status.HTTP_200_OK) 
+        else:
+            response = {'message': 'Please provide all attributes!'}
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+       
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    # authentication_classes = (TokenAuthentication, )
+    permission_classes = (permissions.AllowAny, )

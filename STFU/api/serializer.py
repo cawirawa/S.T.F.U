@@ -7,6 +7,13 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('username', 'first_name', 'email', 'password')
         extra_kwargs = {'password': {'write_only': True, 'required': True}}
 
+    def create(self, validated_data):
+        user = User.objects.create_user(**validated_data)
+        print(user)
+        profile = Profile.objects.create()
+        profile.user = user
+        return profile
+        
 class MatchSerializer(serializers.ModelSerializer):
     roster = UserSerializer(many=True)
     class Meta:
