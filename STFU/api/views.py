@@ -9,6 +9,8 @@ from .serializer import MatchSerializer, ProfileSerializer, UserSerializer
 from django.contrib.gis.geos import *
 from django.contrib.gis.measure import D
 from django.contrib.gis.db.models.functions import Distance
+from geopy.geocoders import Nominatim
+from datetime import *
 
 class MatchViewSet(viewsets.ModelViewSet):
     queryset = Match.objects.all()
@@ -28,6 +30,11 @@ class MatchViewSet(viewsets.ModelViewSet):
             obj.time = request.data['time']
             obj.maxPlayers = request.data['maxPlayers']
             obj.location = Point(float(request.data['lat']), float(request.data['lon']))
+            geolocator = Nominatim(user_agent="api")
+            city = geolocator.reverse(str(request.data['lat']) + ", " + str(request.data['lon']))
+            city = city.raw
+            city = city['address']['city']
+            obj.city = city
             for i in range(len (request.data['roster'])):
                 try:
                     user = User.objects.get(email=request.data['roster'][i]['email'])
@@ -68,6 +75,11 @@ class MatchViewSet(viewsets.ModelViewSet):
             obj.lat = request.data['lat']
             obj.lon = request.data['lon']
             obj.location = Point(float(request.data['lat']), float(request.data['lon']))
+            geolocator = Nominatim(user_agent="api")
+            city = geolocator.reverse(str(request.data['lat']) + ", " + str(request.data['lon']))
+            city = city.raw
+            city = city['address']['city']
+            obj.city = city
             obj.time = request.data['time']
             obj.maxPlayers = request.data['maxPlayers']
             obj.save()
@@ -82,12 +94,16 @@ class MatchViewSet(viewsets.ModelViewSet):
     def match_cards(self, request, pk=None):
         if 'lat' in request.headers and 'lon' in request.headers and 'dist' in request.headers:
             pnt = Point(x=float(request.headers['lat']), y=float(request.headers['lon']), srid=4326)
-            # result - Match.objects.anotate
             distance = float(request.headers['dist']) / 0.00062137 
             ref_location = pnt
             queryset = Match.objects.filter(location__distance_lte=(ref_location, D(m=distance))).annotate(distance=Distance("location", ref_location)).order_by("distance")
+            # Only return today - next 7 days matches
+            startdate = date.today()
+            enddate = startdate + timedelta(days=6)
+            queryset = queryset.filter(time__range=[startdate, enddate])
             serializer = MatchSerializer(queryset, many=True)
-            response = {'message': 'Successfully sorted match by distance', 'result': serializer.data }
+            result = serializer.data
+            response = {'message': 'Successfully sorted match by distance', 'result': result }
             return Response(response, status=status.HTTP_200_OK)  
         else:
             response = {'message': 'Please provide all attributes!'}

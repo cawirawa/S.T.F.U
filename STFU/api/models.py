@@ -41,6 +41,7 @@ class Match(models.Model):
     time = models.DateTimeField(default=now)
     maxPlayers = models.IntegerField(default=11)
     roster = models.ManyToManyField(User)    
+    city = models.CharField(max_length=20, default="San Diego")
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
