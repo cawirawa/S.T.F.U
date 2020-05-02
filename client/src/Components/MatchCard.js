@@ -1,57 +1,71 @@
-import React from 'react';
+import React, {Component} from 'react';
+import { Redirect } from 'react-dom';
 import sports from '../Constant/Sports';
 import Card from '@material-ui/core/Card';
 import { withStyles } from '@material-ui/core/styles';
-import { CardActions, Button } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import './MatchCard.css';
 
 const styles = (theme) => ({
+  button: {
+    marginTop: 20,
+    marginLeft: 10, 
+    marginRight: 10, 
+    display: 'inline',
+    justifyContent: 'center',
+    flex: 1,
+    padding: 0,
+    margin: 0
+  },
+  
   card: {
-    paddingTop: 10,
-    paddingLeft: 20,
-    paddingRight: 20,
+    paddingLeft: 25,
     display: 'flex',
     flexDirection: 'column',
-    alignItem: 'center',
-    justiifyContent: 'center',
+    alignItems: 'start',
+    textTransform: 'capitalize',
     width: 250,
+    height: 200,
+    fontWeight: 'normal',
   },
   matchName: {
     textTransform: 'uppercase',
   },
-  name: {
-    textTransform: 'capitalize',
-  }
 })
 
 // https://developers.google.com/maps/documentation/geocoding/intro
-const MatchCard = props => {
-    const match = props.match;
-    const {classes} = props;
-    var time = /-\d\d-\d\d/.exec(match.time)[0] + '-' + /\d\d\d\d/.exec(match.time)[0];
-    time = time.replace('-', '');
-
-    const viewMatchHandler = () => {
-      
+class MatchCard extends Component {
+    state = {
+      redirect: false
     }
 
-    return (
-      <Button id='card' className={classes.card} onClick={viewMatchHandler}>
-        <Card  className={classes.card} >
-          <h3 className={classes.matchName} >{match.name}</h3>
-          <p><b>Type:</b> {sports[match.type]} <br/>
-             <b>Location:</b> {match.city} <br/>
-             <b>Date:</b> {time} <br/>
-             <b>Players:</b> {match.roster.length}/{match.maxPlayers}<br/>
-             <div className={classes.name}><b>Host:</b> {match.roster[0].first_name}</div> </p>
-          {/* <CardActions >
-            <div>
-              <Button className={classes.button} onClick={viewMatchHandler} size="small" color="primary" >View Match</Button>
-            </div>
-          </CardActions> */}
-        </Card>
-      </Button>
-  );
+    viewMatchHandler = () => {
+        this.setState({redirect: true})
+    }
+
+    render() {
+      const match = this.props.match;
+      const {classes} = this.props;
+      var time = /-\d\d-\d\d/.exec(match.time)[0] + '-' + /\d\d\d\d/.exec(match.time)[0];
+      time = time.replace('-', '');
+
+      if (this.state.redirect) {
+        return <Redirect to={{pathname:"/matchdetail/", match: match.id}} />
+      }
+
+      return (
+        <Button id='card' className={classes.button} onClick={this.viewMatchHandler}>
+          <Card  className={classes.card}>
+            <h3 className={classes.matchName} >{match.name}</h3>
+            <label> <b>Type:</b> {sports[match.type]} </label>
+            <label> <b>Location:</b> {match.city} </label>
+            <label> <b>Date:</b> {time} </label>
+            <label> <b>Players:</b> {match.roster.length}/{match.maxPlayers} </label>
+            <div> <label> <b>Host:</b></label> <label>{match.roster[0].first_name}</label></div>
+          </Card>
+        </Button>
+    );
+    }
 }
 
 
