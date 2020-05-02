@@ -6,6 +6,9 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from .models import Match, Profile, User
 from .serializer import MatchSerializer, ProfileSerializer, UserSerializer
+from django.contrib.gis.geos import *
+from django.contrib.gis.measure import D
+from django.contrib.gis.db.models.functions import Distance
 
 class MatchViewSet(viewsets.ModelViewSet):
     queryset = Match.objects.all()
@@ -15,7 +18,7 @@ class MatchViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['POST'])
     def create_match(self, request, pk=None):
-        if 'id' in request.data and 'roster'  in request.data and 'name' in request.data and 'type' in request.data and 'age' in request.data and 'lat' in request.data and 'lon' in request.data and 'time' in request.data and 'maxPlayers' in request.data:
+        if 'roster'  in request.data and 'name' in request.data and 'type' in request.data and 'age' in request.data and 'lat' in request.data and 'lon' in request.data and 'time' in request.data and 'maxPlayers' in request.data:
             obj = Match.objects.create()
             obj.name = request.data['name']
             obj.type = request.data['type']
@@ -24,6 +27,7 @@ class MatchViewSet(viewsets.ModelViewSet):
             obj.lon = request.data['lon']
             obj.time = request.data['time']
             obj.maxPlayers = request.data['maxPlayers']
+            obj.location = Point(float(request.data['lat']), float(request.data['lon']))
             for i in range(len (request.data['roster'])):
                 try:
                     user = User.objects.get(email=request.data['roster'][i]['email'])
@@ -44,11 +48,12 @@ class MatchViewSet(viewsets.ModelViewSet):
     def update_match(self, request, pk=None):
         if 'id' in request.data and 'roster'  in request.data and 'name' in request.data and 'type' in request.data and 'age' in request.data and 'lat' in request.data and 'lon' in request.data and 'time' in request.data and 'maxPlayers' in request.data:
             try:
+                print(request.data['id'])
                 obj = Match.objects.get(id=request.data['id'])
             except Match.DoesNotExist:
                 response = {'message': 'Match does not exist!'}
                 return Response(response, status=status.HTTP_404_NOT_FOUND)
-            obj.roster.set( obj.roster.filter(id="0"))
+            obj.roster.set([])
             for i in range(len (request.data['roster'])):
                 try:
                     user = User.objects.get(email=request.data['roster'][i]['email'])
@@ -62,11 +67,27 @@ class MatchViewSet(viewsets.ModelViewSet):
             obj.age = request.data['age']
             obj.lat = request.data['lat']
             obj.lon = request.data['lon']
+            obj.location = Point(float(request.data['lat']), float(request.data['lon']))
             obj.time = request.data['time']
             obj.maxPlayers = request.data['maxPlayers']
             obj.save()
             serializer = MatchSerializer(obj, many=False)
             response = {'message': 'Successfully updated match', 'result': serializer.data}
+            return Response(response, status=status.HTTP_200_OK)  
+        else:
+            response = {'message': 'Please provide all attributes!'}
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['GET'])
+    def match_cards(self, request, pk=None):
+        if 'lat' in request.headers and 'lon' in request.headers and 'dist' in request.headers:
+            pnt = Point(x=float(request.headers['lat']), y=float(request.headers['lon']), srid=4326)
+            # result - Match.objects.anotate
+            distance = float(request.headers['dist']) / 0.00062137 
+            ref_location = pnt
+            queryset = Match.objects.filter(location__distance_lte=(ref_location, D(m=distance))).annotate(distance=Distance("location", ref_location)).order_by("distance")
+            serializer = MatchSerializer(queryset, many=True)
+            response = {'message': 'Successfully sorted match by distance', 'result': serializer.data }
             return Response(response, status=status.HTTP_200_OK)  
         else:
             response = {'message': 'Please provide all attributes!'}
