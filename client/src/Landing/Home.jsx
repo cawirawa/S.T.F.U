@@ -18,11 +18,16 @@ class Home extends React.Component {
   
   componentDidMount() {
     // Fetch all matches
-    fetch('http://52.25.207.161:8000/api/match/', {
+    fetch('http://52.25.207.161:8000/api/match/match_cards/', {
       method: 'GET',
+      headers: {
+        "lat": "32.8801",
+        "lon": "-117.2361",
+        "dist": "150" 
+      }
     }).then(resp => resp.json())
     .then(res => {
-      this.setState({matches: res});
+      this.setState({matches: res.result});
       console.log(res);
     }).catch(error => console.log(error));
   };

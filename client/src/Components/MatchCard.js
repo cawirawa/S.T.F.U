@@ -7,7 +7,6 @@ import './MatchCard.css';
 
 const styles = (theme) => ({
   card: {
-    margin: 30,
     paddingTop: 10,
     paddingLeft: 20,
     paddingRight: 20,
@@ -19,6 +18,9 @@ const styles = (theme) => ({
   },
   matchName: {
     textTransform: 'uppercase',
+  },
+  name: {
+    textTransform: 'capitalize',
   }
 })
 
@@ -28,22 +30,27 @@ const MatchCard = props => {
     const {classes} = props;
     var time = /-\d\d-\d\d/.exec(match.time)[0] + '-' + /\d\d\d\d/.exec(match.time)[0];
     time = time.replace('-', '');
+
+    const viewMatchHandler = () => {
+      
+    }
+
     return (
-      <form>
-        <Card id='card' className={classes.card} >
+      <Button id='card' className={classes.card} onClick={viewMatchHandler}>
+        <Card  className={classes.card} >
           <h3 className={classes.matchName} >{match.name}</h3>
           <p><b>Type:</b> {sports[match.type]} <br/>
-             <b>Location:</b> San Diego <br/>
-             <b>Time:</b> {time} <br/>
+             <b>Location:</b> {match.city} <br/>
+             <b>Date:</b> {time} <br/>
              <b>Players:</b> {match.roster.length}/{match.maxPlayers}<br/>
-            <b>Host:</b> {match.roster[0].first_name} </p>
-          <CardActions >
+             <div className={classes.name}><b>Host:</b> {match.roster[0].first_name}</div> </p>
+          {/* <CardActions >
             <div>
-              <Button className={classes.button} size="small" color="primary" >View Match</Button>
+              <Button className={classes.button} onClick={viewMatchHandler} size="small" color="primary" >View Match</Button>
             </div>
-          </CardActions>
+          </CardActions> */}
         </Card>
-      </form>
+      </Button>
   );
 }
 
