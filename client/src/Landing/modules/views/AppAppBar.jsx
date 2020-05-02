@@ -1,11 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { withStyles } from '@material-ui/core/styles';
-import Link from '@material-ui/core/Link';
-import AppBar from '../components/AppBar';
-import Toolbar, { styles as toolbarStyles } from '../components/Toolbar';
-import { Typography } from '@material-ui/core';
+import React from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import Link from "@material-ui/core/Link";
+import AppBar from "../components/AppBar";
+import Toolbar, { styles as toolbarStyles } from "../components/Toolbar";
 
 const styles = (theme) => ({
   title: {
@@ -13,7 +11,7 @@ const styles = (theme) => ({
   },
   placeholder: toolbarStyles(theme).root,
   toolbar: {
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
   },
   left: {
     flex: 1,
@@ -23,8 +21,8 @@ const styles = (theme) => ({
   },
   right: {
     flex: 1,
-    display: 'flex',
-    justifyContent: 'flex-end',
+    display: "flex",
+    justifyContent: "flex-end",
   },
   rightLink: {
     fontSize: 16,
@@ -44,14 +42,16 @@ function AppAppBar(props) {
       <AppBar position="fixed">
         <Toolbar className={classes.toolbar}>
           <div className={classes.left} />
-          <Typography
+          <Link
             variant="h6"
             underline="none"
             color="inherit"
             className={classes.title}
+            href="/"
+            font="tahoma"
           >
-            {'S.T.F.U'}
-          </Typography>
+            {" S . T . F . U "}
+          </Link>
           <div className={classes.right}>
             <Link
               color="inherit"
@@ -60,15 +60,16 @@ function AppAppBar(props) {
               className={classes.rightLink}
               href="/signin"
             >
-              {'Sign In'}
+              {"Sign In"}
             </Link>
             <Link
+              color="inherit"
               variant="h6"
               underline="none"
-              className={clsx(classes.rightLink, classes.linkSecondary)}
+              className={classes.rightLink}
               href="/signup"
             >
-              {'Sign Up'}
+              {"Sign Up"}
             </Link>
           </div>
         </Toolbar>
