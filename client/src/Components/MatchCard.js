@@ -19,6 +19,9 @@ const styles = (theme) => ({
   },
   matchName: {
     textTransform: 'uppercase',
+  },
+  name: {
+    textTransform: 'capitalize',
   }
 })
 
@@ -28,18 +31,23 @@ const MatchCard = props => {
     const {classes} = props;
     var time = /-\d\d-\d\d/.exec(match.time)[0] + '-' + /\d\d\d\d/.exec(match.time)[0];
     time = time.replace('-', '');
+
+    const viewMatchHandler = () => {
+      
+    }
+
     return (
       <form>
         <Card id='card' className={classes.card} >
           <h3 className={classes.matchName} >{match.name}</h3>
           <p><b>Type:</b> {sports[match.type]} <br/>
-             <b>Location:</b> San Diego <br/>
+             <b>Location:</b> {match.city} <br/>
              <b>Time:</b> {time} <br/>
              <b>Players:</b> {match.roster.length}/{match.maxPlayers}<br/>
-            <b>Host:</b> {match.roster[0].first_name} </p>
+             <div className={classes.name}><b>Host:</b> {match.roster[0].first_name}</div> </p>
           <CardActions >
             <div>
-              <Button className={classes.button} size="small" color="primary" >View Match</Button>
+              <Button className={classes.button} onClick={viewMatchHandler} size="small" color="primary" >View Match</Button>
             </div>
           </CardActions>
         </Card>
