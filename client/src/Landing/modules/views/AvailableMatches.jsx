@@ -6,7 +6,6 @@ import Container from '@material-ui/core/Container';
 import Button from '../components/Button';
 import Typography from '../components/Typography'; 
 import MatchCard from '../../../Components/MatchCard';
-import {GenericScrollBox , ScrollAxes, FastTrack} from 'react-scroll-box';
 import { GridList } from '@material-ui/core';
 
 const styles = (theme) => ({
