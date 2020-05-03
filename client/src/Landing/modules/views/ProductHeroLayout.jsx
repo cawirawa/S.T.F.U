@@ -32,6 +32,7 @@ const styles = (theme) => ({
     backgroundColor: theme.palette.common.black,
     opacity: 0.5,
     zIndex: -1,
+    height: 525,
   },
   background: {
     position: "absolute",
@@ -42,10 +43,11 @@ const styles = (theme) => ({
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
     zIndex: -2,
+    height: 525,
   },
   arrowDown: {
     position: "absolute",
-    bottom: theme.spacing(4),
+    bottom: theme.spacing(5),
   },
 });
 
@@ -55,13 +57,6 @@ function ProductHeroLayout(props) {
   return (
     <section className={classes.root}>
       <Container className={classes.container}>
-        <img
-          src={require("../../../Assets/applogo.png")}
-          alt="logo"
-          width="200"
-          height="200"
-          style={{ paddingBottom: 25 }}
-        />
         {children}
         <div className={classes.backdrop} />
         <div className={clsx(classes.background, backgroundClassName)} />
@@ -71,7 +66,6 @@ function ProductHeroLayout(props) {
           height="54"
           width="50"
           alt="arrow down"
-          style={{ marginBottom: 40 }}
         />
       </Container>
     </section>

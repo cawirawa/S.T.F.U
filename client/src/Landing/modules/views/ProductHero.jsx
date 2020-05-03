@@ -5,16 +5,21 @@ import Button from "../components/Button";
 import Typography from "../components/Typography";
 import ProductHeroLayout from "./ProductHeroLayout";
 const backgroundImage =
-  "https://www2.pictures.zimbio.com/gi/Tom+Brady+New+England+Patriots+v+New+York+a2Wb2-0y-tKl.jpg";
+  "https://segiphotography.files.wordpress.com/2015/05/2.jpg?w=1254&h=940";
+
 const styles = (theme) => ({
   background: {
     backgroundImage: `url(${backgroundImage})`,
     backgroundColor: theme.palette.secondary.light, // Average color of the background image.
     backgroundPosition: "center",
-    opacity: 0.4,
+    backgroundPositionY: "25%",
+    opacity: 0.7,
   },
   button: {
     minWidth: 200,
+  },
+  h1: {
+    marginTop: theme.spacing(25),
   },
   h5: {
     marginBottom: theme.spacing(2),
@@ -30,7 +35,13 @@ function ProductHero(props) {
 
   return (
     <ProductHeroLayout backgroundClassName={classes.background}>
-      <Typography color="inherit" align="center" variant="h1" marked="center">
+      <Typography
+        color="inherit"
+        align="center"
+        variant="h1"
+        // marked="center"
+        className={classes.h1}
+      >
         SPORTS TEAMMATES FOR U
       </Typography>
       <Typography

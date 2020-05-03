@@ -162,7 +162,6 @@ function MatchCategories(props) {
             className={classes.imageWrapper}
             style={{
               width: image.width,
-              cursor: "none",
             }}
           >
             <div

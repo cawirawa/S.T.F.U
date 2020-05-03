@@ -26,7 +26,7 @@ const styles = (theme) => ({
     padding: theme.spacing(0, 5),
   },
   title: {
-    marginBottom: theme.spacing(10),
+    marginBottom: theme.spacing(8),
   },
   image: {
     height: 55,
@@ -104,9 +104,8 @@ function ProductHowItWorks(props) {
                 </Typography>
                 <Typography variant="h5" style={{ textAlign: "justify" }}>
                   {
-                    "Gain access to the A-list referee in your area. you will access specially negotiated referees whoever you want "
+                    "Gain access to the A-list referee in your area. You will have special access to specially negotiated referees whoever you want."
                   }
-                  {"that you usually find it hard."}
                 </Typography>
               </div>
             </Grid>
