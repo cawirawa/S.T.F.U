@@ -90,96 +90,98 @@ function MatchCategories(props) {
   const images = [
     {
       url:
-        'https://www.sportspsychologybasketball.com/wp-content/uploads/2011/02/duke_600x300.jpg',
+          'https://www.sportspsychologybasketball.com/wp-content/uploads/2011/02/duke_600x300.jpg',
       title: 'Basketball',
       width: '40%',
     },
     {
       url:
-        'https://www.teachpe.com/wp-content/uploads/2019/09/badminton620.jpg',
+          'https://www.teachpe.com/wp-content/uploads/2019/09/badminton620.jpg',
       title: 'Badminton',
       width: '20%',
     },
     {
       url:
-        'https://www.bergheimat.com/tl_files/bilder/Sommerfotos%202013/Content/berg-wandern-sport.jpg',
+          'https://www.bergheimat.com/tl_files/bilder/Sommerfotos%202013/Content/berg-wandern-sport.jpg',
       title: 'Hiking',
       width: '40%',
     },
     {
       url:
-        'https://assets.bwbx.io/images/users/iqjWHBFdfxIU/iDt6V.rPqgC0/v1/1000x-1.jpg',
+          'https://assets.bwbx.io/images/users/iqjWHBFdfxIU/iDt6V.rPqgC0/v1/1000x-1.jpg',
       title: 'Soccer',
       width: '38%',
     },
     {
       url:
-        'https://lh3.googleusercontent.com/proxy/4V2-62WQO18xUMJKbWqliQEbkcpR5hfuvs-gNLRg2guLIlf7JPE8FCHhad-y4spoF5AApjanVrSYJmznZLiS2UWEYAWcS7kRUT627FoyfREXpXM',
+          'https://www.wallpaperup.com/uploads/wallpapers/2013/10/01/154190/91396625058ee1ef210df8453478439c-700.jpg',
       title: 'Football',
       width: '38%',
     },
     {
       url:
-        'https://upload.wikimedia.org/wikipedia/commons/1/1d/Marcus_Thames_Tigers_2007.jpg',
+          'https://upload.wikimedia.org/wikipedia/commons/1/1d/Marcus_Thames_Tigers_2007.jpg',
       title: 'Baseball',
       width: '24%',
     },
     {
       url:
-        'https://www.economist.com/sites/default/files/20170715_BLP517.jpg',
+          'https://www.economist.com/sites/default/files/20170715_BLP517.jpg',
       title: 'Rugby',
       width: '40%',
     },
     {
       url:
-        'https://i2.wp.com/www.healthfitnessrevolution.com/wp-content/uploads/2015/04/volleyball-90896_1920-2.jpg?fit=1920%2C1280&ssl=1',
+          'https://i2.wp.com/www.healthfitnessrevolution.com/wp-content/uploads/2015/04/volleyball-90896_1920-2.jpg?fit=1920%2C1280&ssl=1',
       title: 'Volleyball',
       width: '20%',
     },
     {
       url:
-        'https://s3951.pcdn.co/wp-content/uploads/2015/09/Brendan-Gallagher-Canadiens-Feb-2018-975x480.jpg',
+          'https://s3951.pcdn.co/wp-content/uploads/2015/09/Brendan-Gallagher-Canadiens-Feb-2018-975x480.jpg',
       title: 'Hockey',
       width: '40%',
     },
   ];
 
   return (
-    <Container className={classes.root} component="section">
-      <Typography variant="h4" marked="center" align="center" component="h2">
-        For any kinds of group sports you want
-      </Typography>
-      <div className={classes.images}>
-        {images.map((image) => (
-          <ButtonBase
-            key={image.title}
-            className={classes.imageWrapper}
-            style={{
-              width: image.width,
-            }}
-          >
-            <div
-              className={classes.imageSrc}
-              style={{
-                backgroundImage: `url(${image.url})`,
-              }}
-            />
-            <div className={classes.imageBackdrop} />
-            <div className={classes.imageButton}>
-              <Typography
-                component="h3"
-                variant="h6"
-                color="inherit"
-                className={classes.imageTitle}
+      <Container className={classes.root} component="section">
+        <div id="section1">
+          <Typography variant="h4" marked="center" align="center" component="h2">
+            For any kinds of group sports you want
+          </Typography>
+        </div>
+        <div className={classes.images}>
+          {images.map((image) => (
+              <ButtonBase
+                  key={image.title}
+                  className={classes.imageWrapper}
+                  style={{
+                    width: image.width,
+                  }}
               >
-                {image.title}
-                <div className={classes.imageMarked} />
-              </Typography>
-            </div>
-          </ButtonBase>
-        ))}
-      </div>
-    </Container>
+                <div
+                    className={classes.imageSrc}
+                    style={{
+                      backgroundImage: `url(${image.url})`,
+                    }}
+                />
+                <div className={classes.imageBackdrop} />
+                <div className={classes.imageButton}>
+                  <Typography
+                      component="h3"
+                      variant="h6"
+                      color="inherit"
+                      className={classes.imageTitle}
+                  >
+                    {image.title}
+                    <div className={classes.imageMarked} />
+                  </Typography>
+                </div>
+              </ButtonBase>
+          ))}
+        </div>
+      </Container>
   );
 }
 

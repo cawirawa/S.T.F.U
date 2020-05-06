@@ -37,7 +37,9 @@ class Home extends React.Component {
       <React.Fragment>
         <AppAppBar />
         <ProductHero />
+        <div id="section2">
         <AvailableMatches matches={this.state.matches} />
+        </div>
         <MatchCategories />
         <ProductHowItWorks />
         <Newsletter />
