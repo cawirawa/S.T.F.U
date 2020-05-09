@@ -7,7 +7,7 @@ import Typography from "../components/Typography";
 
 const styles = (theme) => ({
   root: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(4),
     marginBottom: theme.spacing(4),
   },
   images: {
@@ -152,7 +152,6 @@ function MatchCategories(props) {
         component="h2"
         color="inherit"
         border="auto"
-        style={{ marginTop: 75 }}
       >
         For any kinds of group sports you want
       </Typography>

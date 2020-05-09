@@ -1,25 +1,26 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Container from '@material-ui/core/Container';
-import Button from '../components/Button';
-import Typography from '../components/Typography'; 
-import MatchCard from '../../../Components/MatchCard';
-
+import React from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import Container from "@material-ui/core/Container";
+import Button from "../components/Button";
+import Typography from "../components/Typography";
+import MatchCard from "../../../Components/MatchCard";
+import { GridList } from "@material-ui/core";
 const styles = (theme) => ({
   root: {
-    display: "flex",
-    backgroundColor: theme.palette.secondary.light,
+    display: "stretch",
+    backgroundColor: theme.palette.common.white,
     overflow: "hidden",
   },
   container: {
-    marginTop: theme.spacing(10),
-    marginBottom: theme.spacing(15),
+    marginTop: theme.spacing(6),
+    marginBottom: theme.spacing(4),
     position: "relative",
-    display: "flex",
-    flexDirection: "column",
     alignItems: "center",
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
   },
   item: {
     display: "flex",
@@ -28,18 +29,13 @@ const styles = (theme) => ({
     padding: theme.spacing(0, 5),
   },
   title: {
-    marginBottom: theme.spacing(14),
+    marginBottom: theme.spacing(3),
   },
   number: {
     fontSize: 24,
     fontFamily: theme.typography.fontFamily,
     color: theme.palette.secondary.main,
     fontWeight: theme.typography.fontWeightMedium,
-  },
-  image: {
-    height: 55,
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(4),
   },
   curvyLines: {
     pointerEvents: "none",
@@ -48,29 +44,24 @@ const styles = (theme) => ({
     opacity: 0.7,
   },
   button: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(9),
   },
   text: {
     marginBottom: theme.spacing(5),
   },
   cardContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-  }
+    flexWrap: "nowrap",
+    transform: "translateZ(0)",
+    height: 250,
+  },
 });
 
-
-function ProductHowItWorks(props) {
+function AvailableMatches(props) {
   const { classes } = props;
 
   return (
     <section className={classes.root}>
       <Container className={classes.container}>
-        <img
-          src="https://material-ui.com/static/themes/onepirate/productCurvyLines.png"
-          className={classes.curvyLines}
-          alt="curvy lines"
-        />
         <Typography
           variant="h4"
           marked="center"
@@ -79,18 +70,22 @@ function ProductHowItWorks(props) {
         >
           Available Matches
         </Typography>
-        <div className={classes.cardContainer}>
-          {props.matches.map(match => {
-            return (<div key={match.id} className="row"><MatchCard match={match} /></div>);
+        <GridList className={classes.cardContainer} cols={2}>
+          {props.matches.map((match) => {
+            return (
+              <div key={match.id}>
+                <MatchCard match={match} />
+              </div>
+            );
           })}
-        </div>
+        </GridList>
       </Container>
     </section>
   );
 }
 
-ProductHowItWorks.propTypes = {
+AvailableMatches.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(ProductHowItWorks);
+export default withStyles(styles)(AvailableMatches);
