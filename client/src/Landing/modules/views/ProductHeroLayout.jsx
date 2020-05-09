@@ -59,7 +59,10 @@ function ProductHeroLayout(props) {
         {children}
         <div className={classes.backdrop} />
         <div className={clsx(classes.background, backgroundClassName)} />
-        <a href="#section1" style={{ marginTop: 25, marginBottom: 50 }}>
+        <a
+          href="#section1"
+          style={{ textDecoration: "none", marginTop: 25, marginBottom: 50 }}
+        >
           <button className="button">
             <div className="buttonH"></div>
             <div className="buttonV"></div>

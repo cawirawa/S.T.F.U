@@ -10,12 +10,12 @@ import { GridList } from "@material-ui/core";
 const styles = (theme) => ({
   root: {
     display: "stretch",
-    backgroundColor: theme.palette.secondary.light,
+    backgroundColor: theme.palette.common.white,
     overflow: "hidden",
   },
   container: {
-    marginTop: theme.spacing(8),
-    marginBottom: theme.spacing(8),
+    marginTop: theme.spacing(6),
+    marginBottom: theme.spacing(4),
     position: "relative",
     alignItems: "center",
     display: "flex",
@@ -37,11 +37,6 @@ const styles = (theme) => ({
     color: theme.palette.secondary.main,
     fontWeight: theme.typography.fontWeightMedium,
   },
-  image: {
-    height: 55,
-    marginTop: theme.spacing(6),
-    marginBottom: theme.spacing(6),
-  },
   curvyLines: {
     pointerEvents: "none",
     position: "absolute",
@@ -61,17 +56,12 @@ const styles = (theme) => ({
   },
 });
 
-function ProductHowItWorks(props) {
+function AvailableMatches(props) {
   const { classes } = props;
 
   return (
     <section className={classes.root}>
       <Container className={classes.container}>
-        <img
-          src="https://material-ui.com/static/themes/onepirate/productCurvyLines.png"
-          className={classes.curvyLines}
-          alt="curvy lines"
-        />
         <Typography
           variant="h4"
           marked="center"
@@ -94,8 +84,8 @@ function ProductHowItWorks(props) {
   );
 }
 
-ProductHowItWorks.propTypes = {
+AvailableMatches.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(ProductHowItWorks);
+export default withStyles(styles)(AvailableMatches);
