@@ -5,6 +5,7 @@ import Card from '@material-ui/core/Card';
 import { withStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import './MatchCard.css';
+import honeycomb from '../Assets/HoneyComb.png'
 
 const styles = (theme) => ({
   button: {
@@ -19,13 +20,17 @@ const styles = (theme) => ({
   },
   
   card: {
+    backgroundImage: `url(${honeycomb})`,
+    backgroundPosition: 'center',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
     paddingLeft: 25,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'start',
     textTransform: 'capitalize',
-    width: 250,
-    height: 200,
+    width: 320,
+    height: 220,
     fontWeight: 'normal',
   },
   matchName: {

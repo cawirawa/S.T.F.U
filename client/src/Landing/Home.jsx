@@ -14,15 +14,30 @@ class Home extends React.Component {
   
   state = {
     matches: [],
+    currentLocation: {
+      lat: "",
+      lon: ""
+    },
   };
   
   componentDidMount() {
-    // Fetch all matches
-    fetch('http://52.25.207.161:8000/api/match/match_cards/', {
+    fetch("http://api.ipstack.com/check?access_key=8f0af5c4d95ea86b0ae3944323331ad0",{
+      method: "GET"
+    }).then(response => {
+    return response.json();
+  }).then((res) => {
+    console.log(res)
+    this.setState({currentLocation:{
+      lat: res.latitude,
+      lon: res.longitude
+    }})
+    // fetch.log("http://api.ipstack.com/check?access_key=8f0af5c4d95ea86b0ae3944323331ad0")
+  }).catch(err => console.error('Problem fetching my IP', err)).then((res) => {
+    fetch('http://52.25.207.161/api/match/match_cards/', {
       method: 'GET',
       headers: {
-        "lat": "32.8801",
-        "lon": "-117.2361",
+        "lat": this.state.currentLocation.lat,
+        "lon": this.state.currentLocation.lon,
         "dist": "150" 
       }
     }).then(resp => resp.json())
@@ -30,6 +45,9 @@ class Home extends React.Component {
       this.setState({matches: res.result});
       console.log(res);
     }).catch(error => console.log(error));
+  })
+  
+     
   };
 
   render(){

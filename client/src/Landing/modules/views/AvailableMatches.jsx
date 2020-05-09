@@ -7,7 +7,6 @@ import Button from '../components/Button';
 import Typography from '../components/Typography'; 
 import MatchCard from '../../../Components/MatchCard';
 import { GridList } from '@material-ui/core';
-
 const styles = (theme) => ({
   root: {
     display: 'stretch',
@@ -15,8 +14,8 @@ const styles = (theme) => ({
     overflow: 'hidden',
   },
   container: {
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(4),
+    marginTop: theme.spacing(8),
+    marginBottom: theme.spacing(8),
     position: 'relative',
     alignItems: 'center',
     display: 'flex',
@@ -40,8 +39,8 @@ const styles = (theme) => ({
   },
   image: {
     height: 55,
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(4),
+    marginTop: theme.spacing(6),
+    marginBottom: theme.spacing(6),
   },
   curvyLines: {
     pointerEvents: 'none',
@@ -50,7 +49,7 @@ const styles = (theme) => ({
     opacity: 0.7,
   },
   button: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(9),
   },
   text: {
     marginBottom: theme.spacing(5),
