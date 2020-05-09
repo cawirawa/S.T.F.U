@@ -31,7 +31,7 @@ class User(AbstractUser, ):
 
 class Match(models.Model):
     id = models.CharField(max_length=8, primary_key=True, default=pkgen)
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=30)
     type = models.CharField(choices=SPORTS_TYPE, max_length=15, default="SC")
     age = models.CharField(choices=AGE_RANGE, max_length=5, default="1" )
     #  latitude & longitude, By default is UCSD's lat & lon
@@ -41,7 +41,7 @@ class Match(models.Model):
     time = models.DateTimeField(default=now)
     maxPlayers = models.IntegerField(default=11)
     roster = models.ManyToManyField(User)    
-    city = models.CharField(max_length=20, default="San Diego")
+    city = models.CharField(max_length=100, default="San Diego")
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
