@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.gis.db import models
 from .randomizer import pkgen
 from django.utils.timezone import now
 from django.contrib.postgres.fields import ArrayField
@@ -6,6 +7,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 from multiselectfield import MultiSelectField
 from django.contrib.auth.models import AbstractUser
 from image_cropping import ImageRatioField
+from django.contrib.gis.geos import Point
 
 
 
@@ -35,9 +37,11 @@ class Match(models.Model):
     #  latitude & longitude, By default is UCSD's lat & lon
     lat = models.FloatField(default=32.8801)
     lon = models.FloatField(default=-117.2361)
+    location = models.PointField(null=False, blank=False, srid=4326, verbose_name="location", default=Point(32.8801, -117.2361))
     time = models.DateTimeField(default=now)
     maxPlayers = models.IntegerField(default=11)
     roster = models.ManyToManyField(User)    
+    city = models.CharField(max_length=20, default="San Diego")
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)

@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'image_cropping',
     'phonenumber_field',
     'multiselectfield',
+    'django.contrib.gis',
     'api'
 ]
 
@@ -61,6 +62,9 @@ CORS_ORIGIN_WHITELIST = (
 
 CORS_ALLOW_HEADERS = [
     'Authorization',
+    'lat',
+    'lon',
+    'dist',
 ]
 
 from easy_thumbnails.conf import Settings as thumbnail_settings
@@ -76,6 +80,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.BrokenLinkEmailsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'STFU.urls'
@@ -102,13 +109,22 @@ WSGI_APPLICATION = 'STFU.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
+        'NAME': 'stfu',
+        'USER': 'myprojectuser',
+        'PASSWORD': 'password',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

@@ -1,10 +1,11 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Container from "@material-ui/core/Container";
-import Button from "../components/Button";
-import Typography from "../components/Typography";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
+import Button from '../components/Button';
+import Typography from '../components/Typography'; 
+import MatchCard from '../../../Components/MatchCard';
 
 const styles = (theme) => ({
   root: {
@@ -52,7 +53,12 @@ const styles = (theme) => ({
   text: {
     marginBottom: theme.spacing(5),
   },
+  cardContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+  }
 });
+
 
 function ProductHowItWorks(props) {
   const { classes } = props;
@@ -73,7 +79,11 @@ function ProductHowItWorks(props) {
         >
           Available Matches
         </Typography>
-        <div></div>
+        <div className={classes.cardContainer}>
+          {props.matches.map(match => {
+            return (<div key={match.id} className="row"><MatchCard match={match} /></div>);
+          })}
+        </div>
       </Container>
     </section>
   );
