@@ -14,29 +14,33 @@ class Home extends React.Component {
   state = {
     matches: [],
   };
-  
+
   componentDidMount() {
     // Fetch all matches
-    fetch('http://52.25.207.161:8000/api/match/match_cards/', {
-      method: 'GET',
+    fetch("http://52.25.207.161:8000/api/match/match_cards/", {
+      method: "GET",
       headers: {
-        "lat": "32.8801",
-        "lon": "-117.2361",
-        "dist": "150" 
-      }
-    }).then(resp => resp.json())
-    .then(res => {
-      this.setState({matches: res.result});
-      console.log(res);
-    }).catch(error => console.log(error));
-  };
+        lat: "32.8801",
+        lon: "-117.2361",
+        dist: "150",
+      },
+    })
+      .then((resp) => resp.json())
+      .then((res) => {
+        this.setState({ matches: res.result });
+        console.log(res);
+      })
+      .catch((error) => console.log(error));
+  }
 
-  render(){
+  render() {
     return (
       <React.Fragment>
         <AppAppBar />
         <ProductHero />
-        <AvailableMatches matches={this.state.matches} />
+        {/* <div id="section1">
+          <AvailableMatches matches={this.state.matches} />
+        </div> */}
         <MatchCategories />
         <ProductHowItWorks />
         <Newsletter />

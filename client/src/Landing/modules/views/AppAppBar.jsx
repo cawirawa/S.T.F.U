@@ -50,7 +50,7 @@ function AppAppBar(props) {
               height="50"
               display="flex"
               flex="1"
-              style={{ textAlign: "left", marginTop: 10 }}
+              style={{ textAlign: "left", marginTop: 5 }}
             />
           </Link>
           <div className={classes.right}>

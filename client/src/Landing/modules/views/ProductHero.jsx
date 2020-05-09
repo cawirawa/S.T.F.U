@@ -4,6 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Button from "../components/Button";
 import Typography from "../components/Typography";
 import ProductHeroLayout from "./ProductHeroLayout";
+
 const backgroundImage =
   "https://segiphotography.files.wordpress.com/2015/05/2.jpg?w=1254&h=940";
 
@@ -14,6 +15,7 @@ const styles = (theme) => ({
     backgroundPosition: "center",
     backgroundPositionY: "25%",
     opacity: 0.7,
+    heigth: 100,
   },
   button: {
     minWidth: 200,
@@ -35,13 +37,13 @@ function ProductHero(props) {
 
   return (
     <ProductHeroLayout backgroundClassName={classes.background}>
-      <Typography
-        color="inherit"
-        align="center"
-        variant="h1"
-        // marked="center"
-        className={classes.h1}
-      >
+      {/* Increase the network loading priority of the background image. */}
+      <img
+        style={{ display: "none" }}
+        src={backgroundImage}
+        alt="increase priority"
+      />
+      <Typography color="inherit" align="center" variant="h2" marked="center">
         SPORTS TEAMMATES FOR U
       </Typography>
       <Typography
@@ -62,9 +64,6 @@ function ProductHero(props) {
       >
         Register
       </Button>
-      <Typography variant="body2" color="inherit" className={classes.more}>
-        Discover the experience
-      </Typography>
     </ProductHeroLayout>
   );
 }

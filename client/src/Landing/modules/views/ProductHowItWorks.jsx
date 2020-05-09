@@ -3,7 +3,9 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
+import Button from "../components/Button";
 import Typography from "../components/Typography";
+import "./ImageAnimation.css";
 
 const styles = (theme) => ({
   root: {
@@ -62,6 +64,9 @@ function ProductHowItWorks(props) {
                   className={classes.image}
                   src="https://material-ui.com/static/themes/onepirate/productValues2.svg"
                   alt="match"
+                  style={{
+                    animation: "rotation 5s infinite linear",
+                  }}
                 />
                 <Typography variant="h6" className={classes.text}>
                   Create or Join Match
@@ -80,6 +85,10 @@ function ProductHowItWorks(props) {
                   className={classes.image}
                   src="https://material-ui.com/static/themes/onepirate/productValues1.svg"
                   alt="venue"
+                  style={{
+                    animation: "move 7s",
+                    animationIterationCount: "infinite",
+                  }}
                 />
                 <Typography variant="h6" className={classes.text}>
                   Pick Venue
@@ -98,6 +107,10 @@ function ProductHowItWorks(props) {
                   className={classes.image}
                   src="https://material-ui.com/static/themes/onepirate/productValues3.svg"
                   alt="referee"
+                  style={{
+                    animation: "shake 0.82s",
+                    animationIterationCount: "infinite",
+                  }}
                 />
                 <Typography variant="h6" className={classes.text}>
                   Find Referee
