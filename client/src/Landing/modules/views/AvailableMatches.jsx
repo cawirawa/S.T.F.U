@@ -6,22 +6,20 @@ import Container from '@material-ui/core/Container';
 import Button from '../components/Button';
 import Typography from '../components/Typography'; 
 import MatchCard from '../../../Components/MatchCard';
-import { GridList } from '@material-ui/core';
 
 const styles = (theme) => ({
   root: {
-    display: 'stretch',
+    display: 'flex',
     backgroundColor: theme.palette.secondary.light,
     overflow: 'hidden',
   },
   container: {
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(4),
+    marginTop: theme.spacing(10),
+    marginBottom: theme.spacing(15),
     position: 'relative',
-    alignItems: 'center',
     display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   item: {
     display: 'flex',
@@ -30,7 +28,7 @@ const styles = (theme) => ({
     padding: theme.spacing(0, 5),
   },
   title: {
-    marginBottom: theme.spacing(3),
+    marginBottom: theme.spacing(14),
   },
   number: {
     fontSize: 24,
@@ -56,9 +54,8 @@ const styles = (theme) => ({
     marginBottom: theme.spacing(5),
   },
   cardContainer: {
-    flexWrap: 'nowrap',
-    transform: 'translateZ(0)',
-    height: 250,
+    display: 'flex',
+    flexDirection: 'row',
   }
 });
 
@@ -77,11 +74,11 @@ function ProductHowItWorks(props) {
         <Typography variant="h4" marked="center" className={classes.title} component="h2">
           Available Matches
         </Typography>
-        <GridList className={classes.cardContainer} cols={2} >
+        <div className={classes.cardContainer}>
           {props.matches.map(match => {
-            return (<div key={match.id}><MatchCard match={match} /></div>);
+            return (<div key={match.id} className="row"><MatchCard match={match} /></div>);
           })}
-        </GridList>
+        </div>
       </Container>
     </section>
   );
