@@ -1,18 +1,18 @@
-import withRoot from './modules/withRoot';
+import withRoot from "./modules/withRoot";
 // --- Post bootstrap -----
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
-import { Field, Form, FormSpy } from 'react-final-form';
-import Typography from './modules/components/Typography';
-import AppFooter from './modules/views/AppFooter';
-import AppAppBar from './modules/views/AppAppBar';
-import AppForm from './modules/views/AppForm';
-import { email, required } from './modules/form/validation';
-import RFTextField from './modules/form/RFTextField';
-import FormButton from './modules/form/FormButton';
-import FormFeedback from './modules/form/FormFeedback';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+import Link from "@material-ui/core/Link";
+import { Field, Form, FormSpy } from "react-final-form";
+import Typography from "./modules/components/Typography";
+import AppFooter from "./modules/views/AppFooter";
+import AppAppBar from "./modules/views/AppAppBar";
+import AppForm from "./modules/views/AppForm";
+import { email, required } from "./modules/form/validation";
+import RFTextField from "./modules/form/RFTextField";
+import FormButton from "./modules/form/FormButton";
+import FormFeedback from "./modules/form/FormFeedback";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -32,7 +32,10 @@ function SignUp() {
   const [sent, setSent] = React.useState(false);
 
   const validate = (values) => {
-    const errors = required(['firstName', 'lastName', 'email', 'password'], values);
+    const errors = required(
+      ["firstName", "lastName", "email", "password"],
+      values
+    );
 
     if (!errors.email) {
       const emailError = email(values.email, values);
@@ -62,7 +65,11 @@ function SignUp() {
             </Link>
           </Typography>
         </React.Fragment>
-        <Form onSubmit={handleSubmit} subscription={{ submitting: true }} validate={validate}>
+        <Form
+          onSubmit={handleSubmit}
+          subscription={{ submitting: true }}
+          validate={validate}
+        >
           {({ handleSubmit2, submitting }) => (
             <form onSubmit={handleSubmit2} className={classes.form} noValidate>
               <Grid container spacing={2}>
@@ -121,10 +128,10 @@ function SignUp() {
               <FormButton
                 className={classes.button}
                 disabled={submitting || sent}
-                color="secondary"
+                color="primary"
                 fullWidth
               >
-                {submitting || sent ? 'In progress…' : 'Sign Up'}
+                {submitting || sent ? "In progress…" : "Sign Up"}
               </FormButton>
             </form>
           )}

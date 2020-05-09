@@ -1,9 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import Container from '@material-ui/core/Container';
-import Typography from '../components/Typography';
+import React from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import ButtonBase from "@material-ui/core/ButtonBase";
+import Container from "@material-ui/core/Container";
+import Typography from "../components/Typography";
 
 const styles = (theme) => ({
   root: {
@@ -12,75 +12,75 @@ const styles = (theme) => ({
   },
   images: {
     marginTop: theme.spacing(8),
-    display: 'flex',
-    flexWrap: 'wrap',
+    display: "flex",
+    flexWrap: "wrap",
   },
   imageWrapper: {
-    cursor: 'default',
-    position: 'relative',
-    display: 'block',
+    cursor: "default",
+    position: "relative",
+    display: "block",
     padding: 0,
     borderRadius: 0,
-    height: '40vh',
-    [theme.breakpoints.down('sm')]: {
-      width: '100% !important',
+    height: "40vh",
+    [theme.breakpoints.down("sm")]: {
+      width: "100% !important",
       height: 100,
     },
-    '&:hover': {
+    "&:hover": {
       zIndex: 1,
     },
-    '&:hover $imageBackdrop': {
+    "&:hover $imageBackdrop": {
       opacity: 0.15,
     },
-    '&:hover $imageMarked': {
+    "&:hover $imageMarked": {
       opacity: 0,
     },
-    '&:hover $imageTitle': {
-      border: '4px solid currentColor',
+    "&:hover $imageTitle": {
+      border: "4px solid currentColor",
     },
   },
   imageButton: {
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     right: 0,
     top: 0,
     bottom: 0,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     color: theme.palette.common.white,
   },
   imageSrc: {
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     right: 0,
     top: 0,
     bottom: 0,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center 40%',
+    backgroundSize: "cover",
+    backgroundPosition: "center 40%",
   },
   imageBackdrop: {
-    position: 'absolute',
+    position: "absolute",
     left: 0,
     right: 0,
     top: 0,
     bottom: 0,
     background: theme.palette.common.black,
     opacity: 0.5,
-    transition: theme.transitions.create('opacity'),
+    transition: theme.transitions.create("opacity"),
   },
   imageTitle: {
-    position: 'relative',
+    position: "relative",
     padding: `${theme.spacing(2)}px ${theme.spacing(4)}px 14px`,
   },
   imageMarked: {
     height: 3,
     width: 18,
     background: theme.palette.common.white,
-    position: 'absolute',
+    position: "absolute",
     bottom: -2,
-    left: 'calc(50% - 9px)',
-    transition: theme.transitions.create('opacity'),
+    left: "calc(50% - 9px)",
+    transition: theme.transitions.create("opacity"),
   },
 });
 
@@ -90,63 +90,69 @@ function MatchCategories(props) {
   const images = [
     {
       url:
-        'https://www.sportspsychologybasketball.com/wp-content/uploads/2011/02/duke_600x300.jpg',
-      title: 'Basketball',
-      width: '40%',
+        "https://www.sportspsychologybasketball.com/wp-content/uploads/2011/02/duke_600x300.jpg",
+      title: "Basketball",
+      width: "40%",
     },
     {
       url:
-        'https://www.teachpe.com/wp-content/uploads/2019/09/badminton620.jpg',
-      title: 'Badminton',
-      width: '20%',
+        "https://www.teachpe.com/wp-content/uploads/2019/09/badminton620.jpg",
+      title: "Badminton",
+      width: "20%",
     },
     {
       url:
-        'https://www.bergheimat.com/tl_files/bilder/Sommerfotos%202013/Content/berg-wandern-sport.jpg',
-      title: 'Hiking',
-      width: '40%',
+        "https://www.bergheimat.com/tl_files/bilder/Sommerfotos%202013/Content/berg-wandern-sport.jpg",
+      title: "Hiking",
+      width: "40%",
     },
     {
       url:
-        'https://assets.bwbx.io/images/users/iqjWHBFdfxIU/iDt6V.rPqgC0/v1/1000x-1.jpg',
-      title: 'Soccer',
-      width: '38%',
+        "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/iDt6V.rPqgC0/v1/1000x-1.jpg",
+      title: "Soccer",
+      width: "38%",
     },
     {
       url:
-        'https://lh3.googleusercontent.com/proxy/4V2-62WQO18xUMJKbWqliQEbkcpR5hfuvs-gNLRg2guLIlf7JPE8FCHhad-y4spoF5AApjanVrSYJmznZLiS2UWEYAWcS7kRUT627FoyfREXpXM',
-      title: 'Football',
-      width: '38%',
+        "https://ca-times.brightspotcdn.com/dims4/default/48f4494/2147483647/strip/true/crop/1852x1244+1616+664/resize/840x564!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F82%2F07%2F7e75546740e4add4c67443bea721%2Fhttps-delivery.gettyimages.com%2Fdownloads%2F1186219343.jpg",
+      title: "Football",
+      width: "38%",
     },
     {
       url:
-        'https://upload.wikimedia.org/wikipedia/commons/1/1d/Marcus_Thames_Tigers_2007.jpg',
-      title: 'Baseball',
-      width: '24%',
+        "https://upload.wikimedia.org/wikipedia/commons/1/1d/Marcus_Thames_Tigers_2007.jpg",
+      title: "Baseball",
+      width: "24%",
+    },
+    {
+      url: "https://www.economist.com/sites/default/files/20170715_BLP517.jpg",
+      title: "Rugby",
+      width: "40%",
     },
     {
       url:
-        'https://www.economist.com/sites/default/files/20170715_BLP517.jpg',
-      title: 'Rugby',
-      width: '40%',
+        "https://i2.wp.com/www.healthfitnessrevolution.com/wp-content/uploads/2015/04/volleyball-90896_1920-2.jpg?fit=1920%2C1280&ssl=1",
+      title: "Volleyball",
+      width: "20%",
     },
     {
       url:
-        'https://i2.wp.com/www.healthfitnessrevolution.com/wp-content/uploads/2015/04/volleyball-90896_1920-2.jpg?fit=1920%2C1280&ssl=1',
-      title: 'Volleyball',
-      width: '20%',
-    },
-    {
-      url:
-        'https://s3951.pcdn.co/wp-content/uploads/2015/09/Brendan-Gallagher-Canadiens-Feb-2018-975x480.jpg',
-      title: 'Hockey',
-      width: '40%',
+        "https://s3951.pcdn.co/wp-content/uploads/2015/09/Brendan-Gallagher-Canadiens-Feb-2018-975x480.jpg",
+      title: "Hockey",
+      width: "40%",
     },
   ];
 
   return (
     <Container className={classes.root} component="section">
-      <Typography variant="h4" marked="center" align="center" component="h2">
+      <Typography
+        variant="h4"
+        marked="center"
+        align="center"
+        component="h2"
+        color="inherit"
+        border="auto"
+      >
         For any kinds of group sports you want
       </Typography>
       <div className={classes.images}>

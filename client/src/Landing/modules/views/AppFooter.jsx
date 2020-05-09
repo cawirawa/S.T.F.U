@@ -1,21 +1,22 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Typography from '../components/Typography';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import Typography from "../components/Typography";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    maxWidth: '100%',
-    backgroundColor: theme.palette.secondary.light,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    maxWidth: "100%",
+    backgroundColor: theme.palette.grey.main,
+    color: theme.palette.common.white,
   },
   container: {
     marginTop: theme.spacing(4),
     marginBottom: theme.spacing(4),
-    display: 'flex',
-    alignContent: 'center',
+    display: "flex",
+    alignContent: "center",
   },
 }));
 
@@ -25,8 +26,8 @@ export default function AppFooter() {
   return (
     <Container component="footer" className={classes.root}>
       <Typography className={classes.container}>
-            {'© WOIKS Team '}
-            {new Date().getFullYear()}
+        {"© WOIKS Team "}
+        {new Date().getFullYear()}
       </Typography>
     </Container>
   );
