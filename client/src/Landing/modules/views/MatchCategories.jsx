@@ -170,6 +170,12 @@ function MatchCategories(props) {
                 backgroundImage: `url(${image.url})`,
               }}
             />
+            <div
+              className={classes.imageSrc}
+              style={{
+                backgroundImage: `url(${image.url})`,
+              }}
+            />
             <div className={classes.imageBackdrop} />
             <div className={classes.imageButton}>
               <Typography
