@@ -15,7 +15,6 @@ const styles = (theme) => ({
     [theme.breakpoints.up("sm")]: {
       minHeight: 500,
       maxHeight: 1300,
-      height: "40vh",
     },
   },
   container: {
@@ -60,7 +59,7 @@ function ProductHeroLayout(props) {
         {children}
         <div className={classes.backdrop} />
         <div className={clsx(classes.background, backgroundClassName)} />
-        <a href="#section1" style={{ marginTop: 25 }}>
+        <a href="#section1" style={{ marginTop: 25, marginBottom: 50 }}>
           <button className="button">
             <div className="buttonH"></div>
             <div className="buttonV"></div>

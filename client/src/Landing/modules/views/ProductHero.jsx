@@ -4,7 +4,6 @@ import { withStyles } from "@material-ui/core/styles";
 import Button from "../components/Button";
 import Typography from "../components/Typography";
 import ProductHeroLayout from "./ProductHeroLayout";
-import "./ImageAnimation.css";
 
 const backgroundImage =
   "https://segiphotography.files.wordpress.com/2015/05/2.jpg?w=1254&h=940";

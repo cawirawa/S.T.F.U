@@ -152,6 +152,7 @@ function MatchCategories(props) {
         component="h2"
         color="inherit"
         border="auto"
+        style={{ marginTop: 75 }}
       >
         For any kinds of group sports you want
       </Typography>
