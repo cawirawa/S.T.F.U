@@ -13,6 +13,7 @@ import { email, required } from "./modules/form/validation";
 import RFTextField from "./modules/form/RFTextField";
 import FormButton from "./modules/form/FormButton";
 import FormFeedback from "./modules/form/FormFeedback";
+import db from "../base";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -27,9 +28,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SignUp() {
+function SignUp({history}) {
   const classes = useStyles();
   const [sent, setSent] = React.useState(false);
+
+  const redirectSignIn = () => {
+    history.push("/");
+  }
 
   const validate = (values) => {
     const errors = required(
@@ -47,8 +52,21 @@ function SignUp() {
     return errors;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (event) => {
     setSent(true);
+
+      event.preventDefault();
+      const { email, password } = event.target.elements;
+
+      try{
+        db
+            .auth()
+            .createUserWithEmailAndPassword(email.value,
+                password.value);
+        history.push("/");
+      } catch(error){
+        alert(error);
+      }
   };
 
   return (
@@ -71,7 +89,7 @@ function SignUp() {
           validate={validate}
         >
           {({ handleSubmit2, submitting }) => (
-            <form onSubmit={handleSubmit2} className={classes.form} noValidate>
+            <form onSubmit={handleSubmit} className={classes.form} noValidate>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <Field
