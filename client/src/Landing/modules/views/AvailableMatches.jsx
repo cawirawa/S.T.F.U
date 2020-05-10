@@ -52,7 +52,8 @@ const styles = (theme) => ({
   cardContainer: {
     flexWrap: "nowrap",
     transform: "translateZ(0)",
-    height: 250,
+    height: 275,
+    overflowY: "hidden",
   },
 });
 

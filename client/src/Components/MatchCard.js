@@ -21,6 +21,8 @@ const styles = (theme) => ({
   },
 
   card: {
+    borderStyle: "outset",
+    borderWidth: 0.8,
     backgroundImage: `url(${honeycomb})`,
     backgroundPosition: "center",
     backgroundSize: "cover",
