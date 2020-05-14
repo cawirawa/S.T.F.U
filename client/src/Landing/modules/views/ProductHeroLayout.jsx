@@ -12,10 +12,7 @@ const styles = (theme) => ({
     position: "relative",
     display: "flex",
     alignItems: "center",
-    [theme.breakpoints.up("sm")]: {
-      minHeight: 500,
-      maxHeight: 1300,
-    },
+    height: "100vh",
   },
   container: {
     marginTop: theme.spacing(20),
@@ -30,9 +27,9 @@ const styles = (theme) => ({
     top: 0,
     bottom: 0,
     backgroundColor: theme.palette.common.black,
-    opacity: 0.5,
+    opacity: 0.4,
     zIndex: -1,
-    height: 525,
+    height: "100vh",
   },
   background: {
     position: "absolute",
@@ -43,10 +40,10 @@ const styles = (theme) => ({
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
     zIndex: -2,
-    height: 525,
+    height: "100vh",
   },
   html: {
-    scrollBbehavior: "smooth",
+    scrollBehavior: "smooth",
   },
 });
 
@@ -61,7 +58,7 @@ function ProductHeroLayout(props) {
         <div className={clsx(classes.background, backgroundClassName)} />
         <a
           href="#section1"
-          style={{ textDecoration: "none", marginTop: 25, marginBottom: 50 }}
+          style={{ textDecoration: "none", marginTop: 50, marginBottom: 50 }}
         >
           <button className="button">
             <div className="buttonH"></div>

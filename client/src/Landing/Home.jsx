@@ -9,6 +9,7 @@ import ProductHowItWorks from "./modules/views/ProductHowItWorks";
 import Newsletter from "./modules/views/Newsletter";
 import AppAppBar from "./modules/views/AppAppBar";
 import AvailableMatches from "./modules/views/AvailableMatches";
+import Teams from "./modules/views/Teams";
 
 class Home extends React.Component {
   state = {
@@ -41,7 +42,7 @@ class Home extends React.Component {
       })
       .catch((err) => console.error("Problem fetching my IP", err))
       .then((res) => {
-        fetch("http://52.25.207.161/api/match/match_cards/", {
+        fetch("http://52.25.207.cat/api/match/match_cards/", {
           method: "GET",
           headers: {
             lat: this.state.currentLocation.lat,
@@ -68,6 +69,7 @@ class Home extends React.Component {
         </div>
         <MatchCategories />
         <ProductHowItWorks />
+        <Teams />
         <Newsletter />
         <QuestionsHero />
         <AppFooter />

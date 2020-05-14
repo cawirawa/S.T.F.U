@@ -90,7 +90,7 @@ function MatchCategories(props) {
   const images = [
     {
       url:
-        "https://www.sportspsychologybasketball.com/wp-content/uploads/2011/02/duke_600x300.jpg",
+        "https://www.usab.com/~/media/8d807d542ebf4339b2024c78b255bdeb.ashx?h=600&la=en&w=800",
       title: "Basketball",
       width: "40%",
     },
@@ -102,7 +102,7 @@ function MatchCategories(props) {
     },
     {
       url:
-        "https://www.bergheimat.com/tl_files/bilder/Sommerfotos%202013/Content/berg-wandern-sport.jpg",
+        "https://s3.amazonaws.com/images.gearjunkie.com/uploads/2018/03/piccourtesyfjallraven-bestwomenshikingpants.jpg",
       title: "Hiking",
       width: "40%",
     },
@@ -120,7 +120,7 @@ function MatchCategories(props) {
     },
     {
       url:
-        "https://upload.wikimedia.org/wikipedia/commons/1/1d/Marcus_Thames_Tigers_2007.jpg",
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Baseball_pitch_release.jpg/1200px-Baseball_pitch_release.jpg",
       title: "Baseball",
       width: "24%",
     },

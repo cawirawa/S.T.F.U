@@ -18,36 +18,10 @@ const styles = (theme) => ({
     marginBottom: theme.spacing(4),
     position: "relative",
     alignItems: "center",
+    justifyContent: 'center',
     display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "space-around",
-  },
-  item: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    padding: theme.spacing(0, 5),
-  },
-  title: {
-    marginBottom: theme.spacing(3),
-  },
-  number: {
-    fontSize: 24,
-    fontFamily: theme.typography.fontFamily,
-    color: theme.palette.secondary.main,
-    fontWeight: theme.typography.fontWeightMedium,
-  },
-  curvyLines: {
-    pointerEvents: "none",
-    position: "absolute",
-    top: -180,
-    opacity: 0.7,
-  },
-  button: {
-    marginTop: theme.spacing(9),
-  },
-  text: {
-    marginBottom: theme.spacing(5),
+    // flexWrap: "wrap",
+    // justifyContent: "space-around",
   },
   cardContainer: {
     flexWrap: "nowrap",
@@ -66,11 +40,13 @@ function AvailableMatches(props) {
         <Typography
           variant="h4"
           marked="center"
-          className={classes.title}
+          align="center"
           component="h2"
+          color="inherit"
+          border="auto"
         >
           Available Matches
-        </Typography>
+      </Typography>
         <GridList className={classes.cardContainer} cols={2}>
           {props.matches.map((match) => {
             return (

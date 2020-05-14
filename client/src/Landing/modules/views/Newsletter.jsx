@@ -54,7 +54,7 @@ function Newsletter(props) {
                   variant="h2"
                   component="h2"
                   gutterBottom
-                  style={{ color: "white", paddingTop: 20 }}
+                  style={{ color: "white", paddingTop: 20, textAlign: 'center' }}
                 >
                   Interested?
                 </Typography>

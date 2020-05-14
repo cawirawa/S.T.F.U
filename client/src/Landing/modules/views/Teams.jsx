@@ -1,15 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Container from '@material-ui/core/Container';
-import Button from '../components/Button';
-import Typography from '../components/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import { Grid, Container, Typography, Avatar, Card, CardContent } from '@material-ui/core';
 
-const styles = (theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
-    backgroundColor: theme.palette.secondary.light,
+    backgroundColor: theme.palette.primary.light,
     overflow: 'hidden',
   },
   container: {
@@ -20,64 +16,130 @@ const styles = (theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  item: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    padding: theme.spacing(0, 5),
-  },
   title: {
-    marginBottom: theme.spacing(14),
+    marginBottom: theme.spacing(10),
   },
-  number: {
-    fontSize: 24,
-    fontFamily: theme.typography.fontFamily,
-    color: theme.palette.secondary.main,
-    fontWeight: theme.typography.fontWeightMedium,
+  card: {
+    borderRadius: '20%',
+    textAlign: 'center',
+    margin: 15,
+    minWidth: 200,
+    minHeight: 200,
+    width: 250,
+    height: 220,
+    alignContent: 'center'
   },
-  image: {
-    height: 55,
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(4),
+  avatar: {
+    width: 120,
+    height: 120,
+    margin: 'auto',
   },
-  curvyLines: {
-    pointerEvents: 'none',
-    position: 'absolute',
-    top: -180,
-    opacity: 0.7,
+  heading: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    letterSpacing: '0.5px',
+    marginTop: 8,
+    marginBottom: 0,
   },
-  button: {
-    marginTop: theme.spacing(8),
+  subheader: {
+    fontSize: 14,
+    color: theme.palette.grey[600],
+    marginBottom: '0.875em',
   },
-  text: {
-    marginBottom: theme.spacing(5),
-  },
-});
+  gridItem: {
+    display: "flex",
+    alignItem: "center",
+    justifyContent: "center"
+  }
+}));
 
-function ProductHowItWorks(props) {
-  const { classes } = props;
+const members = [
+  {
+    pic:
+      "https://www.usab.com/~/media/8d807d542ebf4339b2024c78b255bdeb.ashx?h=600&la=en&w=800",
+    name: "Carlos Wirawan",
+    title: "Project Manager",
+  },
+  {
+    pic:
+    require("../../../Assets/shirley.jpg"),
+    name: "Gabriela Shirley",
+    title: "User Interface Specialist",
+  },
+  {
+    pic:
+    require("../../../Assets/billy.jpg"),
+    name: "Billy Halim",
+    title: "Software Development Lead",
+  },
+  {
+    pic:
+    require("../../../Assets/bruce.jpg"),
+    name: "Shih Gau Peng",
+    title: "Algorithm Specialist",
+  },
+  {
+    pic:
+      "https://ca-times.brightspotcdn.com/dims4/default/48f4494/2147483647/strip/true/crop/1852x1244+1616+664/resize/840x564!/quality/90/?pic=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F82%2F07%2F7e75546740e4add4c67443bea721%2Fhttps-delivery.gettyimages.com%2Fdownloads%2F1186219343.jpg",
+    name: "Albert Estevan",
+    title: "Business Analyst",
+  },
+  {
+    pic:
+      require("../../../Assets/tian.jpg"),
+    name: "Tiancheng Fu",
+    title: "Senior System Analyst",
+  },
+  {
+    pic: "https://www.economist.com/sites/default/files/20170715_BLP517.jpg",
+    name: "Woosung Kim",
+    title: "Database Specialist",
+  },
+  {
+    pic:
+    require("../../../Assets/wong.jpg"),
+    name: "Jason Wong",
+    title: "Quality Assurance Lead",
+  },
+  {
+    pic:
+      "https://s3951.pcdn.co/wp-content/uploads/2015/09/Brendan-Gallagher-Canadiens-Feb-2018-975x480.jpg",
+    name: "Nikolas Jody",
+    title: "Software Architect",
+  },
+  {
+    pic:
+    require("../../../Assets/jason.jpg"),
+    name: "Jason Kaharudin",
+    title: "Software Architect",
+  },
+];
+
+export default function Teams() {
+  const classes = useStyles();
 
   return (
     <section className={classes.root}>
       <Container className={classes.container}>
-        <img
-          src="https://material-ui.com/static/themes/onepirate/productCurvyLines.png"
-          className={classes.curvyLines}
-          alt="curvy lines"
-        />
-        <Typography variant="h4" marked="center" className={classes.title} component="h2">
+        <Typography variant="h4" marked="center" gutterBottom className={classes.title} component="h2">
           Teams
         </Typography>
         <div>
-          
+          <Grid container spacing={5} className={classes.gridItem}>
+            {members.map((member) => (
+              <Grid item xs={12} sm={6} md={3}>
+                <Card className={classes.card}>
+                  <CardContent>
+                    <Avatar className={classes.avatar} src={member.pic} />
+                    <h3 className={classes.heading}>{member.name}</h3>
+                    <span className={classes.subheader}>{member.title}</span>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
         </div>
       </Container>
     </section>
   );
 }
-
-ProductHowItWorks.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(ProductHowItWorks);

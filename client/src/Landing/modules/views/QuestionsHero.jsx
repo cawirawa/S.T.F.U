@@ -40,7 +40,7 @@ function QuestionsHero(props) {
           href="mailto:cawirawa@ucsd.edu"
         >
           <Typography variant="h4" component="span">
-            Got any questions? Need help?
+            Got any questions? Ask us!
           </Typography>
         </a>
       </Button>

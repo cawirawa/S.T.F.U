@@ -4,24 +4,25 @@ import { withStyles } from "@material-ui/core/styles";
 import Button from "../components/Button";
 import Typography from "../components/Typography";
 import ProductHeroLayout from "./ProductHeroLayout";
+import '../../style.css';
+import './ImageAnimation.css';
 
-const backgroundImage =
-  "https://segiphotography.files.wordpress.com/2015/05/2.jpg?w=1254&h=940";
+const backgroundImage = require('../../../Assets/hero_background.webp');
 
 const styles = (theme) => ({
   background: {
     backgroundImage: `url(${backgroundImage})`,
-    backgroundColor: theme.palette.secondary.light, // Average color of the background image.
+    backgroundColor: theme.palette.secondary.light,
     backgroundPosition: "center",
     backgroundPositionY: "25%",
-    opacity: 0.7,
-    heigth: 100,
+    backgroundSize: '200% 125%',
+    animation: `gradientImg 15s ease infinite`,
   },
   button: {
     minWidth: 200,
   },
   h1: {
-    marginTop: theme.spacing(25),
+    marginTop: theme.spacing(20),
   },
   h5: {
     marginBottom: theme.spacing(2),
@@ -41,7 +42,6 @@ function ProductHero(props) {
       <img
         style={{ display: "none" }}
         src={backgroundImage}
-        alt="increase priority"
       />
       <Typography color="inherit" align="center" variant="h2" marked="center">
         SPORTS TEAMMATES FOR U
@@ -57,7 +57,6 @@ function ProductHero(props) {
       <Button
         color="primary"
         variant="contained"
-        size="large"
         className={classes.button}
         component="a"
         href="/signup"
