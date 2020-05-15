@@ -34,13 +34,13 @@ export default function MatchSearch(props) {
         return (a.name + username + " (" + a.id + ")");
     });
     const [value, setValue] = useState(options[0]);
-    // let match = props.match;
-    // let card = match.map((match) => {
-    //     return (
-    //     <div key={match.id}>
-    //         <MatchCard match={match} />
-    //     </div>
-    //     );})
+    let match = props.match;
+    let card = match.map((match) => {
+        return (
+        <div key={match.id}>
+            <MatchCard match={match} />
+        </div>
+        );})
     
     // useEffect(() => {
     //     card = match.map((match) => {
