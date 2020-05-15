@@ -12,7 +12,7 @@ const styles = (theme) => ({
     position: "relative",
     display: "flex",
     alignItems: "center",
-    height: "100vh",
+    height: "93vh",
   },
   container: {
     marginTop: theme.spacing(20),

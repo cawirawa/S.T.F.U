@@ -70,8 +70,8 @@ function SignUp() {
           subscription={{ submitting: true }}
           validate={validate}
         >
-          {({ handleSubmit2, submitting }) => (
-            <form onSubmit={handleSubmit2} className={classes.form} noValidate>
+          {({ handleSubmit, submitting }) => (
+            <form onSubmit={handleSubmit} className={classes.form} noValidate>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <Field

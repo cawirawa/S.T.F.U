@@ -9,29 +9,30 @@ const useStyles = makeStyles(theme => ({
     overflow: 'hidden',
   },
   container: {
-    marginTop: theme.spacing(10),
-    marginBottom: theme.spacing(15),
+    marginTop: theme.spacing(8),
+    marginBottom: theme.spacing(8),
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
   },
   title: {
-    marginBottom: theme.spacing(10),
+    marginBottom: theme.spacing(8),
   },
   card: {
     borderRadius: '20%',
     textAlign: 'center',
-    margin: 15,
-    minWidth: 200,
-    minHeight: 200,
-    width: 250,
-    height: 220,
+    marginLeft: 15,
+    marginRight: 15,
+    minWidth: 150,
+    minHeight: 150,
+    width: 230,
+    height: 180,
     alignContent: 'center'
   },
   avatar: {
-    width: 120,
-    height: 120,
+    width: 90,
+    height: 90,
     margin: 'auto',
   },
   heading: {
@@ -56,7 +57,7 @@ const useStyles = makeStyles(theme => ({
 const members = [
   {
     pic:
-      "https://www.usab.com/~/media/8d807d542ebf4339b2024c78b255bdeb.ashx?h=600&la=en&w=800",
+    require("../../../Assets/carlos.jpg"),
     name: "Carlos Wirawan",
     title: "Project Manager",
   },
@@ -80,7 +81,7 @@ const members = [
   },
   {
     pic:
-      "https://ca-times.brightspotcdn.com/dims4/default/48f4494/2147483647/strip/true/crop/1852x1244+1616+664/resize/840x564!/quality/90/?pic=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F82%2F07%2F7e75546740e4add4c67443bea721%2Fhttps-delivery.gettyimages.com%2Fdownloads%2F1186219343.jpg",
+    require("../../../Assets/albert.jpg"),
     name: "Albert Estevan",
     title: "Business Analyst",
   },
@@ -91,7 +92,7 @@ const members = [
     title: "Senior System Analyst",
   },
   {
-    pic: "https://www.economist.com/sites/default/files/20170715_BLP517.jpg",
+    pic: require("../../../Assets/woosung.jpg"),
     name: "Woosung Kim",
     title: "Database Specialist",
   },
@@ -103,7 +104,7 @@ const members = [
   },
   {
     pic:
-      "https://s3951.pcdn.co/wp-content/uploads/2015/09/Brendan-Gallagher-Canadiens-Feb-2018-975x480.jpg",
+    require("../../../Assets/jody.jpg"),
     name: "Nikolas Jody",
     title: "Software Architect",
   },

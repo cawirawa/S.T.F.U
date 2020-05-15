@@ -4,6 +4,7 @@ import SignIn from './Landing/SignIn';
 import SignUp from './Landing/SignUp';
 import ForgotPassword from './Landing/ForgotPassword';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
+import Dashboard from './Dashboard/Dashboard';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route exact path="/signin" component={SignIn} />
         <Route exact path="/signup" component={SignUp} />
         <Route exact path="/forgotpassword" component={ForgotPassword} />
+        <Route exact path="/dashboard" component={Dashboard} />
       </Router>
     </div>
   );
