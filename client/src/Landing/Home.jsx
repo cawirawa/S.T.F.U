@@ -42,7 +42,7 @@ class Home extends React.Component {
       })
       .catch((err) => console.error("Problem fetching my IP", err))
       .then((res) => {
-        fetch("http://52.25.207.cat/api/match/match_cards/", {
+        fetch("http://52.25.207.161/api/match/match_cards/", {
           method: "GET",
           headers: {
             lat: this.state.currentLocation.lat,
