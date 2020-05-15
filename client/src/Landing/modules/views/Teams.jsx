@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(8),
   },
   card: {
-    borderRadius: '20%',
+    borderRadius: '10%',
     textAlign: 'center',
     marginLeft: 15,
     marginRight: 15,

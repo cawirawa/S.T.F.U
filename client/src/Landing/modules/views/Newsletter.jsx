@@ -8,8 +8,19 @@ import Typography from "../components/Typography";
 import TextField from "../components/TextField";
 import Button from "../components/Button";
 import Link from "@material-ui/core/Link";
+import illustration from "../../../Assets/illustration.jpg"
 
 const styles = (theme) => ({
+  divRoot: {
+    alignItems: "center",
+    backgroundImage: `url(${illustration})`,
+    backgroundPosition: "center",
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    // backgroundSize: '100% 100%',
+    padding: "5%",
+    display: "stretch",
+  },
   root: {
     marginTop: theme.spacing(8),
     marginBottom: 0,
@@ -23,7 +34,7 @@ const styles = (theme) => ({
   card: {
     display: "flex",
     justifyContent: "center",
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     padding: theme.spacing(8, 3),
     height: 350,
     verticalAlign: "center",
@@ -43,7 +54,7 @@ function Newsletter(props) {
   const { classes } = props;
 
   return (
-    <div style={{ alignItems: "center" }}>
+    <div className={classes.divRoot} >
       <Container className={classes.root} component="section">
         <Grid container>
           <Grid md={3}></Grid>
