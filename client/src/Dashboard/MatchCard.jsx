@@ -24,6 +24,8 @@ import AlarmIcon from '@material-ui/icons/Alarm';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import ShareIcon from '@material-ui/icons/Share';
+import sports from "../Constant/Sports";
+import ages from "../Constant/Ages";
 
 const useStyles = makeStyles((theme) => ({
     card: {
@@ -106,8 +108,9 @@ function IconContainer(props) {
     return <span {...other}>{customIcons[value].icon}</span>;
 }
 
-export default function () {
+export default function (props) {
     const classes = useStyles();
+    const match = props.match;
     const [open, setOpen] = React.useState(false);
     const handleClickOpen = () => {
         setOpen(true);
@@ -117,16 +120,26 @@ export default function () {
         setOpen(false);
     };
 
+    var date = /-\d\d-\d\d/.exec(match.time)[0] + "/" + /\d\d\d\d/.exec(match.time)[0];
+    date = date.replace("-", "");
+    date = date.replace("-", "/");
+
+    var time = /T\d\d:\d\d/.exec(match.time)[0]
+    time = time.replace("T", "")
+    
+    
+
+
     return (
         <Card className={classes.card} elevation={0}>
             <CardContent className={classes.content}>
                 <Grid container>
                     <Grid item xs={9}>
-                        <h3 className={classes.title}>Woiks Friendly Match</h3>
+                        <h3 className={classes.title}>{match.name}</h3>
                     </Grid>
                     <Grid item xs={3}>
                         <PlaceIcon />
-                        <h2 className={classes.heading}>{"San Diego"}</h2>
+                        <h2 className={classes.heading}>{match.city}</h2>
                     </Grid>
                     <Grid item item xs={9}>
                         <Rating
@@ -145,7 +158,7 @@ export default function () {
                     </Grid>
                     <Grid item xs={12}>
                         <p className={classes.body}>
-                            Hey y'all should join our match!! It's beginner-friendly.
+                            {match.description === "" ? "Hey y'all should join our match!! It's beginner-friendly." : match.description}
                         </p>
                     </Grid>
                     <Grid item xs={1}>
@@ -154,28 +167,28 @@ export default function () {
                             <DialogTitle id="form-dialog-title">Match Details</DialogTitle>
                             <DialogContent dividers>
                                 <Typography gutterBottom display='block'>
-                                    Name: Woiks Friendly Match
+                                    Name: {match.name}
                                 </Typography>
                                 <Typography gutterBottom display='block'>
-                                    ID: 8299312
+                                    ID: {match.id}
                                 </Typography>
                                 <Typography gutterBottom display='block'>
-                                    Type: soccer
+                                    Type: {sports[match.type]}
                                 </Typography>
                                 <Typography gutterBottom display='block'>
-                                    Age: 16-18
+                                    Age: {ages[match.age]}
                                 </Typography>
                                 <Typography gutterBottom display='block'>
-                                    Location: UCSD
+                                    Location: {match.city}
                                 </Typography>
                                 <Typography gutterBottom display='block'>
-                                    Date: 4/14/20
+                                    Date: {date}
                                 </Typography>
                                 <Typography gutterBottom display='block'>
-                                    Time: 7PM
+                                    Time: {time}
                                 </Typography>
                                 <Typography gutterBottom display='block'>
-                                    Player: 9/11
+                                    Player: {match.roster.length}/{match.maxPlayers}
                                 </Typography>
                             </DialogContent>
                             <DialogActions>

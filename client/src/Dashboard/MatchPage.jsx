@@ -103,7 +103,7 @@ function IconContainer(props) {
     return <span {...other}>{customIcons[value].icon}</span>;
 }
 
-export default function MatchPage() {
+export default function MatchPage(props) {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const [state, setState] = useState({
@@ -386,9 +386,14 @@ export default function MatchPage() {
                     </Dialog>
                 </Grid >
             </Grid >
-            <MatchCard />
-            <MatchCard />
-            <MatchCard />
+            
+            {props.match.map((match) => {
+            return (
+              <div key={match.id}>
+                <MatchCard match={match} />
+              </div>
+            );
+          })}
         </Fragment >
     );
 }

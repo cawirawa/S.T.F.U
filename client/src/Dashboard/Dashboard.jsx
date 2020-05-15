@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {Drawer, Box, AppBar, Toolbar, Typography, Divider, Container, Grid, Link } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
@@ -17,7 +17,7 @@ import MatchHistoryPage from './MatchHistoryPage';
 
 const drawerWidth = 240;
 
-const styles = makeStyles((theme) => ({
+const styles = (theme) => ({
   root: {
     display: 'flex',
   },
@@ -98,9 +98,9 @@ const styles = makeStyles((theme) => ({
   flexGrow: {
     flexGrow: 1
   },
-}));
+});
 
-export default class Dashboard extends Component {
+class Dashboard extends Component {
   state = {
     open: true,
     content: "1",
@@ -125,15 +125,15 @@ export default class Dashboard extends Component {
         this.setState({lon: toString(res.longitude)});
       })
       .catch((err) => console.error("Problem fetching my IP", err))
-        fetch("http://52.25.207.161/api/match/", {
-          method: "GET",
+      fetch("http://52.25.207.161/api/match/", {
+        method: "GET",
+      })
+        .then((resp) => resp.json())
+        .then((res) => {
+          this.setState({match: res});
+          console.log(this.state.match);
         })
-          .then((resp) => resp.json())
-          .then((res) => {
-            this.setState({match: res});
-            console.log(this.state.match);
-          })
-          .catch((error) => console.log(error));
+        .catch((error) => console.log(error));
 
 }
   
@@ -150,7 +150,7 @@ export default class Dashboard extends Component {
   
 
   render(){
-    const classes = useStyles();
+    const { classes } = this.props;
     // const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
     return (
@@ -207,7 +207,7 @@ export default class Dashboard extends Component {
           <Container maxWidth="lg" className={classes.container}>
             <Grid container justify="center" alignItems="center">
               <Grid item>
-                {this.state.content === "1" ? <MatchPage /> : null}
+                {this.state.content === "1" ? <MatchPage match={this.state.match} /> : null}
                 {this.state.content === "2" ? <VenuePage /> : null}
                 {this.state.content === "3" ? <RefereePage /> : null}
                 {this.state.content === "4" ? <ProfilePage /> : null}
@@ -224,3 +224,5 @@ export default class Dashboard extends Component {
     );
       }
 }
+
+export default withStyles(styles)(Dashboard);
