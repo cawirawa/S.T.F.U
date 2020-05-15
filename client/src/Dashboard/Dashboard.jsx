@@ -107,6 +107,7 @@ class Dashboard extends Component {
     lat: "",
     lon: "",
     match: [],
+    options: []
   }
 
   componentDidMount() {

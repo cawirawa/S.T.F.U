@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useRef, useEffect, useMemo } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Button, Grid, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Divider, MenuItem, FormLabel, CardContent, Typography } from '@material-ui/core';
-import MatchCard from './MatchCard';
+// import MatchCard from './MatchCard';
 import MatchSearch from './MatchSearch';
 import { Form } from "react-final-form";
 import Rating from '@material-ui/lab/Rating';
@@ -59,6 +59,13 @@ const useStyles = makeStyles((theme) => ({
     icon: {
         marginRight: 2,
     },
+    outer: {
+        display: "flex",
+        justifyContent: 'space-between',
+    },
+    createMatch: {
+        marginRight: "4%",
+    }
 }));
 
 function loadScript(src, position, id) {
@@ -199,11 +206,11 @@ export default function MatchPage(props) {
 
     return (
         <Fragment>
-            <Grid container>
-                <Grid item xs={10}>
-                    <MatchSearch />
+            <Grid container className={classes.outer}>
+                <Grid item xs={5}>
+                    <MatchSearch match={props.match} />
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={2} className={classes.createMatch}>
                     <Button variant="contained" color="primary" onClick={handleClickOpen} className={classes.button}>
                         Create Match
                     </Button>
@@ -387,13 +394,7 @@ export default function MatchPage(props) {
                 </Grid >
             </Grid >
             
-            {props.match.map((match) => {
-            return (
-              <div key={match.id}>
-                <MatchCard match={match} />
-              </div>
-            );
-          })}
+            
         </Fragment >
     );
 }
