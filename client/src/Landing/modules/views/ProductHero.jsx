@@ -7,7 +7,7 @@ import ProductHeroLayout from "./ProductHeroLayout";
 import '../../style.css';
 import './ImageAnimation.css';
 
-const backgroundImage = require('../../../Assets/hero_background.webp');
+const backgroundImage = require('../../../Assets/hero_background.jpg');
 
 const styles = (theme) => ({
   background: {
