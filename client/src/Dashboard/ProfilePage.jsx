@@ -27,6 +27,7 @@ import SentimentDissatisfiedIcon from '@material-ui/icons/SentimentDissatisfied'
 import SentimentSatisfiedIcon from '@material-ui/icons/SentimentSatisfied';
 import SentimentSatisfiedAltIcon from '@material-ui/icons/SentimentSatisfiedAltOutlined';
 import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfied';
+import SaveIcon from '@material-ui/icons/Save';
 
 const useStyles = makeStyles((theme) => ({
     root: {},
@@ -482,9 +483,10 @@ export default function ProfilePage(props) {
                             <Button
                                 color="primary"
                                 variant="contained"
+                                startIcon={<SaveIcon />}
                             >
-                                Save details
-          </Button>
+                                Save
+                            </Button>
                         </CardActions>
                     </form>
                 )}

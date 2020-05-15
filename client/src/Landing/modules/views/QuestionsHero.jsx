@@ -52,6 +52,10 @@ function QuestionsHero(props) {
         className={classes.buoy}
         alt="buoy"
       />
+      <img
+        src={require("../../../Assets/illustration.jpg")}
+        alt="illustration"
+      />
     </Container>
   );
 }

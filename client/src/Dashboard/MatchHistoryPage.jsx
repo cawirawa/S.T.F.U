@@ -1,9 +1,27 @@
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import MatchCard from './MatchCard';
 
-export default function MyMatchHistoryPage() {
+const useStyles = makeStyles(theme => ({
+    h2: {
+        fontFamily: 'Open Sans',
+        color: 'gray',
+        lineHeight: 1.5,
+        fontWeight: 400,
+        letterSpacing: '3px',
+        margin: '50px'
+    },
+}));
+
+export default function MatchHistoryPage() {
+    const classes = useStyles();
     return (
         <div>
-            <img src={require("../Assets/comingsoon.svg")} alt="Coming Soon!" />
+            <h2 className={classes.h2}>Active Matches</h2>
+            <MatchCard />
+            <h2 className={classes.h2}>Past Matches</h2>
+            <MatchCard />
+            <MatchCard />
         </div>
     );
 }
