@@ -33,7 +33,11 @@ class MatchViewSet(viewsets.ModelViewSet):
             geolocator = Nominatim(user_agent="api")
             city = geolocator.reverse(str(request.data['lat']) + ", " + str(request.data['lon']))
             city = city.raw
-            city = city['address']['city']
+            try:
+                city = city['address']['city']
+            except KeyError:
+                city = city['address']['state']
+
             obj.city = city
             for i in range(len (request.data['roster'])):
                 try:
@@ -78,7 +82,10 @@ class MatchViewSet(viewsets.ModelViewSet):
             geolocator = Nominatim(user_agent="api")
             city = geolocator.reverse(str(request.data['lat']) + ", " + str(request.data['lon']))
             city = city.raw
-            city = city['address']['city']
+            try:
+                city = city['address']['city']
+            except KeyError:
+                city = city['address']['state']
             obj.city = city
             obj.time = request.data['time']
             obj.maxPlayers = request.data['maxPlayers']
@@ -99,7 +106,7 @@ class MatchViewSet(viewsets.ModelViewSet):
             queryset = Match.objects.filter(location__distance_lte=(ref_location, D(m=distance))).annotate(distance=Distance("location", ref_location)).order_by("distance")
             # Only return today - next 7 days matches
             startdate = date.today()
-            enddate = startdate + timedelta(days=6)
+            enddate = startdate + timedelta(days=30)
             queryset = queryset.filter(time__range=[startdate, enddate])
             serializer = MatchSerializer(queryset, many=True)
             result = serializer.data
