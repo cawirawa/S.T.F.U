@@ -11,6 +11,7 @@ import { email, required } from "./modules/form/validation";
 import RFTextField from "./modules/form/RFTextField";
 import FormButton from "./modules/form/FormButton";
 import FormFeedback from "./modules/form/FormFeedback";
+import * as firebase from "firebase";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -44,6 +45,7 @@ function ForgotPassword() {
 
   const handleSubmit = () => {
     setSent(true);
+    return firebase.auth().sendPasswordResetEmail(email);
   };
 
   return (

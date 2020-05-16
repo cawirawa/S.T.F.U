@@ -54,19 +54,21 @@ function SignUp({history}) {
 
   const handleSubmit = (event) => {
     setSent(true);
+  };
 
-      event.preventDefault();
-      const { email, password } = event.target.elements;
+  const handleSubmit2 = (event) => {
+    event.preventDefault();
+    const { email, password } = event.target.elements;
 
-      try{
-        db
-            .auth()
-            .createUserWithEmailAndPassword(email.value,
-                password.value);
-        history.push("/");
-      } catch(error){
-        alert(error);
-      }
+    try{
+      db
+          .auth()
+          .createUserWithEmailAndPassword(email.value,
+              password.value);
+      history.push("/");
+    } catch(error){
+      alert(error);
+    }
   };
 
   return (
