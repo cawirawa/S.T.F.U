@@ -45,6 +45,9 @@ function ForgotPassword() {
 
   const handleSubmit = () => {
     setSent(true);
+  };
+
+  const handleSubmit2 = (email) => {
     return firebase.auth().sendPasswordResetEmail(email);
   };
 
