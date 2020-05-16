@@ -24,6 +24,8 @@ import EventIcon from '@material-ui/icons/Event';
 import AlarmIcon from '@material-ui/icons/Alarm';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
+import ContactSupportIcon from '@material-ui/icons/ContactSupport';
 import ShareIcon from '@material-ui/icons/Share';
 import sports from "../Constant/Sports";
 import ages from "../Constant/Ages";
@@ -152,7 +154,7 @@ export default function (props) {
     const handleClose = () => {
         setOpen(false);
     };
-
+    
     var date = /-\d\d-\d\d/.exec(match.time)[0] + "/" + /\d\d\d\d/.exec(match.time)[0];
     date = date.replace("-", "");
     date = date.replace("-", "/");
@@ -212,7 +214,7 @@ export default function (props) {
                                     <div className={classes.matchdetail}><div className={classes.matchLabel}><label><b>Time: </b></label></div> <div className={classes.matchContent}>{time}</div></div>
                                 </Typography>
                                 <Typography gutterBottom display='flex'>
-                                    <div className={classes.matchdetail}><div className={classes.matchLabel}><label><b>Player: </b></label></div> <div className={classes.matchContent}>{match.roster.length}/{match.maxPlayers}</div></div>
+                                    <div className={classes.matchdetail}><div className={classes.matchLabel}><label><b>Players: </b></label></div> <div className={classes.matchContent}>{match.roster.length}/{match.maxPlayers}</div></div>
                                 </Typography>
                                 <Typography gutterBottom display='flex'>
                                     <div className={classes.matchdetail}><div className={classes.matchLabel}><label><b>Roster: </b></label></div> <div className={classes.matchContent}><ol>{match.roster.map(user => {
@@ -254,6 +256,14 @@ export default function (props) {
                     <div>
                         <AlarmIcon />
                         <h2 className={classes.heading}>{time}</h2>
+                    </div>
+                    <div>
+                        <PeopleAltIcon />
+                        <h2 className={classes.heading}>{match.roster.length}/{match.maxPlayers}</h2>
+                    </div>
+                    <div>
+                        <ContactSupportIcon />
+                        <h2 className={classes.heading} style={{textTransform: "capitalize"}}>{match.roster[0].first_name}</h2>
                     </div>
                 </Grid>
             </CardContent>

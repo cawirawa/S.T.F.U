@@ -272,11 +272,12 @@ export default function MatchPage(props) {
                                             </TextField>
                                             <TextField
                                                 fullWidth
+                                                id="outlined-number"
                                                 label="Number of players"
+                                                type="number"
                                                 margin="dense"
                                                 name="numOfPlayers"
                                                 variant="outlined"
-                                                select
                                             >
                                                 <MenuItem value="" selected="selected">Select a number</MenuItem>
                                                 <MenuItem value="1">1</MenuItem>
@@ -370,7 +371,7 @@ export default function MatchPage(props) {
                                                 margin="dense"
                                                 variant="outlined"
                                                 name="notes"
-                                                label="Additional Notes"
+                                                label="Match Description"
                                                 fullWidth
                                             />
                                         </CardContent>
