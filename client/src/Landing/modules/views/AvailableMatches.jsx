@@ -18,8 +18,8 @@ const styles = (theme) => ({
     marginBottom: theme.spacing(4),
     position: "relative",
     alignItems: "center",
-    justifyContent: "center",
-    display: "flex",
+    justifyContent: 'center',
+    flexDirection: "row",
   },
   cardContainer: {
     flexWrap: "nowrap",
@@ -49,7 +49,7 @@ function AvailableMatches(props) {
           {props.matches.map((match) => {
             return (
               <div key={match.id}>
-                <MatchCard match={match} />
+                <MatchCard match={match} disabled={true} />
               </div>
             );
           })}

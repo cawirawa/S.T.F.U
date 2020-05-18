@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, {Component} from 'react';
 import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {Drawer, Box, AppBar, Toolbar, Typography, Divider, Container, Grid, Link } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
@@ -17,7 +17,7 @@ import MatchHistoryPage from './MatchHistoryPage';
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles((theme) => ({
+const styles = (theme) => ({
   root: {
     display: 'flex',
   },
@@ -98,87 +98,132 @@ const useStyles = makeStyles((theme) => ({
   flexGrow: {
     flexGrow: 1
   },
-}));
+});
 
-export default function Dashboard() {
-  const classes = useStyles();
-  const [open, setOpen] = useState(true);
-  const [content, setContent] = useState("1");
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+class Dashboard extends Component {
+  state = {
+    open: true,
+    content: "1",
+    lat: "",
+    lon: "",
+    match: [],
+    options: []
+  }
 
-  return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
-        <Toolbar className={classes.toolbar}>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <div className={classes.flexGrow} />
-          <Link
-            variant="h6"
-            underline="none"
-            color="inherit"
-            href="/"
-            font="tahoma"
-          >
-            <img
-              src={require("../Assets/appbarlogo.png")}
-              alt="logo"
-              width="50"
-              height="50"
-              display="flex"
-              flex="1"
-              style={{ textAlign: "left", marginTop: 5 }}
-            />
-          </Link>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        variant="permanent"
-        classes={{
-          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-        }}
-        open={open}
-      >
-        <div className={classes.toolbarIcon}>
-          <IconButton onClick={handleDrawerClose}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </div>
-        <Divider />
-        <ListItems onClick={setContent} />
-      </Drawer>
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          <Grid container justify="center" alignItems="center">
-            <Grid item>
-              {content === "1" ? <MatchPage /> : null}
-              {content === "2" ? <VenuePage /> : null}
-              {content === "3" ? <RefereePage /> : null}
-              {content === "4" ? <ProfilePage /> : null}
-              {content === "5" ? <InvitationPage /> : null}
-              {content === "6" ? <MatchHistoryPage /> : null}
-            </Grid>
-          </Grid>
-          <Box pt={4}>
-            <Copyright />
-          </Box>
-        </Container>
-      </main>
-    </div>
-  );
+  componentDidMount() {
+    fetch(
+      "http://api.ipstack.com/check?access_key=8f0af5c4d95ea86b0ae3944323331ad0",
+      {
+        method: "GET",
+      }
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((res) => {
+        console.log(res);
+        this.setState({lat: toString(res.latitude)});
+        this.setState({lon: toString(res.longitude)});
+      })
+      .catch((err) => console.error("Problem fetching my IP", err))
+      fetch("http://52.25.207.161/api/match/", {
+        method: "GET",
+      })
+        .then((resp) => resp.json())
+        .then((res) => {
+          this.setState({match: res});
+          console.log(this.state.match);
+        })
+        .catch((error) => console.log(error));
+
 }
+  
+  handleDrawerOpen = () => {
+    this.setState({open:true});
+  };
+  handleDrawerClose = () => {
+    this.setState({open:false});
+  };
+
+  setContent = (c) => {
+    this.setState({content: c})
+  }
+  
+
+  render(){
+    const { classes } = this.props;
+    // const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+    return (
+      <div className={classes.root}>
+        <CssBaseline />
+        <AppBar position="absolute" className={clsx(classes.appBar, this.state.open && classes.appBarShift)}>
+          <Toolbar className={classes.toolbar}>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              onClick={this.handleDrawerOpen}
+              className={clsx(classes.menuButton, this.state.open && classes.menuButtonHidden)}
+            >
+              <MenuIcon />
+            </IconButton>
+            <div className={classes.flexGrow} />
+            <Link
+              variant="h6"
+              underline="none"
+              color="inherit"
+              href="/"
+              font="tahoma"
+            >
+              <img
+                src={require("../Assets/appbarlogo.png")}
+                alt="logo"
+                width="50"
+                height="50"
+                display="flex"
+                flex="1"
+                style={{ textAlign: "left", marginTop: 5 }}
+              />
+            </Link>
+          </Toolbar>
+        </AppBar>
+        <Drawer
+          variant="permanent"
+          classes={{
+            paper: clsx(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
+          }}
+          open={this.state.open}
+        >
+          <div className={classes.toolbarIcon}>
+            <IconButton onClick={this.handleDrawerClose}>
+              <ChevronLeftIcon />
+            </IconButton>
+          </div>
+          <Divider />
+          <ListItems onClick={this.setContent} />
+        </Drawer>
+        <main className={classes.content}>
+          <div className={classes.appBarSpacer} />
+          <Container maxWidth="lg" className={classes.container}>
+            <Grid container justify="center" alignItems="center">
+              <Grid item>
+                {this.state.content === "1" ? <MatchPage match={this.state.match} /> : null}
+                {this.state.content === "2" ? <VenuePage /> : null}
+                {this.state.content === "3" ? <RefereePage /> : null}
+                {this.state.content === "4" ? <ProfilePage /> : null}
+                {this.state.content === "5" ? <InvitationPage /> : null}
+                {this.state.content === "6" ? <MatchHistoryPage /> : null}
+              </Grid>
+            </Grid>
+            <Box pt={4}>
+              <Copyright />
+            </Box>
+          </Container>
+        </main>
+      </div>
+    );
+      }
+}
+
+export default withStyles(styles)(Dashboard);

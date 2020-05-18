@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useRef, useEffect, useMemo } from 'react';
 import { makeStyles } from '@material-ui/styles';
 import { Button, Grid, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Divider, MenuItem, FormLabel, CardContent, Typography } from '@material-ui/core';
-import MatchCard from './MatchCard';
+// import MatchCard from './MatchCard';
 import MatchSearch from './MatchSearch';
 import { Form } from "react-final-form";
 import Rating from '@material-ui/lab/Rating';
@@ -59,6 +59,13 @@ const useStyles = makeStyles((theme) => ({
     icon: {
         marginRight: 2,
     },
+    outer: {
+        display: "flex",
+        justifyContent: 'space-between',
+    },
+    createMatch: {
+        marginRight: "4%",
+    }
 }));
 
 function loadScript(src, position, id) {
@@ -103,7 +110,7 @@ function IconContainer(props) {
     return <span {...other}>{customIcons[value].icon}</span>;
 }
 
-export default function MatchPage() {
+export default function MatchPage(props) {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const [state, setState] = useState({
@@ -199,11 +206,11 @@ export default function MatchPage() {
 
     return (
         <Fragment>
-            <Grid container>
-                <Grid item xs={10}>
-                    <MatchSearch />
+            <Grid container className={classes.outer}>
+                <Grid item xs={5}>
+                    <MatchSearch match={props.match} />
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={2} className={classes.createMatch}>
                     <Button variant="contained" color="primary" onClick={handleClickOpen} className={classes.button}>
                         Create Match
                     </Button>
@@ -265,11 +272,12 @@ export default function MatchPage() {
                                             </TextField>
                                             <TextField
                                                 fullWidth
+                                                id="outlined-number"
                                                 label="Number of players"
+                                                type="number"
                                                 margin="dense"
                                                 name="numOfPlayers"
                                                 variant="outlined"
-                                                select
                                             >
                                                 <MenuItem value="" selected="selected">Select a number</MenuItem>
                                                 <MenuItem value="1">1</MenuItem>
@@ -363,7 +371,7 @@ export default function MatchPage() {
                                                 margin="dense"
                                                 variant="outlined"
                                                 name="notes"
-                                                label="Additional Notes"
+                                                label="Match Description"
                                                 fullWidth
                                             />
                                         </CardContent>
@@ -386,9 +394,8 @@ export default function MatchPage() {
                     </Dialog>
                 </Grid >
             </Grid >
-            <MatchCard />
-            <MatchCard />
-            <MatchCard />
+            
+            
         </Fragment >
     );
 }

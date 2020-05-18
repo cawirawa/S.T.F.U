@@ -4,6 +4,7 @@ import {
     Card,
     CardContent,
     CardMedia,
+    Container,
     Grid,
     Button,
     Typography,
@@ -23,7 +24,12 @@ import EventIcon from '@material-ui/icons/Event';
 import AlarmIcon from '@material-ui/icons/Alarm';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
+import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
+import ContactSupportIcon from '@material-ui/icons/ContactSupport';
 import ShareIcon from '@material-ui/icons/Share';
+import sports from "../Constant/Sports";
+import ages from "../Constant/Ages";
+import { ta } from 'date-fns/esm/locale';
 
 const useStyles = makeStyles((theme) => ({
     card: {
@@ -31,7 +37,8 @@ const useStyles = makeStyles((theme) => ({
         padding: 10,
         borderRadius: 16,
         width: '70vw',
-        marginBottom: 15
+        marginBottom: 15,
+        elevation: 10,
     },
     media: {
         width: '20%',
@@ -45,7 +52,8 @@ const useStyles = makeStyles((theme) => ({
     content: {
         padding: 2,
         display: 'flex',
-        flex: '1 0 auto'
+        flexDirection: 'row',
+        flexGrow: 10
     },
     title: {
         fontSize: 17,
@@ -76,6 +84,35 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '1.8rem',
         marginRight: 9,
     },
+    matchdetail: {
+        display: "flex",
+        justifyContent: "stretch"
+    },
+    matchLabel:{
+        flex: 2
+    },
+    matchContent:{
+        flex: 5
+    },
+    left: {
+        flex:6,
+        flexDirection: "row"
+    },
+    right: {
+        padding: "2%",
+        flex:2,
+        flexDirection: "column"
+    },
+    outerLeft: {
+        display: "flex",
+        flex:9,
+        flexDirection: "row"
+    },
+    outerRight: {
+        display: "contents",
+        flex:1,
+        flexDirection: "row"
+    }
 }));
 
 const customIcons = {
@@ -106,8 +143,9 @@ function IconContainer(props) {
     return <span {...other}>{customIcons[value].icon}</span>;
 }
 
-export default function () {
+export default function (props) {
     const classes = useStyles();
+    const match = props.match;
     const [open, setOpen] = React.useState(false);
     const handleClickOpen = () => {
         setOpen(true);
@@ -116,19 +154,26 @@ export default function () {
     const handleClose = () => {
         setOpen(false);
     };
+    
+    var date = /-\d\d-\d\d/.exec(match.time)[0] + "/" + /\d\d\d\d/.exec(match.time)[0];
+    date = date.replace("-", "");
+    date = date.replace("-", "/");
+
+    var time = /T\d\d:\d\d/.exec(match.time)[0]
+    time = time.replace("T", "")
+    
+    
+
 
     return (
         <Card className={classes.card} elevation={0}>
+            <Container className={classes.outerLeft}>
             <CardContent className={classes.content}>
-                <Grid container>
+                <Grid container className={classes.left}>
                     <Grid item xs={9}>
-                        <h3 className={classes.title}>Woiks Friendly Match</h3>
+                        <h3 className={classes.title}>{match.name}</h3>
                     </Grid>
-                    <Grid item xs={3}>
-                        <PlaceIcon />
-                        <h2 className={classes.heading}>{"San Diego"}</h2>
-                    </Grid>
-                    <Grid item item xs={9}>
+                    <Grid item xs={9}>
                         <Rating
                             name="customized-icons"
                             defaultValue={2}
@@ -137,45 +182,50 @@ export default function () {
                             className={classes.rating}
                         />
                     </Grid>
-                    <Grid item xs={3}>
-                        <EventIcon />
-                        <h2 className={classes.heading}>{"04/15/20"}</h2>
-                        <AlarmIcon />
-                        <h2 className={classes.heading}>{"6 PM"}</h2>
-                    </Grid>
                     <Grid item xs={12}>
                         <p className={classes.body}>
-                            Hey y'all should join our match!! It's beginner-friendly.
+                            {match.description === "" ? "Hey y'all should join our match!! It's beginner-friendly." : match.description}
                         </p>
                     </Grid>
-                    <Grid item xs={1}>
+                    <Grid item xs={2}>
                         <Button variant="contained" color="primary" onClick={handleClickOpen}>Join</Button>
                         <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullWidth>
                             <DialogTitle id="form-dialog-title">Match Details</DialogTitle>
                             <DialogContent dividers>
-                                <Typography gutterBottom display='block'>
-                                    Name: Woiks Friendly Match
+                                <Typography gutterBottom display='flex' >
+                                    <div className={classes.matchdetail}><div className={classes.matchLabel}><label><b>Name: </b></label></div> <div className={classes.matchContent}>{match.name}</div></div>
                                 </Typography>
-                                <Typography gutterBottom display='block'>
-                                    ID: 8299312
+                                <Typography gutterBottom display='flex'>
+                                    <div className={classes.matchdetail}><div className={classes.matchLabel}><label><b>ID: </b></label></div> <div className={classes.matchContent}>{match.id}</div></div>
                                 </Typography>
-                                <Typography gutterBottom display='block'>
-                                    Type: soccer
+                                <Typography gutterBottom display='flex'>
+                                    <div className={classes.matchdetail}><div className={classes.matchLabel}><label><b>Type: </b></label></div> <div className={classes.matchContent}>{sports[match.type]}</div></div>
                                 </Typography>
-                                <Typography gutterBottom display='block'>
-                                    Age: 16-18
+                                <Typography gutterBottom display='flex'>
+                                    <div className={classes.matchdetail}><div className={classes.matchLabel}><label><b>Age: </b></label></div> <div className={classes.matchContent}>{ages[match.age]}</div></div>
                                 </Typography>
-                                <Typography gutterBottom display='block'>
-                                    Location: UCSD
+                                <Typography gutterBottom display='flex'>
+                                    <div className={classes.matchdetail}><div className={classes.matchLabel}><label><b>Location: </b></label></div> <div className={classes.matchContent}>{match.city}</div></div>
                                 </Typography>
-                                <Typography gutterBottom display='block'>
-                                    Date: 4/14/20
+                                <Typography gutterBottom display='flex'>
+                                    <div className={classes.matchdetail}><div className={classes.matchLabel}><label><b>Date: </b></label></div> <div className={classes.matchContent}>{date}</div></div>
                                 </Typography>
-                                <Typography gutterBottom display='block'>
-                                    Time: 7PM
+                                <Typography gutterBottom display='flex'>
+                                    <div className={classes.matchdetail}><div className={classes.matchLabel}><label><b>Time: </b></label></div> <div className={classes.matchContent}>{time}</div></div>
                                 </Typography>
-                                <Typography gutterBottom display='block'>
-                                    Player: 9/11
+                                <Typography gutterBottom display='flex'>
+                                    <div className={classes.matchdetail}><div className={classes.matchLabel}><label><b>Players: </b></label></div> <div className={classes.matchContent}>{match.roster.length}/{match.maxPlayers}</div></div>
+                                </Typography>
+                                <Typography gutterBottom display='flex'>
+                                    <div className={classes.matchdetail}><div className={classes.matchLabel}><label><b>Roster: </b></label></div> <div className={classes.matchContent}><ol>{match.roster.map(user => {
+                                        return <li>{user.first_name + " (" + user.username + ")"}</li>
+                                    })}</ol></div></div>
+                                </Typography>
+                                <Typography gutterBottom display='flex'>
+                                <div className={classes.matchdetail}><div className={classes.matchLabel}><label><b>Description: </b></label></div><div className={classes.matchContent}>
+                                        {match.description === "" ? "Hey y'all should join our match!! It's beginner-friendly." : match.description}
+                                    </div>
+                                </div>
                                 </Typography>
                             </DialogContent>
                             <DialogActions>
@@ -188,16 +238,42 @@ export default function () {
                             </DialogActions>
                         </Dialog>
                     </Grid>
-                    <Grid item>
+                    <Grid item xs={4}>
                         <ShareIcon color="secondary" className={classes.icon} />
                         <FavoriteIcon color="secondary" className={classes.icon} />
                     </Grid>
                 </Grid>
+
+                <Grid container className={classes.right}>
+                    <div>
+                        <PlaceIcon />
+                        <h2 className={classes.heading}>{match.city}</h2>
+                    </div>
+                    <div>
+                        <EventIcon />
+                        <h2 className={classes.heading}>{date}</h2>
+                    </div>
+                    <div>
+                        <AlarmIcon />
+                        <h2 className={classes.heading}>{time}</h2>
+                    </div>
+                    <div>
+                        <PeopleAltIcon />
+                        <h2 className={classes.heading}>{match.roster.length}/{match.maxPlayers}</h2>
+                    </div>
+                    <div>
+                        <ContactSupportIcon />
+                        <h2 className={classes.heading} style={{textTransform: "capitalize"}}>{match.roster[0].first_name}</h2>
+                    </div>
+                </Grid>
             </CardContent>
-            <CardMedia
-                className={classes.media}
-                image={require('../Assets/soccer.jpg')}
-            />
+            </Container>
+            <Container className={classes.outerRight}>
+                <CardMedia
+                        className={classes.media}
+                        image={require('../Assets/soccer.jpg')}
+                        />
+            </Container>
         </Card >
     );
 }
