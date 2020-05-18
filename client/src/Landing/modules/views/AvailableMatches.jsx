@@ -20,8 +20,6 @@ const styles = (theme) => ({
     alignItems: "center",
     justifyContent: 'center',
     flexDirection: "row",
-    // flexWrap: "wrap",
-    // justifyContent: "space-around",
   },
   cardContainer: {
     flexWrap: "nowrap",
@@ -46,7 +44,7 @@ function AvailableMatches(props) {
           border="auto"
         >
           Available Matches
-      </Typography>
+        </Typography>
         <GridList className={classes.cardContainer} cols={2}>
           {props.matches.map((match) => {
             return (
