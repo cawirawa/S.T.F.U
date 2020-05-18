@@ -49,7 +49,7 @@ function AppAppBar(props) {
               src={require("../../../Assets/appbarlogo.png")}
               alt="logo"
               width="50"
-              height="50"
+              height="55"
               display="flex"
               flex="1"
               style={{ textAlign: "left", marginTop: 5 }}

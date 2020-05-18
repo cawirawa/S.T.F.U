@@ -13,6 +13,7 @@ const styles = (theme) => ({
     marginLeft: 10,
     marginRight: 10,
     display: "inline",
+    borderRadius: "10%",
     justifyContent: "center",
     flex: 1,
     padding: 0,
@@ -22,7 +23,8 @@ const styles = (theme) => ({
 
   card: {
     borderStyle: "outset",
-    borderWidth: 0.8,
+    borderRadius: "10%",
+    borderWidth: 0.6,
     backgroundImage: `url(${honeycomb})`,
     backgroundPosition: "center",
     backgroundSize: "cover",

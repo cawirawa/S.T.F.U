@@ -11,6 +11,7 @@ import AppAppBar from "./modules/views/AppAppBar";
 import AvailableMatches from "./modules/views/AvailableMatches";
 import Teams from "./modules/views/Teams";
 
+
 class Home extends React.Component {
   state = {
     matches: [],
@@ -64,13 +65,13 @@ class Home extends React.Component {
       <React.Fragment>
         <AppAppBar />
         <ProductHero />
-        <div id="section1">
-          <AvailableMatches matches={this.state.matches} />
+        <AvailableMatches matches={this.state.matches} />
+        <div id="section2">
+          <MatchCategories />
         </div>
-        <MatchCategories />
         <ProductHowItWorks />
         <Teams />
-        <Newsletter />
+        <Newsletter/>
         <QuestionsHero />
         <AppFooter />
       </React.Fragment>
