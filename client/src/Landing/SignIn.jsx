@@ -1,6 +1,7 @@
 import withRoot from "./modules/withRoot";
 // --- Post bootstrap -----
-import React from "react";
+import React, {useContext} from "react";
+import {Redirect} from "react-router-dom";
 import { Field, Form, FormSpy } from "react-final-form";
 import { makeStyles } from "@material-ui/core/styles";
 import Link from "@material-ui/core/Link";
@@ -12,6 +13,8 @@ import { email, required } from "./modules/form/validation";
 import RFTextField from "./modules/form/RFTextField";
 import FormButton from "./modules/form/FormButton";
 import FormFeedback from "./modules/form/FormFeedback";
+import '../App.css';
+import {AuthContext} from "../auth/Auth";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -26,9 +29,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SignIn() {
+function SignIn({history}) {
   const classes = useStyles();
   const [sent, setSent] = React.useState(false);
+
+  const redirectSignUp = () => {
+    history.push("/signup")
+  }
+
+  const {currentUser} = useContext(AuthContext);
+  if (currentUser) {
+    return <Redirect to="/" />;
+  }
 
   const validate = (values) => {
     const errors = required(["email", "password"], values);
