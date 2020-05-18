@@ -89,49 +89,42 @@ function MatchCategories(props) {
 
   const images = [
     {
-      url:
-        "https://www.sportspsychologybasketball.com/wp-content/uploads/2011/02/duke_600x300.jpg",
+      url: require("../../../Assets/basketball.jpg"),
       title: "Basketball",
       width: "40%",
     },
     {
-      url:
-        "https://www.teachpe.com/wp-content/uploads/2019/09/badminton620.jpg",
+      url: require("../../../Assets/badminton.jpg"),
       title: "Badminton",
       width: "20%",
     },
     {
-      url:
-        "https://www.bergheimat.com/tl_files/bilder/Sommerfotos%202013/Content/berg-wandern-sport.jpg",
+      url: require("../../../Assets/hiking.jpg"),
       title: "Hiking",
       width: "40%",
     },
     {
-      url:
-        "https://assets.bwbx.io/images/users/iqjWHBFdfxIU/iDt6V.rPqgC0/v1/1000x-1.jpg",
+      url: require("../../../Assets/soccer.jpg"),
       title: "Soccer",
       width: "38%",
     },
     {
-      url:
-        "https://ca-times.brightspotcdn.com/dims4/default/48f4494/2147483647/strip/true/crop/1852x1244+1616+664/resize/840x564!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F82%2F07%2F7e75546740e4add4c67443bea721%2Fhttps-delivery.gettyimages.com%2Fdownloads%2F1186219343.jpg",
+      url: require("../../../Assets/football.jpg"),
       title: "Football",
       width: "38%",
     },
     {
-      url:
-        "https://upload.wikimedia.org/wikipedia/commons/1/1d/Marcus_Thames_Tigers_2007.jpg",
+      url: require("../../../Assets/baseball.jpg"),
       title: "Baseball",
       width: "24%",
     },
     {
-      url: "https://www.economist.com/sites/default/files/20170715_BLP517.jpg",
+      url: require("../../../Assets/rugby.jpg"),
       title: "Rugby",
       width: "40%",
     },
     {
-      url:
-        "https://i2.wp.com/www.healthfitnessrevolution.com/wp-content/uploads/2015/04/volleyball-90896_1920-2.jpg?fit=1920%2C1280&ssl=1",
+      url: require("../../../Assets/volleyball.jpg"),
       title: "Volleyball",
       width: "20%",
     },

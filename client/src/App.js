@@ -6,6 +6,7 @@ import ForgotPassword from './Landing/ForgotPassword';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 import PrivateRoute from "./auth/PrivateRoute";
 import {AuthProvider} from "./auth/Auth";
+import Dashboard from './Dashboard/Dashboard';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
                 <Route exact path="/signin" component={SignIn} />
                 <Route exact path="/signup" component={SignUp} />
                 <Route exact path="/forgotpassword" component={ForgotPassword} />
+                <Route exact path="/dashboard" component={Dashboard} />
             </Router>
         </div>
     </AuthProvider>

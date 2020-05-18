@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "100%",
     backgroundColor: theme.palette.grey.main,
     color: theme.palette.common.white,
+    bottom: 0,
   },
   container: {
     marginTop: theme.spacing(4),

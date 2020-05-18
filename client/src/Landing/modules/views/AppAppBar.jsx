@@ -8,6 +8,8 @@ import Toolbar, { styles as toolbarStyles } from "../components/Toolbar";
 const styles = (theme) => ({
   appBar: {
     backgroundColor: theme.palette.common.white,
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    top: 0,
   },
   title: {
     fontSize: 24,

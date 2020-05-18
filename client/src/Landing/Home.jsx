@@ -9,6 +9,7 @@ import ProductHowItWorks from "./modules/views/ProductHowItWorks";
 import Newsletter from "./modules/views/Newsletter";
 import AppAppBar from "./modules/views/AppAppBar";
 import AvailableMatches from "./modules/views/AvailableMatches";
+import Teams from "./modules/views/Teams";
 
 class Home extends React.Component {
   state = {
@@ -68,6 +69,7 @@ class Home extends React.Component {
         </div>
         <MatchCategories />
         <ProductHowItWorks />
+        <Teams />
         <Newsletter />
         <QuestionsHero />
         <AppFooter />

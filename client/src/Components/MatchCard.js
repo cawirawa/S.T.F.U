@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { Redirect } from "react-dom";
+import { Redirect } from "react-router-dom";
 import sports from "../Constant/Sports";
 import Card from "@material-ui/core/Card";
 import { withStyles } from "@material-ui/core/styles";
-import { Button } from "@material-ui/core";
+import { Button, Slide, Dialog, DialogActions, DialogContent, DialogContentText } from "@material-ui/core";
 import "./MatchCard.css";
 import honeycomb from "../Assets/HoneyComb.png";
 
@@ -21,6 +21,8 @@ const styles = (theme) => ({
   },
 
   card: {
+    borderStyle: "outset",
+    borderWidth: 0.8,
     backgroundImage: `url(${honeycomb})`,
     backgroundPosition: "center",
     backgroundSize: "cover",
@@ -43,21 +45,83 @@ const styles = (theme) => ({
 class MatchCard extends Component {
   state = {
     redirect: false,
+    open: false,
+    signup: false,
+    login: false,
   };
 
   viewMatchHandler = () => {
+    this.setState({ open: true});
     this.setState({ redirect: true });
+  };
+
+  handleClickOpen = () => {
+    this.setState({open: true});
+  };
+
+  handleClickLogin = () => {
+    console.log("woiks");
+    this.setState({login: true});
+  };
+
+  handleClickSignup = () => {
+    this.setState({signup: true});
+  };
+
+  handleClose = () => {
+    this.setState({open: false});
+    window.location.reload();
   };
 
   render() {
     const match = this.props.match;
     const { classes } = this.props;
+
+    const Transition = React.forwardRef(function Transition(props, ref) {
+      return <Slide direction="up" ref={ref} {...props} />;
+    });
+
     var time =
       /-\d\d-\d\d/.exec(match.time)[0] + "-" + /\d\d\d\d/.exec(match.time)[0];
     time = time.replace("-", "");
 
-    if (this.state.redirect) {
-      return <Redirect to={{ pathname: "/matchdetail/", match: match.id }} />;
+
+    if (this.state.login) {
+      return <Redirect to='/signin' push />;
+    }
+
+    if (this.state.signup) {
+      return <Redirect to='/signup' push />;
+    }
+
+    if (this.state.redirect && this.props.disabled === false) {
+      return <Redirect to={{ pathname: "/matchdetail/", match: match.id }} push />;
+    }
+
+    if (this.state.redirect && this.props.disabled === true) {
+      
+      return <Dialog
+        open={this.state.open}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={this.handleClose}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            Please Sign Up or Sign In to continue!
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={this.handleClickSignup} color="primary">
+            SIGN UP
+          </Button>
+          <Button onClick={this.handleClickLogin} color="primary">
+            SIGN IN
+          </Button>
+        </DialogActions>
+      </Dialog>;
     }
 
     return (
