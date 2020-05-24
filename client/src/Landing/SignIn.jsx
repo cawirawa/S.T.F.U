@@ -1,9 +1,10 @@
 import withRoot from "./modules/withRoot";
 // --- Post bootstrap -----
 import React, {useContext} from "react";
-import {Redirect} from "react-router-dom";
+import { Slide, Dialog, DialogActions, DialogContent, DialogContentText } from "@material-ui/core";
 import { Field, Form, FormSpy } from "react-final-form";
 import { makeStyles } from "@material-ui/core/styles";
+import { Redirect } from "react-router-dom";
 import Link from "@material-ui/core/Link";
 import Typography from "./modules/components/Typography";
 import AppFooter from "./modules/views/AppFooter";
@@ -12,9 +13,11 @@ import AppForm from "./modules/views/AppForm";
 import { email, required } from "./modules/form/validation";
 import RFTextField from "./modules/form/RFTextField";
 import FormButton from "./modules/form/FormButton";
+import Button from '@material-ui/core/Button';
 import FormFeedback from "./modules/form/FormFeedback";
 import '../App.css';
 import {AuthContext} from "../auth/Auth";
+import firebase from '../base'
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -29,17 +32,42 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
 function SignIn({history}) {
   const classes = useStyles();
   const [sent, setSent] = React.useState(false);
-
-  const redirectSignUp = () => {
-    history.push("/signup")
-  }
+  const [open, setOpen] = React.useState(false);
+  const [token, setToken] = React.useState("");
 
   const {currentUser} = useContext(AuthContext);
+  
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const getToken = () => {
+    fetch("http://52.25.207.161/api/profile/log_in/", {
+      method: "GET",
+      headers: {
+        email: currentUser.email
+      },
+    })
+      .then((resp) => resp.json())
+      .then((res) => {
+        setToken(res.token)
+        if (res.message === "User does not exist!"){
+          handleClickOpen();
+          firebase.auth().signOut();
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  }
+
   if (currentUser) {
-    return <Redirect to="/" />;
+    getToken();
+    return <Redirect to="/dashboard" token={token} />;
   }
 
   const validate = (values) => {
@@ -54,10 +82,32 @@ function SignIn({history}) {
 
     return errors;
   };
+  
 
-  const handleSubmit = () => {
-    setSent(true);
+  const handleClose = () => {
+    setOpen(false);
+    window.location.reload();
   };
+
+  const handleSignin = (event) => {
+    event.preventDefault();
+    const { Email, Password } = event.target.elements
+    
+    try {
+    setSent(true);
+    firebase.auth().signInWithEmailAndPassword(Email.value, Password.value).catch((error) => {
+      handleClickOpen();
+      console.log(error)
+   });
+    getToken();
+    return <Redirect to="/dashboard" token={token} />;
+    } catch (err) {
+      alert (err);
+    }
+  };
+  const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
 
   return (
     <React.Fragment>
@@ -75,12 +125,12 @@ function SignIn({history}) {
           </Typography>
         </React.Fragment>
         <Form
-          onSubmit={handleSubmit}
+          onSubmit={handleSignin}
           subscription={{ submitting: true }}
           validate={validate}
         >
           {({ handleSubmit, submitting }) => (
-            <form onSubmit={handleSubmit} className={classes.form} noValidate>
+            <form onSubmit={handleSignin} className={classes.form} noValidate>
               <Field
                 autoComplete="email"
                 autoFocus
@@ -89,7 +139,7 @@ function SignIn({history}) {
                 fullWidth
                 label="Email"
                 margin="normal"
-                name="email"
+                name="Email"
                 required
                 size="large"
               />
@@ -99,21 +149,12 @@ function SignIn({history}) {
                 component={RFTextField}
                 disabled={submitting || sent}
                 required
-                name="password"
+                name="Password"
                 autoComplete="current-password"
                 label="Password"
                 type="password"
                 margin="normal"
               />
-              <FormSpy subscription={{ submitError: true }}>
-                {({ submitError }) =>
-                  submitError ? (
-                    <FormFeedback className={classes.feedback} error>
-                      {submitError}
-                    </FormFeedback>
-                  ) : null
-                }
-              </FormSpy>
               <FormButton
                 className={classes.button}
                 disabled={submitting || sent}
@@ -123,6 +164,16 @@ function SignIn({history}) {
               >
                 {submitting || sent ? "In progress…" : "Sign In"}
               </FormButton>
+              <FormSpy subscription={{ submitError: true }}>
+                {({ submitError }) =>
+                  submitError ? (
+                    <FormFeedback className={classes.feedback} error>
+                      {submitError}
+                    </FormFeedback>
+                  ) : null
+                }
+              </FormSpy>
+              
             </form>
           )}
         </Form>
@@ -131,6 +182,25 @@ function SignIn({history}) {
             Forgot password?
           </Link>
         </Typography>
+        <Dialog
+        open={open}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-slide-title"
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            User not found!!
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            close
+          </Button>
+        </DialogActions>
+      </Dialog>
       </AppForm>
       <AppFooter />
     </React.Fragment>

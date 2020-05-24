@@ -8,6 +8,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import InsertInvitationIcon from '@material-ui/icons/InsertInvitation';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import firebase from '../base'
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -66,7 +67,7 @@ export default function ListItems({ onClick }) {
         <ListItemIcon>
           <ExitToAppIcon style={{ color: "#05294b" }} fontSize="large" />
         </ListItemIcon>
-        <ListItemText primary="Log out" />
+        <ListItemText primary="Log out" onClick={()=>{firebase.auth().signOut();}} />
       </ListItem>
     </div>
   );
