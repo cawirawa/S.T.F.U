@@ -14,7 +14,7 @@ const styles = (theme) => ({
     overflow: "hidden",
   },
   container: {
-    marginTop: theme.spacing(10),
+    marginTop: theme.spacing(8),
     marginBottom: theme.spacing(10),
     position: "relative",
     display: "flex",
@@ -28,7 +28,7 @@ const styles = (theme) => ({
     padding: theme.spacing(0, 5),
   },
   title: {
-    marginBottom: theme.spacing(8),
+    marginBottom: theme.spacing(10),
   },
   image: {
     height: 55,

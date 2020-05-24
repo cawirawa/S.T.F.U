@@ -1,7 +1,13 @@
 import withRoot from "./modules/withRoot";
 // --- Post bootstrap -----
-import React, {useContext} from "react";
-import { Slide, Dialog, DialogActions, DialogContent, DialogContentText } from "@material-ui/core";
+import React, { useContext } from "react";
+import {
+  Slide,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+} from "@material-ui/core";
 import { Field, Form, FormSpy } from "react-final-form";
 import { makeStyles } from "@material-ui/core/styles";
 import { Redirect } from "react-router-dom";
@@ -13,11 +19,11 @@ import AppForm from "./modules/views/AppForm";
 import { email, required } from "./modules/form/validation";
 import RFTextField from "./modules/form/RFTextField";
 import FormButton from "./modules/form/FormButton";
-import Button from '@material-ui/core/Button';
+import Button from "@material-ui/core/Button";
 import FormFeedback from "./modules/form/FormFeedback";
-import '../App.css';
-import {AuthContext} from "../auth/Auth";
-import firebase from '../base'
+import "../App.css";
+import { AuthContext } from "../auth/Auth";
+import firebase from "../base";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -32,15 +38,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-function SignIn({history}) {
+function SignIn({ history }) {
   const classes = useStyles();
   const [sent, setSent] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [token, setToken] = React.useState("");
 
-  const {currentUser} = useContext(AuthContext);
-  
+  const { currentUser } = useContext(AuthContext);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -49,13 +54,13 @@ function SignIn({history}) {
     fetch("http://52.25.207.161/api/profile/log_in/", {
       method: "GET",
       headers: {
-        email: currentUser.email
+        email: currentUser.email,
       },
     })
       .then((resp) => resp.json())
       .then((res) => {
-        setToken(res.token)
-        if (res.message === "User does not exist!"){
+        setToken(res.token);
+        if (res.message === "User does not exist!") {
           handleClickOpen();
           firebase.auth().signOut();
         }
@@ -63,7 +68,7 @@ function SignIn({history}) {
       .catch((error) => {
         console.log(error.message);
       });
-  }
+  };
 
   if (currentUser) {
     getToken();
@@ -82,7 +87,6 @@ function SignIn({history}) {
 
     return errors;
   };
-  
 
   const handleClose = () => {
     setOpen(false);
@@ -91,18 +95,21 @@ function SignIn({history}) {
 
   const handleSignin = (event) => {
     event.preventDefault();
-    const { Email, Password } = event.target.elements
-    
+    const { Email, Password } = event.target.elements;
+
     try {
-    setSent(true);
-    firebase.auth().signInWithEmailAndPassword(Email.value, Password.value).catch((error) => {
-      handleClickOpen();
-      console.log(error)
-   });
-    getToken();
-    return <Redirect to="/dashboard" token={token} />;
+      setSent(true);
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(Email.value, Password.value)
+        .catch((error) => {
+          handleClickOpen();
+          console.log(error);
+        });
+      getToken();
+      return <Redirect to="/dashboard" token={token} />;
     } catch (err) {
-      alert (err);
+      alert(err);
     }
   };
   const Transition = React.forwardRef(function Transition(props, ref) {
@@ -173,7 +180,6 @@ function SignIn({history}) {
                   ) : null
                 }
               </FormSpy>
-              
             </form>
           )}
         </Form>
@@ -183,24 +189,24 @@ function SignIn({history}) {
           </Link>
         </Typography>
         <Dialog
-        open={open}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-slide-title"
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-            User not found!!
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            close
-          </Button>
-        </DialogActions>
-      </Dialog>
+          open={open}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+              User not found!!
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              close
+            </Button>
+          </DialogActions>
+        </Dialog>
       </AppForm>
       <AppFooter />
     </React.Fragment>

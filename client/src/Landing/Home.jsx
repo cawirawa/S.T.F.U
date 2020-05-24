@@ -11,7 +11,6 @@ import AppAppBar from "./modules/views/AppAppBar";
 import AvailableMatches from "./modules/views/AvailableMatches";
 import Teams from "./modules/views/Teams";
 
-
 class Home extends React.Component {
   state = {
     matches: [],
@@ -56,6 +55,23 @@ class Home extends React.Component {
             this.setState({ matches: res.result });
             console.log(res);
           })
+          .then((res) => {
+            if (this.state.matches.length === 0) {
+              fetch("http://52.25.207.161/api/match/match_cards/", {
+                method: "GET",
+                headers: {
+                  lat: this.state.currentLocation.lat,
+                  lon: this.state.currentLocation.lon,
+                  dist: "10000",
+                },
+              })
+                .then((resp) => resp.json())
+                .then((res) => {
+                  this.setState({ matches: res.result });
+                  console.log(res);
+                });
+            }
+          })
           .catch((error) => console.log(error));
       });
   }
@@ -66,12 +82,12 @@ class Home extends React.Component {
         <AppAppBar />
         <ProductHero />
         <AvailableMatches matches={this.state.matches} />
-        <div id="section2">
+        <div id="section">
           <MatchCategories />
         </div>
         <ProductHowItWorks />
         <Teams />
-        <Newsletter/>
+        <Newsletter />
         <QuestionsHero />
         <AppFooter />
       </React.Fragment>

@@ -16,7 +16,7 @@ const styles = (theme) => ({
     marginBottom: theme.spacing(4),
     position: "relative",
     alignItems: "center",
-    justifyContent: 'center',
+    justifyContent: "center",
     flexDirection: "row",
   },
   cardContainer: {
@@ -40,6 +40,7 @@ function AvailableMatches(props) {
           component="h2"
           color="inherit"
           border="auto"
+          style={{ paddingBottom: 50, paddingTop: 25 }}
         >
           Available Matches
         </Typography>

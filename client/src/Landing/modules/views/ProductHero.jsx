@@ -4,10 +4,10 @@ import { withStyles } from "@material-ui/core/styles";
 import Button from "../components/Button";
 import Typography from "../components/Typography";
 import ProductHeroLayout from "./ProductHeroLayout";
-import '../../style.css';
-import './ImageAnimation.css';
+import "../../style.css";
+import "./ImageAnimation.css";
 
-const backgroundImage = require('../../../Assets/hero_background.jpg');
+const backgroundImage = require("../../../Assets/hero_background.jpg");
 
 const styles = (theme) => ({
   background: {
@@ -15,7 +15,7 @@ const styles = (theme) => ({
     backgroundColor: theme.palette.secondary.light,
     backgroundPosition: "center",
     backgroundPositionY: "25%",
-    backgroundSize: '200% 125%',
+    backgroundSize: "200% 125%",
     animation: `gradientImg 15s ease infinite`,
   },
   button: {
@@ -25,7 +25,7 @@ const styles = (theme) => ({
     marginTop: theme.spacing(20),
   },
   h5: {
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(4),
     marginTop: theme.spacing(4),
   },
   more: {
@@ -39,10 +39,7 @@ function ProductHero(props) {
   return (
     <ProductHeroLayout backgroundClassName={classes.background}>
       {/* Increase the network loading priority of the background image. */}
-      <img
-        style={{ display: "none" }}
-        src={backgroundImage}
-      />
+      <img style={{ display: "none" }} src={backgroundImage} />
       <Typography color="inherit" align="center" variant="h2" marked="center">
         SPORTS TEAMMATES FOR U
       </Typography>
