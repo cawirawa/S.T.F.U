@@ -1,48 +1,58 @@
-import React, {Component} from 'react';
-import clsx from 'clsx';
-import { withStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import {Drawer, Box, AppBar, Toolbar, Typography, Divider, Container, Grid, Link } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ListItems from './ListItems';
-import ProfilePage from './ProfilePage';
-import Copyright from './Copyright';
-import MatchPage from './MatchPage';
-import VenuePage from './VenuePage';
-import RefereePage from './RefereePage';
-import InvitationPage from './InvitationPage';
-import MatchHistoryPage from './MatchHistoryPage';
+import React, { Component } from "react";
+import clsx from "clsx";
+import { withStyles } from "@material-ui/core/styles";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import {
+  Drawer,
+  Box,
+  AppBar,
+  Toolbar,
+  Typography,
+  Divider,
+  Container,
+  Grid,
+  Link,
+} from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ListItems from "./ListItems";
+import ProfilePage from "./ProfilePage";
+import Copyright from "./Copyright";
+import MatchPage from "./MatchPage";
+import VenuePage from "./VenuePage";
+import RefereePage from "./RefereePage";
+import InvitationPage from "./InvitationPage";
+import MatchHistoryPage from "./MatchHistoryPage";
 
 const drawerWidth = 240;
 
 const styles = (theme) => ({
   root: {
-    display: 'flex',
+    display: "flex",
   },
   toolbar: {
     paddingRight: 24, // keep right padding when drawer closed
   },
   toolbarIcon: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    padding: "0 8px",
     ...theme.mixins.toolbar,
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
+    transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    backgroundColor: '#05294b'
+    backgroundColor: "#05294b",
   },
   appBarShift: {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
+    transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -51,36 +61,36 @@ const styles = (theme) => ({
     marginRight: 36,
   },
   menuButtonHidden: {
-    display: 'none',
+    display: "none",
   },
   title: {
     flexGrow: 1,
   },
   drawerPaper: {
-    position: 'relative',
-    whiteSpace: 'nowrap',
+    position: "relative",
+    whiteSpace: "nowrap",
     width: drawerWidth,
-    transition: theme.transitions.create('width', {
+    transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
   drawerPaperClose: {
-    overflowX: 'hidden',
-    transition: theme.transitions.create('width', {
+    overflowX: "hidden",
+    transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
     width: theme.spacing(7),
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up("sm")]: {
       width: theme.spacing(9),
     },
   },
   appBarSpacer: theme.mixins.toolbar,
   content: {
     flexGrow: 1,
-    height: '100vh',
-    overflow: 'auto',
+    height: "100vh",
+    overflow: "auto",
   },
   container: {
     paddingTop: theme.spacing(4),
@@ -88,15 +98,15 @@ const styles = (theme) => ({
   },
   paper: {
     padding: theme.spacing(2),
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column',
+    display: "flex",
+    overflow: "auto",
+    flexDirection: "column",
   },
   fixedHeight: {
     height: 240,
   },
   flexGrow: {
-    flexGrow: 1
+    flexGrow: 1,
   },
 });
 
@@ -107,8 +117,8 @@ class Dashboard extends Component {
     lat: "",
     lon: "",
     match: [],
-    options: []
-  }
+    options: [],
+  };
 
   componentDidMount() {
     fetch(
@@ -122,49 +132,56 @@ class Dashboard extends Component {
       })
       .then((res) => {
         console.log(res);
-        this.setState({lat: toString(res.latitude)});
-        this.setState({lon: toString(res.longitude)});
+        this.setState({ lat: toString(res.latitude) });
+        this.setState({ lon: toString(res.longitude) });
       })
-      .catch((err) => console.error("Problem fetching my IP", err))
-      fetch("http://52.25.207.161/api/match/", {
-        method: "GET",
+      .catch((err) => console.error("Problem fetching my IP", err));
+    fetch("http://52.25.207.161/api/match/", {
+      method: "GET",
+    })
+      .then((resp) => resp.json())
+      .then((res) => {
+        this.setState({ match: res });
+        console.log(this.state.match);
       })
-        .then((resp) => resp.json())
-        .then((res) => {
-          this.setState({match: res});
-          console.log(this.state.match);
-        })
-        .catch((error) => console.log(error));
+      .catch((error) => console.log(error));
+  }
 
-}
-  
   handleDrawerOpen = () => {
-    this.setState({open:true});
+    this.setState({ open: true });
   };
   handleDrawerClose = () => {
-    this.setState({open:false});
+    this.setState({ open: false });
   };
 
   setContent = (c) => {
-    this.setState({content: c})
-  }
-  
+    this.setState({ content: c });
+  };
 
-  render(){
+  render() {
     const { classes } = this.props;
     // const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
     return (
       <div className={classes.root}>
         <CssBaseline />
-        <AppBar position="absolute" className={clsx(classes.appBar, this.state.open && classes.appBarShift)}>
+        <AppBar
+          position="absolute"
+          className={clsx(
+            classes.appBar,
+            this.state.open && classes.appBarShift
+          )}
+        >
           <Toolbar className={classes.toolbar}>
             <IconButton
               edge="start"
               color="inherit"
               aria-label="open drawer"
               onClick={this.handleDrawerOpen}
-              className={clsx(classes.menuButton, this.state.open && classes.menuButtonHidden)}
+              className={clsx(
+                classes.menuButton,
+                this.state.open && classes.menuButtonHidden
+              )}
             >
               <MenuIcon />
             </IconButton>
@@ -180,7 +197,7 @@ class Dashboard extends Component {
                 src={require("../Assets/appbarlogo.png")}
                 alt="logo"
                 width="50"
-                height="50"
+                height="55"
                 display="flex"
                 flex="1"
                 style={{ textAlign: "left", marginTop: 5 }}
@@ -191,7 +208,10 @@ class Dashboard extends Component {
         <Drawer
           variant="permanent"
           classes={{
-            paper: clsx(classes.drawerPaper, !this.state.open && classes.drawerPaperClose),
+            paper: clsx(
+              classes.drawerPaper,
+              !this.state.open && classes.drawerPaperClose
+            ),
           }}
           open={this.state.open}
         >
@@ -208,12 +228,13 @@ class Dashboard extends Component {
           <Container maxWidth="lg" className={classes.container}>
             <Grid container justify="center" alignItems="center">
               <Grid item>
-                {this.state.content === "1" ? <MatchPage match={this.state.match} /> : null}
+                {this.state.content === "1" ? (
+                  <MatchPage match={this.state.match} />
+                ) : null}
                 {this.state.content === "2" ? <VenuePage /> : null}
                 {this.state.content === "3" ? <RefereePage /> : null}
                 {this.state.content === "4" ? <ProfilePage /> : null}
-                {this.state.content === "5" ? <InvitationPage /> : null}
-                {this.state.content === "6" ? <MatchHistoryPage /> : null}
+                {this.state.content === "5" ? <MatchHistoryPage /> : null}
               </Grid>
             </Grid>
             <Box pt={4}>
@@ -223,7 +244,7 @@ class Dashboard extends Component {
         </main>
       </div>
     );
-      }
+  }
 }
 
 export default withStyles(styles)(Dashboard);

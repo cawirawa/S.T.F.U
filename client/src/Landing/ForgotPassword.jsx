@@ -12,6 +12,7 @@ import RFTextField from "./modules/form/RFTextField";
 import FormButton from "./modules/form/FormButton";
 import FormFeedback from "./modules/form/FormFeedback";
 import * as firebase from "firebase";
+import { Redirect } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -47,8 +48,15 @@ function ForgotPassword() {
     setSent(true);
   };
 
-  const handleSubmit2 = (email) => {
-    return firebase.auth().sendPasswordResetEmail(email);
+  const handleSubmit2 = (event) => {
+    const { Email } = event.target.elements;
+    firebase.auth().sendPasswordResetEmail(Email.value);
+    alert("A password reset link has been sent to your email address");
+    console.log("AYAM");
+  };
+
+  const handlePage = () => {
+    return <Redirect to="/dashboard" />;
   };
 
   return (
@@ -70,7 +78,7 @@ function ForgotPassword() {
           validate={validate}
         >
           {({ handleSubmit, submitting }) => (
-            <form onSubmit={handleSubmit} className={classes.form} noValidate>
+            <form onSubmit={handleSubmit2} className={classes.form} noValidate>
               <Field
                 autoFocus
                 autoComplete="email"
@@ -79,7 +87,7 @@ function ForgotPassword() {
                 fullWidth
                 label="Email"
                 margin="normal"
-                name="email"
+                name="Email"
                 required
                 size="large"
               />
@@ -98,6 +106,7 @@ function ForgotPassword() {
                 size="large"
                 color="primary"
                 fullWidth
+                onClick={handlePage}
               >
                 {submitting || sent ? "In progress…" : "Send reset link"}
               </FormButton>
