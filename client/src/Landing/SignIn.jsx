@@ -108,9 +108,7 @@ function SignIn({ history }) {
         });
       getToken();
       return <Redirect to="/dashboard" token={token} />;
-    } catch (err) {
-      alert(err);
-    }
+    } catch {}
   };
   const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
