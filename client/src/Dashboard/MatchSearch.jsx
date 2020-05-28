@@ -41,19 +41,6 @@ export default function MatchSearch(props) {
             <MatchCard match={match} />
         </div>
         );})
-    
-    // useEffect(() => {
-    //     card = match.map((match) => {
-    //         return (
-    //         <div key={match.id}>
-    //             <MatchCard match={match} />
-    //         </div>)
-    //     })
-    //     options = props.match.map(a => {
-    //         let username = a.roster[0] ? " - " + a.roster[0].username : "";
-    //         return (a.name + username + " (" + a.id + ")");
-    //     });
-    // }, [match])
 
     return (
         <React.Fragment>
@@ -64,13 +51,7 @@ export default function MatchSearch(props) {
                             value={value}
                             onChange={(event, newValue) => {
                                 setValue(newValue);
-                                // let v = /\(\d\d\d-\d\d\d\d/.exec(newValue)[0]
-                                // v = v.replace("(", "")
-                                // match = match.filter((match) => {
-                                //     return (match.id === v);
-                                //   });
-                                // forceUpdate();
-                                // console.log(match)
+                                
                             }}
                             id="controllable-states-demo"
                             options={options}

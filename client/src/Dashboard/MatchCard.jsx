@@ -96,7 +96,8 @@ const useStyles = makeStyles((theme) => ({
     },
     left: {
         flex:6,
-        flexDirection: "row"
+        flexDirection: "row",
+        textAlign: "left"
     },
     right: {
         padding: "2%",
