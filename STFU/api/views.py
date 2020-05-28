@@ -20,7 +20,7 @@ class MatchViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['POST'])
     def create_match(self, request, pk=None):
-        if 'roster'  in request.data and 'name' in request.data and 'type' in request.data and 'age' in request.data and 'lat' in request.data and 'lon' in request.data and 'time' in request.data and 'maxPlayers' in request.data:
+        if 'roster'  in request.data and 'name' in request.data and 'type' in request.data and 'age' in request.data and 'lat' in request.data and 'lon' in request.data and 'time' in request.data and 'maxPlayers' in request.data and 'description' in request.data:
             obj = Match.objects.create()
             obj.name = request.data['name']
             obj.type = request.data['type']
@@ -28,6 +28,7 @@ class MatchViewSet(viewsets.ModelViewSet):
             obj.lat = request.data['lat']
             obj.lon = request.data['lon']
             obj.time = request.data['time']
+            obj.description = request.data['description']
             obj.maxPlayers = request.data['maxPlayers']
             obj.location = Point(float(request.data['lat']), float(request.data['lon']))
             geolocator = Nominatim(user_agent="api")
@@ -100,6 +101,7 @@ class MatchViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['GET'])
     def match_cards(self, request, pk=None):
         if 'lat' in request.headers and 'lon' in request.headers and 'dist' in request.headers:
+            print(request.headers['lat'] + request.headers['lat'])
             pnt = Point(x=float(request.headers['lat']), y=float(request.headers['lon']), srid=4326)
             distance = float(request.headers['dist']) / 0.00062137 
             ref_location = pnt
@@ -119,7 +121,7 @@ class MatchViewSet(viewsets.ModelViewSet):
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-    # authentication_classes = (TokenAuthentication, )
+    authentication_classes = (TokenAuthentication, )
     permission_classes = (permissions.AllowAny, )
 
     @action(detail=False, methods=['GET'])
@@ -140,6 +142,91 @@ class ProfileViewSet(viewsets.ModelViewSet):
         else:
             response = {'message': 'Please provide all attributes!'}
             return Response(response, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['POST'], permission_classes=[permissions.AllowAny])
+    def create_user(self, request, pk=None):
+        if 'email' in request.data and 'name' in request.data and 'username' in request.data:
+            try: 
+                user = User.objects.get(username=request.data['username'])
+                response = {'message': 'username used!'}
+                return Response(response, status=status.HTTP_400_BAD_REQUEST)
+            except User.DoesNotExist:
+                try: 
+                    user = User.objects.get(email=request.data['email'])
+                    response = {'message': 'email used!'}
+                    return Response(response, status=status.HTTP_400_BAD_REQUEST)
+                except User.DoesNotExist:
+                    user = User.objects.create(username=request.data['username'], email=request.data['email'])
+                    user.first_name = request.data['name']
+                    user.save()
+                    obj = Profile.objects.create(user=user)
+                    serializer = ProfileSerializer(obj, many=False)
+                    token = Token.objects.create(user=user)
+                    response = {'message': 'Successfully created User', 'result': serializer.data, 'token': token.key }
+                    return Response(response, status=status.HTTP_200_OK)
+        else:
+            response = {'message': 'Please provide all attributes!'}
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=['GET'])
+    def log_in(self, request, pk=None):
+        if 'email' in request.headers:
+            try: 
+                user = User.objects.get(email=request.headers['email'])
+                obj = Profile.objects.get(user=user)
+                serializer = ProfileSerializer(obj, many=False)
+                token = Token.objects.get(user=user)
+                response = {'message': 'Successfully fetched User', 'result': serializer.data, 'token': token.key }
+                return Response(response, status=status.HTTP_200_OK)
+            except User.DoesNotExist:
+                response = {'message': 'User does not exist!'}
+                return Response(response, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            response = {'message': 'Please provide all attributes!'}
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+            
+    @action(detail=False, methods=['POST'])
+    def update_profile(self, request, pk=None):
+        if 'email' in request.data and 'phone' in request.data and 'age' in request.data and 'zip_code' in request.data and 'sports' in request.data and 'bio' in request.data and 'profile_image' in request.data:
+            try: 
+                user = User.objects.get(username=request.data['email'])
+                profile = Profile.objects.get(user=user)
+                profile.phone = request.data['phone']
+                profile.age = request.data['age']
+                profile.zip_code = request.data['zip_code']
+                profile.sports = request.data['sports']
+                profile.bio = request.data['bio']
+                profile.profile_image = request.data['profile_image']
+                profile.save()
+                serializer = ProfileSerializer(obj, many=False)
+                response = {'message': 'Successfully updated profile with profile image', 'result': serializer.data}
+                return Response(response, status=status.HTTP_200_OK)  
+
+            except User.DoesNotExist:
+                response = {'message': 'User does not exist!'}
+                return Response(response, status=status.HTTP_400_BAD_REQUEST)
+        elif 'email' in request.data and 'phone' in request.data and 'age' in request.data and 'zip_code' in request.data and 'sports' in request.data and 'bio' in request.data:
+            try: 
+                user = User.objects.get(username=request.data['email'])
+                profile = Profile.objects.get(user=user)
+                profile.phone = request.data['phone']
+                profile.age = request.data['age']
+                profile.zip_code = request.data['zip_code']
+                profile.sports = request.data['sports']
+                profile.bio = request.data['bio']
+                profile.save()
+                serializer = ProfileSerializer(obj, many=False)
+                response = {'message': 'Successfully updated profile', 'result': serializer.data}
+                return Response(response, status=status.HTTP_200_OK)  
+
+            except User.DoesNotExist:
+                response = {'message': 'User does not exist!'}
+                return Response(response, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            response = {'message': 'Please provide all attributes!'}
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)    
+
+
        
 
 

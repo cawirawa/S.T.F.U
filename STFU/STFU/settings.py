@@ -66,6 +66,8 @@ CORS_ALLOW_HEADERS = [
     'lat',
     'lon',
     'dist',
+    'email',
+    'content-type'
 ]
 
 from easy_thumbnails.conf import Settings as thumbnail_settings
@@ -105,7 +107,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'STFU.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
