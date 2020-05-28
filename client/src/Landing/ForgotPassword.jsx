@@ -1,16 +1,18 @@
-import withRoot from './modules/withRoot';
+import withRoot from "./modules/withRoot";
 // --- Post bootstrap -----
-import React from 'react';
-import { Field, Form, FormSpy } from 'react-final-form';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from './modules/components/Typography';
-import AppFooter from './modules/views/AppFooter';
-import AppAppBar from './modules/views/AppAppBar';
-import AppForm from './modules/views/AppForm';
-import { email, required } from './modules/form/validation';
-import RFTextField from './modules/form/RFTextField';
-import FormButton from './modules/form/FormButton';
-import FormFeedback from './modules/form/FormFeedback';
+import React from "react";
+import { Field, Form, FormSpy } from "react-final-form";
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from "./modules/components/Typography";
+import AppFooter from "./modules/views/AppFooter";
+import AppAppBar from "./modules/views/AppAppBar";
+import AppForm from "./modules/views/AppForm";
+import { email, required } from "./modules/form/validation";
+import RFTextField from "./modules/form/RFTextField";
+import FormButton from "./modules/form/FormButton";
+import FormFeedback from "./modules/form/FormFeedback";
+import * as firebase from "firebase";
+import { Redirect } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -30,7 +32,7 @@ function ForgotPassword() {
   const [sent, setSent] = React.useState(false);
 
   const validate = (values) => {
-    const errors = required(['email', 'password'], values);
+    const errors = required(["email", "password"], values);
 
     if (!errors.email) {
       const emailError = email(values.email, values);
@@ -46,6 +48,17 @@ function ForgotPassword() {
     setSent(true);
   };
 
+  const handleSubmit2 = (event) => {
+    const { Email } = event.target.elements;
+    firebase.auth().sendPasswordResetEmail(Email.value);
+    alert("A password reset link has been sent to your email address");
+    console.log("AYAM");
+  };
+
+  const handlePage = () => {
+    return <Redirect to="/dashboard" />;
+  };
+
   return (
     <React.Fragment>
       <AppAppBar />
@@ -56,11 +69,15 @@ function ForgotPassword() {
           </Typography>
           <Typography variant="body2" align="center">
             {"Enter your email address below and we'll " +
-              'send you a link to reset your password.'}
+              "send you a link to reset your password."}
           </Typography>
         </React.Fragment>
-        <Form onSubmit={handleSubmit} subscription={{ submitting: true }} validate={validate}>
-          {({ handleSubmit2, submitting }) => (
+        <Form
+          onSubmit={handleSubmit}
+          subscription={{ submitting: true }}
+          validate={validate}
+        >
+          {({ handleSubmit, submitting }) => (
             <form onSubmit={handleSubmit2} className={classes.form} noValidate>
               <Field
                 autoFocus
@@ -70,7 +87,7 @@ function ForgotPassword() {
                 fullWidth
                 label="Email"
                 margin="normal"
-                name="email"
+                name="Email"
                 required
                 size="large"
               />
@@ -87,10 +104,11 @@ function ForgotPassword() {
                 className={classes.button}
                 disabled={submitting || sent}
                 size="large"
-                color="secondary"
+                color="primary"
                 fullWidth
+                onClick={handlePage}
               >
-                {submitting || sent ? 'In progress…' : 'Send reset link'}
+                {submitting || sent ? "In progress…" : "Send reset link"}
               </FormButton>
             </form>
           )}

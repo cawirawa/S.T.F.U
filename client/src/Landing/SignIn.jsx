@@ -1,17 +1,29 @@
-import withRoot from './modules/withRoot';
+import withRoot from "./modules/withRoot";
 // --- Post bootstrap -----
-import React from 'react';
-import { Field, Form, FormSpy } from 'react-final-form';
-import { makeStyles } from '@material-ui/core/styles';
-import Link from '@material-ui/core/Link';
-import Typography from './modules/components/Typography';
-import AppFooter from './modules/views/AppFooter';
-import AppAppBar from './modules/views/AppAppBar';
-import AppForm from './modules/views/AppForm';
-import { email, required } from './modules/form/validation';
-import RFTextField from './modules/form/RFTextField';
-import FormButton from './modules/form/FormButton';
-import FormFeedback from './modules/form/FormFeedback';
+import React, { useContext } from "react";
+import {
+  Slide,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+} from "@material-ui/core";
+import { Field, Form, FormSpy } from "react-final-form";
+import { makeStyles } from "@material-ui/core/styles";
+import { Redirect } from "react-router-dom";
+import Link from "@material-ui/core/Link";
+import Typography from "./modules/components/Typography";
+import AppFooter from "./modules/views/AppFooter";
+import AppAppBar from "./modules/views/AppAppBar";
+import AppForm from "./modules/views/AppForm";
+import { email, required } from "./modules/form/validation";
+import RFTextField from "./modules/form/RFTextField";
+import FormButton from "./modules/form/FormButton";
+import Button from "@material-ui/core/Button";
+import FormFeedback from "./modules/form/FormFeedback";
+import "../App.css";
+import { AuthContext } from "../auth/Auth";
+import firebase from "../base";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -26,12 +38,45 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SignIn() {
+function SignIn({ history }) {
   const classes = useStyles();
   const [sent, setSent] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
+  const [token, setToken] = React.useState("");
+
+  const { currentUser } = useContext(AuthContext);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const getToken = () => {
+    fetch("http://52.25.207.161/api/profile/log_in/", {
+      method: "GET",
+      headers: {
+        email: currentUser.email,
+      },
+    })
+      .then((resp) => resp.json())
+      .then((res) => {
+        setToken(res.token);
+        if (res.message === "User does not exist!") {
+          handleClickOpen();
+          firebase.auth().signOut();
+        }
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
+  };
+
+  if (currentUser) {
+    getToken();
+    return <Redirect to="/dashboard" token={token} />;
+  }
 
   const validate = (values) => {
-    const errors = required(['email', 'password'], values);
+    const errors = required(["email", "password"], values);
 
     if (!errors.email) {
       const emailError = email(values.email, values);
@@ -43,9 +88,31 @@ function SignIn() {
     return errors;
   };
 
-  const handleSubmit = () => {
-    setSent(true);
+  const handleClose = () => {
+    setOpen(false);
+    window.location.reload();
   };
+
+  const handleSignin = (event) => {
+    event.preventDefault();
+    const { Email, Password } = event.target.elements;
+
+    try {
+      setSent(true);
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(Email.value, Password.value)
+        .catch((error) => {
+          handleClickOpen();
+          console.log(error);
+        });
+      getToken();
+      return <Redirect to="/dashboard" token={token} />;
+    } catch {}
+  };
+  const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
 
   return (
     <React.Fragment>
@@ -56,15 +123,19 @@ function SignIn() {
             Sign In
           </Typography>
           <Typography variant="body2" align="center">
-            {'Not a member yet? '}
+            {"Not a member yet? "}
             <Link href="/signup" align="center" underline="always">
               Sign Up here
             </Link>
           </Typography>
         </React.Fragment>
-        <Form onSubmit={handleSubmit} subscription={{ submitting: true }} validate={validate}>
-          {({ handleSubmit2, submitting }) => (
-            <form onSubmit={handleSubmit2} className={classes.form} noValidate>
+        <Form
+          onSubmit={handleSignin}
+          subscription={{ submitting: true }}
+          validate={validate}
+        >
+          {({ handleSubmit, submitting }) => (
+            <form onSubmit={handleSignin} className={classes.form} noValidate>
               <Field
                 autoComplete="email"
                 autoFocus
@@ -73,7 +144,7 @@ function SignIn() {
                 fullWidth
                 label="Email"
                 margin="normal"
-                name="email"
+                name="Email"
                 required
                 size="large"
               />
@@ -83,12 +154,21 @@ function SignIn() {
                 component={RFTextField}
                 disabled={submitting || sent}
                 required
-                name="password"
+                name="Password"
                 autoComplete="current-password"
                 label="Password"
                 type="password"
                 margin="normal"
               />
+              <FormButton
+                className={classes.button}
+                disabled={submitting || sent}
+                size="large"
+                color="primary"
+                fullWidth
+              >
+                {submitting || sent ? "In progress…" : "Sign In"}
+              </FormButton>
               <FormSpy subscription={{ submitError: true }}>
                 {({ submitError }) =>
                   submitError ? (
@@ -98,15 +178,6 @@ function SignIn() {
                   ) : null
                 }
               </FormSpy>
-              <FormButton
-                className={classes.button}
-                disabled={submitting || sent}
-                size="large"
-                color="secondary"
-                fullWidth
-              >
-                {submitting || sent ? 'In progress…' : 'Sign In'}
-              </FormButton>
             </form>
           )}
         </Form>
@@ -115,6 +186,25 @@ function SignIn() {
             Forgot password?
           </Link>
         </Typography>
+        <Dialog
+          open={open}
+          TransitionComponent={Transition}
+          keepMounted
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-slide-title"
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+              User not found!!
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              close
+            </Button>
+          </DialogActions>
+        </Dialog>
       </AppForm>
       <AppFooter />
     </React.Fragment>
