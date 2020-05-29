@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import MenuItem from '@material-ui/core/MenuItem'
 import Grid from '@material-ui/core/Grid';
 import MatchCard from './MatchCard';
 
@@ -76,10 +77,30 @@ export default function MatchSearch(props) {
                             options={options}
                             renderInput={(params) => <TextField {...params} label="Search available matches" variant="outlined" />}
                         />
+                        <TextField
+                        fullWidth
+                        label="Sort by"
+                        margin="dense"
+                        name="sportsType"
+                        variant="outlined"
+                        select
+                        >
+                            <MenuItem value="" selected="selected">Sort by</MenuItem>
+                            <MenuItem value="soccer">Most recent</MenuItem>
+                            <MenuItem value="basketball">Skill level</MenuItem>
+                            <MenuItem value="football">Distance</MenuItem>
+                        </TextField>
+
                     </Grid>
-                    <div>
+                </Grid>
+                                    
+                <Grid
+                      container
+                      direction="row"
+                      justify="center"
+                      alignItems="center"
+                    >
                         {card}
-                    </div>
                 </Grid>
             </div>
         </React.Fragment>
