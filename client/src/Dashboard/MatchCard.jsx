@@ -32,9 +32,9 @@ import ages from "../Constant/Ages";
 const useStyles = makeStyles((theme) => ({
   card: {
     display: "flex",
-    padding: 10,
+    marginLeft: 450,
     borderRadius: 16,
-    width: "40vw",
+    width: "60vw",
     marginBottom: 15,
     elevation: 10,
   },

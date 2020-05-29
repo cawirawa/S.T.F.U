@@ -21,28 +21,13 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     textTransform: "none",
+    marginLeft: -265,
   },
 }));
 
-// const options = [
-//     'Woiks Friendly Match',
-//     'FIFA2020 GAME ON',
-//     'Bored in the house?',
-//     'In the house bored'
-// ];
-
 export default function MatchSearch(props) {
   const classes = useStyles();
-  // const [, updateState] = React.useState();
-  // const forceUpdate = React.useCallback(() => updateState({}), []);
   const [match, setMatch] = React.useState(null);
-  // const [card, setCard] = React.useState(
-  //     match.map((match) => {
-  //     return (
-  //     <div key={match.id}>
-  //         <MatchCard match={match} />
-  //     </div>
-  //     );}));
   let options = props.match.map((a) => {
     let username = a.roster[0] ? " - " + a.roster[0].username : "";
     return a.name + username + " (" + a.id + ")";
@@ -88,24 +73,6 @@ export default function MatchSearch(props) {
     setTxt("Distance");
   };
 
-  // useEffect(() => {
-  //         if (updatedMatch) {setMatch(updatedMatch);}
-  //         else {setMatch(props.match);}
-  //         setCard(match.map((match) => {
-  //             return (
-  //             <div key={match.id}>
-  //                 <MatchCard match={match} />
-  //             </div>
-  //             );}))
-
-  // },[match, value]);
-  // let card = match.map((match) => {
-  //     return (
-  //     <div key={match.id}>
-  //         <MatchCard match={match} />
-  //     </div>
-  //     );})
-
   return (
     <React.Fragment>
       <div className={classes.root}>
@@ -128,6 +95,7 @@ export default function MatchSearch(props) {
               options={options}
               renderInput={(params) => (
                 <TextField
+                  style={{ width: "57.5vw" }}
                   {...params}
                   label="Search available matches"
                   variant="outlined"
