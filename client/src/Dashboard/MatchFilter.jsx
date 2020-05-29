@@ -73,21 +73,8 @@ const useStyles = makeStyles((theme) => ({
     details: {
         display: 'flex'
     },
-    avatar: {
-        marginLeft: 'auto',
-        height: 100,
-        width: 100,
-        flexShrink: 0,
-        flexGrow: 0
-    },
-    divider: {
-        marginBottom: 15,
-    },
     locationText: {
         marginLeft: 6
-    },
-    form: {
-        marginTop: 6,
     },
     formControl: {
         margin: 3
@@ -100,19 +87,8 @@ const useStyles = makeStyles((theme) => ({
         marginTop: 35,
         margin: '0 auto',
     },
-    button: {
-        marginTop: 40,
-        margin: '0 auto',
-    },
     icon: {
         marginRight: 2,
-    },
-    outer: {
-        display: "flex",
-        justifyContent: 'space-between',
-    },
-    createMatch: {
-        marginRight: "4%",
     },
     root: {
         width: 250,
@@ -169,65 +145,79 @@ const marks = [
   ];
 
 export default function MatchFilter(props) {
-    let match = props.match;
-
     const classes = useStyles();
+
+    const [state, setState] = React.useState({
+        f_sportsType: '',
+        f_skilllevel: 0,
+        f_distance: 50,
+        f_time1: false,
+        f_time2: false,
+        f_time3: false,
+        f_time4: false,
+        f_time5: false
+    });
 
     var filterStyle = {
         padding: 20
     }
+    
 
-    const handleTypeChange = (event) => {
-        setValue(event.target.value);
-    };
+    const handleDistanceChange = name => (event, newValue) => {
+        setState({ ...state, [name]: newValue });
+        props.onDist(name, newValue);
+      };
 
-    const handleChange = (event) => {
+    const handleTimeChange = (event) => {
         setState({ ...state, [event.target.name]: event.target.checked });
+        props.onTime(event.target.name,event.target.checked);
     };
 
-    const [state, setState] = React.useState({
-        time1: false,
-        time2: false,
-        time3: false,
-        time4: false,
-        time5: false
-      });
-          
-      const { time1, time2, time3, time4, time5 } = state;
-      const error = [time1, time2, time3, time4, time5].filter((v) => v).length !== 2;
+    const handleLevelChange = name => (event, newValue) => {
+        setState({ ...state, [name]: newValue});
+        props.onSkill(name, newValue);
+    };
 
-      const [value, setValue] = React.useState(30);
+    const handleTypeClick = name => (event) => {
+        if (event.target.value === state.f_sportsType) {
+            setState({ ...state, [name]: ''});
+            props.onType(name,'');
+        } else {
+            setState({ ...state, [name]: event.target.value});
+            props.onType(name,event.target.value);
+        }
+    };
     
     return(
         <Fragment>
-            <h1> Filter</h1>
-
-            <Box component="fieldset" mb={3} borderColor="grey">
+            <Box component="fieldset" mt={12} mb={3} borderColor="grey">
 
             <ExpansionPanel className={classes.expanded} defaultExpanded='true'>
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography className={classes.heading}> Sports Type</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
-                    <div>
+                    <form>
                         <FormControl component="fieldset">    
-                            <RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleTypeChange}>
-                                <FormControlLabel value="soccer" control={<Radio color="primary" />} label="Soccer" />
-                                <FormControlLabel value="basketball" control={<Radio color="primary" />} label="Basketball" />
-                                <FormControlLabel value="football" control={<Radio color="primary" />} label="Football" />
-                                <FormControlLabel value="volleyball" control={<Radio color="primary" />} label="Volleyball" />
-                                <FormControlLabel value="baseball" control={<Radio color="primary" />} label="Baseball" />
+                            <RadioGroup aria-label="sportstype" name="f_sportsType" value={state.f_sportsType}>
+                                <FormControlLabel value="SC" control={<Radio onClick={handleTypeClick("f_sportsType")} color="primary" />} label="Soccer" />
+                                <FormControlLabel value="BK" control={<Radio onClick={handleTypeClick("f_sportsType")} color="primary" />} label="Basketball" />
+                                <FormControlLabel value="FB" control={<Radio onClick={handleTypeClick("f_sportsType")} color="primary" />} label="Football" />
+                                <FormControlLabel value="VB" control={<Radio onClick={handleTypeClick("f_sportsType")} color="primary" />} label="Volleyball" />
+                                <FormControlLabel value="BS" control={<Radio onClick={handleTypeClick("f_sportsType")} color="primary" />} label="Baseball" />
                             </RadioGroup>
                         </FormControl>
-                    </div>
+                    </form>
                 </ExpansionPanelDetails>
             </ExpansionPanel>
 
             <div style={filterStyle}>
                 <FormLabel component="legend">Skill Level</FormLabel>
                 <Rating
-                name="customized-icons"
-                defaultValue={0}
+                name="f_skilllevel"
+                value={state.f_skilllevel}
+                defaultValue={2}
+                onChange={handleLevelChange("f_skilllevel")}
                 getLabelText={(value) => customIcons[value].label}
                 IconContainerComponent={IconContainer}
                 />
@@ -236,7 +226,7 @@ export default function MatchFilter(props) {
             <div>
                 <FormLabel component="legend">Distance</FormLabel>
                 <div style={filterStyle}>
-                <MySlider aria-label="my slider" defaultValue={50} marks={marks} valueLabelDisplay="on" />
+                <MySlider name="f_distance" onChange={handleDistanceChange("f_distance")} defaultValue={state.f_distance} marks={marks} valueLabelDisplay="on" />
                 </div>
             </div>
 
@@ -249,23 +239,23 @@ export default function MatchFilter(props) {
                         <FormControl component="fieldset" className={classes.formControl}>
                             <FormGroup>
                                 <FormControlLabel
-                                    control={<Checkbox checked={time1} onChange={handleChange} name="time1" color="primary" />}
+                                    control={<Checkbox checked={state.f_time1} onChange={handleTimeChange} name="f_time1" color="primary" />}
                                     label="Today"
                                 />
                                 <FormControlLabel
-                                    control={<Checkbox checked={time2} onChange={handleChange} name="time2" color="primary" />}
+                                    control={<Checkbox checked={state.f_time2} onChange={handleTimeChange} name="f_time2" color="primary" />}
                                     label="Tomorrow "
                                 />
                                 <FormControlLabel
-                                    control={<Checkbox checked={time3} onChange={handleChange} name="time3" color="primary" />}
+                                    control={<Checkbox checked={state.f_time3} onChange={handleTimeChange} name="f_time3" color="primary" />}
                                     label="In a 3 days"
                                 />
                                 <FormControlLabel
-                                    control={<Checkbox checked={time4} onChange={handleChange} name="time4" color="primary" />}
+                                    control={<Checkbox checked={state.f_time4} onChange={handleTimeChange} name="f_time4" color="primary" />}
                                     label="In a week"
                                 />
                                 <FormControlLabel
-                                    control={<Checkbox checked={time5} onChange={handleChange} name="time5" color="primary" />}
+                                    control={<Checkbox checked={state.f_time5} onChange={handleTimeChange} name="f_time5" color="primary" />}
                                     label="In a month"
                                 />
                             </FormGroup>

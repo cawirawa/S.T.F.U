@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 import MatchCard from './MatchCard';
 
 const useStyles = makeStyles(theme => ({
@@ -16,6 +18,9 @@ const useStyles = makeStyles(theme => ({
         '& > * + *': {
             marginTop: theme.spacing(3),
         },
+    },
+    button: {
+        textTransform: "none"
     },
 }));
 
@@ -42,9 +47,48 @@ export default function MatchSearch(props) {
         let username = a.roster[0] ? " - " + a.roster[0].username : "";
         return (a.name + username + " (" + a.id + ")");
     });
+    
     const [value, setValue] = useState(options[0]);
-    // let updatedMatch;
-    // let card;
+    let filter_match = props.match;
+    filter_match = filter_match.filter(filter_match=>{
+        return props.type == '' || props.type == filter_match.type;
+    });
+
+    let card = filter_match.map((match) => {
+        return (
+        <div key={match.id}>
+            <MatchCard match={match} />
+        </div>
+        );})
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [txt, setTxt] = useState("None");
+
+    const handleClick = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+
+    const handleRecent = () => {
+        setAnchorEl(null);
+        setTxt("Most Recent");
+      };
+
+    const handleSkill = () => {
+        setAnchorEl(null);
+        setTxt("Skill Level");
+      };
+
+    const handleDist = () => {
+        setAnchorEl(null);
+        setTxt("Distance");
+      };
+
+
+    
     // useEffect(() => {
     //         if (updatedMatch) {setMatch(updatedMatch);}
     //         else {setMatch(props.match);}
@@ -85,42 +129,33 @@ export default function MatchSearch(props) {
                             options={options}
                             renderInput={(params) => <TextField {...params} label="Search available matches" variant="outlined" />}
                         />
-                        <TextField
-                            fullWidth
-                            label="Sort by"
-                            margin="dense"
-                            name="sportsType"
-                            variant="outlined"
-                            select
+
+                        <Button className={classes.button} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+                            Sort by: {txt}
+                        </Button>
+
+                        <Menu
+                            id="simple-menu"
+                            anchorEl={anchorEl}
+                            keepMounted
+                            open={Boolean(anchorEl)}
+                            onClose={handleClose}
                         >
-                            <MenuItem value="" selected="selected">Sort by</MenuItem>
-                            <MenuItem value="soccer">Most recent</MenuItem>
-                            <MenuItem value="basketball">Skill level</MenuItem>
-                            <MenuItem value="football">Distance</MenuItem>
-                        </TextField>
+                            <MenuItem onClick={handleRecent}>Most Recent</MenuItem>
+                            <MenuItem onClick={handleSkill}>Skill level</MenuItem>
+                            <MenuItem onClick={handleDist}>Distance</MenuItem>
+                        </Menu>
 
                     </Grid>
-                    <div>
-                        {match ?
-                            match.map((currMatch) => {
-                                console.log(currMatch.name)
-                                return (
-                                    <div key={currMatch.id}>
-                                        <MatchCard match={currMatch} />
-                                    </div>
-                                );
-                            })
-                            :
-                            props.match.map((match) => {
-                                return (
-                                    <div key={match.id}>
-                                        <MatchCard match={match} />
-                                    </div>
-                                );
-                            })
-                        }
-
-                    </div>
+                </Grid>
+                                    
+                <Grid
+                      container
+                      direction="row"
+                      justify="center"
+                      alignItems="center"
+                    >
+                        {card}
                 </Grid>
             </div>
 
