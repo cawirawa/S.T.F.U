@@ -53,7 +53,6 @@ function SignUp({ history }) {
       .then((resp) => resp.json())
       .then((res) => {
         setToken(res.token);
-        console.log(res);
       })
       .catch((error) => {
         console.log(error.message);
@@ -100,24 +99,16 @@ function SignUp({ history }) {
   const handleSignup = (event) => {
     event.preventDefault();
     const { Email, Password, FullName, Username } = event.target.elements;
-    let success = true;
-    try {
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(Email.value, Password.value)
-        .catch((error) => {
-          success = false;
-          alert("Email is either empty or badly formatted");
-        });
-    } catch (error) {
-      success = false;
-      alert(error);
-    }
-    console.log(success);
-    if (success) {
-      createUser(Username.value, FullName.value, Email.value);
-      return <Redirect to="/dashboard" token={token} />;
-    }
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(Email.value, Password.value)
+      .catch((error) => {
+        alert(
+          "Please check on the following conditions: \nAll fields are filled out \nEmail is properly formatted"
+        );
+      });
+    createUser(Username.value, FullName.value, Email.value);
+    return <Redirect to="/dashboard" token={token} />;
   };
 
   return (

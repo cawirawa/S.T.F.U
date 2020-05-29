@@ -104,7 +104,6 @@ function SignIn({ history }) {
         .signInWithEmailAndPassword(Email.value, Password.value)
         .catch((error) => {
           handleClickOpen();
-          console.log(error);
         });
       getToken();
       return <Redirect to="/dashboard" token={token} />;
@@ -196,7 +195,7 @@ function SignIn({ history }) {
         >
           <DialogContent>
             <DialogContentText id="alert-dialog-slide-description">
-              User not found!!
+              User not found!! (Check if email is properly formatted)
             </DialogContentText>
           </DialogContent>
           <DialogActions>

@@ -31,7 +31,6 @@ class Home extends React.Component {
         return response.json();
       })
       .then((res) => {
-        console.log(res);
         this.setState({
           currentLocation: {
             lat: res.latitude,
@@ -53,7 +52,6 @@ class Home extends React.Component {
           .then((resp) => resp.json())
           .then((res) => {
             this.setState({ matches: res.result });
-            console.log(res);
           })
           .then((res) => {
             if (this.state.matches.length === 0) {
@@ -68,7 +66,6 @@ class Home extends React.Component {
                 .then((resp) => resp.json())
                 .then((res) => {
                   this.setState({ matches: res.result });
-                  console.log(res);
                 });
             }
           })

@@ -129,7 +129,6 @@ class Dashboard extends Component {
         return response.json();
       })
       .then((res) => {
-        console.log(res);
         this.setState({ lat: toString(res.latitude) });
         this.setState({ lon: toString(res.longitude) });
       })
@@ -140,7 +139,6 @@ class Dashboard extends Component {
       .then((resp) => resp.json())
       .then((res) => {
         this.setState({ match: res });
-        console.log(this.state.match);
       })
       .catch((error) => console.log(error));
   }
