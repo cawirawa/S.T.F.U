@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/styles';
 import { Button, Grid, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Divider, MenuItem, FormLabel, CardContent, Typography } from '@material-ui/core';
 // import MatchCard from './MatchCard';
 import MatchSearch from './MatchSearch';
+import MatchFilter from './MatchFilter';
 import { Form } from "react-final-form";
 import Rating from '@material-ui/lab/Rating';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
@@ -392,6 +393,7 @@ export default function MatchPage(props) {
                             </Form>
                         </DialogContent>
                     </Dialog>
+                    <MatchFilter match={props.match}/>
                 </Grid >
             </Grid >
             
