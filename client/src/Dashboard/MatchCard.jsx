@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         padding: 10,
         borderRadius: 16,
-        width: '70vw',
+        width: '40vw',
         marginBottom: 15,
         elevation: 10,
     },
@@ -161,9 +161,6 @@ export default function (props) {
 
     var time = /T\d\d:\d\d/.exec(match.time)[0]
     time = time.replace("T", "")
-    
-    
-
 
     return (
         <Card className={classes.card} elevation={0}>

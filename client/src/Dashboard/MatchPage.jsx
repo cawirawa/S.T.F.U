@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/styles';
 import { Button, Grid, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Divider, MenuItem, FormLabel, CardContent, Typography } from '@material-ui/core';
 // import MatchCard from './MatchCard';
 import MatchSearch from './MatchSearch';
+import MatchFilter from './MatchFilter';
 import { Form } from "react-final-form";
 import Rating from '@material-ui/lab/Rating';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
@@ -122,12 +123,34 @@ export default function MatchPage(props) {
         duration: '',
         numOfPlayers: '',
         notes: '',
+        f_sportsType: '',
+        f_skilllevel: 2,
+        f_distance: 50,
+        f_time1: false,
+        f_time2: false,
+        f_time3: false,
+        f_time4: false,
+        f_time5: false,
     });
+
     const [value, setValue] = useState(null);
     const [inputValue, setInputValue] = useState('');
     const [options, setOptions] = useState([]);
     const loaded = useRef(false);
     const [selectedDate, setSelectedDate] = useState(new Date());
+
+    const onTypeSubmit = (name, type) => {
+        setState({ ...state, [name]: type });
+    }
+    const onSkillSubmit = (name, level) => {
+        setState({ ...state, [name]: level });
+    }
+    const onDistSubmit = (name, dist) => {
+        setState({ ...state, [name]: dist });
+    }
+    const onTimeSubmit = (name, checked) => {
+        setState({ ...state, [name]: checked });
+    }
 
     const handleDateChange = (date) => {
         setSelectedDate(date);
@@ -207,9 +230,12 @@ export default function MatchPage(props) {
     return (
         <Fragment>
             <Grid container className={classes.outer}>
+
                 <Grid item xs={5}>
-                    <MatchSearch match={props.match} />
+                    <MatchSearch match={props.match} type={state.f_sportsType} level={state.f_skillLevel} dist={state.f_distance} time1={state.f_time1} time2={state.f_time2}
+                                 time3={state.f_time3} time4={state.f_time4}  time5={state.f_time5}/>
                 </Grid>
+
                 <Grid item xs={2} className={classes.createMatch}>
                     <Button variant="contained" color="primary" onClick={handleClickOpen} className={classes.button}>
                         Create Match
@@ -392,6 +418,7 @@ export default function MatchPage(props) {
                             </Form>
                         </DialogContent>
                     </Dialog>
+                    <MatchFilter onType={onTypeSubmit} onSkill={onSkillSubmit} onDist={onDistSubmit} onTime={onTimeSubmit}/>
                 </Grid >
             </Grid >
             
