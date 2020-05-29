@@ -86,12 +86,12 @@ export default function MatchSearch(props) {
                             renderInput={(params) => <TextField {...params} label="Search available matches" variant="outlined" />}
                         />
                         <TextField
-                        fullWidth
-                        label="Sort by"
-                        margin="dense"
-                        name="sportsType"
-                        variant="outlined"
-                        select
+                            fullWidth
+                            label="Sort by"
+                            margin="dense"
+                            name="sportsType"
+                            variant="outlined"
+                            select
                         >
                             <MenuItem value="" selected="selected">Sort by</MenuItem>
                             <MenuItem value="soccer">Most recent</MenuItem>
@@ -101,25 +101,29 @@ export default function MatchSearch(props) {
 
                     </Grid>
                     <div>
-                        {match ? 
-                        match.map((currMatch) => {
-                            console.log(currMatch.name)
-                                        return (
-                                        <div key={currMatch.id}>
-                                            <MatchCard match={currMatch} />
-                                        </div>
-                                        );})
-                                        :
-                        props.match.map((match) => {
-                            return (
-                            <div key={match.id}>
-                                <MatchCard match={match} />
-                            </div>
-                            );})
+                        {match ?
+                            match.map((currMatch) => {
+                                console.log(currMatch.name)
+                                return (
+                                    <div key={currMatch.id}>
+                                        <MatchCard match={currMatch} />
+                                    </div>
+                                );
+                            })
+                            :
+                            props.match.map((match) => {
+                                return (
+                                    <div key={match.id}>
+                                        <MatchCard match={match} />
+                                    </div>
+                                );
+                            })
                         }
 
                     </div>
+                </Grid>
             </div>
+
         </React.Fragment>
 
     );
