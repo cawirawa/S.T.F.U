@@ -30,31 +30,38 @@ export default function MatchSearch(props) {
     const classes = useStyles();
     // const [, updateState] = React.useState();
     // const forceUpdate = React.useCallback(() => updateState({}), []);
+    const [match, setMatch] = React.useState(null);
+    // const [card, setCard] = React.useState(
+    //     match.map((match) => {
+    //     return (
+    //     <div key={match.id}>
+    //         <MatchCard match={match} />
+    //     </div>
+    //     );}));
     let options = props.match.map(a => {
         let username = a.roster[0] ? " - " + a.roster[0].username : "";
         return (a.name + username + " (" + a.id + ")");
     });
     const [value, setValue] = useState(options[0]);
-    let match = props.match;
-    let card = match.map((match) => {
-        return (
-        <div key={match.id}>
-            <MatchCard match={match} />
-        </div>
-        );})
-    
+    // let updatedMatch;
+    // let card;
     // useEffect(() => {
-    //     card = match.map((match) => {
-    //         return (
-    //         <div key={match.id}>
-    //             <MatchCard match={match} />
-    //         </div>)
-    //     })
-    //     options = props.match.map(a => {
-    //         let username = a.roster[0] ? " - " + a.roster[0].username : "";
-    //         return (a.name + username + " (" + a.id + ")");
-    //     });
-    // }, [match])
+    //         if (updatedMatch) {setMatch(updatedMatch);}
+    //         else {setMatch(props.match);}
+    //         setCard(match.map((match) => {
+    //             return (
+    //             <div key={match.id}>
+    //                 <MatchCard match={match} />
+    //             </div>
+    //             );}))
+
+    // },[match, value]);
+    // let card = match.map((match) => {
+    //     return (
+    //     <div key={match.id}>
+    //         <MatchCard match={match} />
+    //     </div>
+    //     );})
 
     return (
         <React.Fragment>
@@ -65,13 +72,14 @@ export default function MatchSearch(props) {
                             value={value}
                             onChange={(event, newValue) => {
                                 setValue(newValue);
-                                // let v = /\(\d\d\d-\d\d\d\d/.exec(newValue)[0]
-                                // v = v.replace("(", "")
-                                // match = match.filter((match) => {
-                                //     return (match.id === v);
-                                //   });
-                                // forceUpdate();
-                                // console.log(match)
+                                console.log("newvalue: " + newValue)
+                                let matchId = /\d\d\d-\d\d\d\d/.exec(newValue);
+                                let filteredMatch;
+                                if (newValue) {
+                                    filteredMatch = props.match.filter(match => matchId == match.id)
+                                }
+                                console.log(filteredMatch)
+                                setMatch(filteredMatch);
                             }}
                             id="controllable-states-demo"
                             options={options}
@@ -92,16 +100,25 @@ export default function MatchSearch(props) {
                         </TextField>
 
                     </Grid>
-                </Grid>
-                                    
-                <Grid
-                      container
-                      direction="row"
-                      justify="center"
-                      alignItems="center"
-                    >
-                        {card}
-                </Grid>
+                    <div>
+                        {match ? 
+                        match.map((currMatch) => {
+                            console.log(currMatch.name)
+                                        return (
+                                        <div key={currMatch.id}>
+                                            <MatchCard match={currMatch} />
+                                        </div>
+                                        );})
+                                        :
+                        props.match.map((match) => {
+                            return (
+                            <div key={match.id}>
+                                <MatchCard match={match} />
+                            </div>
+                            );})
+                        }
+
+                    </div>
             </div>
         </React.Fragment>
 
