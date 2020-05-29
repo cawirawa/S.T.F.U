@@ -195,7 +195,8 @@ function SignIn({ history }) {
         >
           <DialogContent>
             <DialogContentText id="alert-dialog-slide-description">
-              User not found!! (Check if email is properly formatted)
+              Please make sure there is an account associatedwith that email.
+              Otherwise, please input the correct password (case matters).
             </DialogContentText>
           </DialogContent>
           <DialogActions>
