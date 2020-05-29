@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 function SignUp({ history }) {
   const classes = useStyles();
-  const [sent, setSent] = React.useState(false);
+  const [sent] = React.useState(false);
   const [token, setToken] = React.useState("");
 
   const { currentUser } = useContext(AuthContext);
@@ -97,24 +97,26 @@ function SignUp({ history }) {
     return errors;
   };
 
-  const handleSubmit = (event) => {
-    setSent(true);
-  };
-
   const handleSignup = (event) => {
     event.preventDefault();
     const { Email, Password, FullName, Username } = event.target.elements;
+    let success = true;
     try {
       firebase
         .auth()
         .createUserWithEmailAndPassword(Email.value, Password.value)
         .catch((error) => {
-          console.log(error);
+          success = false;
+          alert("Email is either empty or badly formatted");
         });
+    } catch (error) {
+      success = false;
+      alert(error);
+    }
+    console.log(success);
+    if (success) {
       createUser(Username.value, FullName.value, Email.value);
       return <Redirect to="/dashboard" token={token} />;
-    } catch (error) {
-      alert(error);
     }
   };
 

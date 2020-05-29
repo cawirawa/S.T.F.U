@@ -7,7 +7,6 @@ import {
   Box,
   AppBar,
   Toolbar,
-  Typography,
   Divider,
   Container,
   Grid,
@@ -22,7 +21,6 @@ import Copyright from "./Copyright";
 import MatchPage from "./MatchPage";
 import VenuePage from "./VenuePage";
 import RefereePage from "./RefereePage";
-import InvitationPage from "./InvitationPage";
 import MatchHistoryPage from "./MatchHistoryPage";
 
 const drawerWidth = 240;

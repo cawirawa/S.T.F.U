@@ -4,14 +4,12 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  ListSubheader,
   Divider,
 } from "@material-ui/core";
 import SportsBasketballIcon from "@material-ui/icons/SportsBasketball";
 import PlaceIcon from "@material-ui/icons/Place";
 import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import InsertInvitationIcon from "@material-ui/icons/InsertInvitation";
 import TimelineIcon from "@material-ui/icons/Timeline";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import firebase from "../base";
