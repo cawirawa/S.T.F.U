@@ -186,7 +186,7 @@ class Dashboard extends Component {
               variant="h6"
               underline="none"
               color="inherit"
-              href="/"
+              href="/dashboard"
               font="tahoma"
             >
               <img
