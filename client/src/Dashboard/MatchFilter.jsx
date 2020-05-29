@@ -4,7 +4,6 @@ import { Button, Grid, TextField, Dialog, DialogActions, DialogContent, DialogTi
 // import MatchCard from './MatchCard';
 import MatchSearch from './MatchSearch';
 import { Form } from "react-final-form";
-
 import Rating from '@material-ui/lab/Rating';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -74,14 +73,8 @@ const useStyles = makeStyles((theme) => ({
     details: {
         display: 'flex'
     },
-    divider: {
-        marginBottom: 15,
-    },
     locationText: {
         marginLeft: 6
-    },
-    form: {
-        marginTop: 6,
     },
     formControl: {
         margin: 3
@@ -94,19 +87,8 @@ const useStyles = makeStyles((theme) => ({
         marginTop: 35,
         margin: '0 auto',
     },
-    button: {
-        marginTop: 40,
-        margin: '0 auto',
-    },
     icon: {
         marginRight: 2,
-    },
-    outer: {
-        display: "flex",
-        justifyContent: 'space-between',
-    },
-    createMatch: {
-        marginRight: "4%",
     },
     root: {
         width: 250,
@@ -179,11 +161,7 @@ export default function MatchFilter(props) {
     var filterStyle = {
         padding: 20
     }
-      
-    const handleTypeChange = (event) => {
-        setState({ ...state, [event.target.name]: event.target.value});
-        props.onType(event.target.name,event.target.value);
-    };
+    
 
     const handleDistanceChange = name => (event, newValue) => {
         setState({ ...state, [name]: newValue });

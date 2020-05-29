@@ -83,13 +83,13 @@ const members = [
     pic:
     require("../../../Assets/albert.jpg"),
     name: "Albert Estevan",
-    title: "Business Analyst",
+    title: "Senior System Analyst",
   },
   {
     pic:
       require("../../../Assets/tian.jpg"),
     name: "Tiancheng Fu",
-    title: "Senior System Analyst",
+    title: "Business Analyst",
   },
   {
     pic: require("../../../Assets/woosung.jpg"),
