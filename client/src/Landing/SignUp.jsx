@@ -43,7 +43,7 @@ function SignUp({ history }) {
       name: fullName,
       email: Email,
     };
-    fetch("http://52.25.207.161/api/profile/create_user/", {
+    fetch("http://35.163.180.234/api/profile/create_user/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -60,7 +60,7 @@ function SignUp({ history }) {
   };
 
   const getToken = () => {
-    fetch("http://52.25.207.161/api/profile/log_in/", {
+    fetch("http://35.163.180.234/api/profile/log_in/", {
       method: "GET",
       headers: {
         email: currentUser.email,

@@ -41,7 +41,7 @@ class Home extends React.Component {
       })
       .catch((err) => console.error("Problem fetching my IP", err))
       .then((res) => {
-        fetch("http://52.25.207.161/api/match/match_cards/", {
+        fetch("http://35.163.180.234/api/match/match_cards/", {
           method: "GET",
           headers: {
             lat: this.state.currentLocation.lat,
@@ -55,7 +55,7 @@ class Home extends React.Component {
           })
           .then((res) => {
             if (this.state.matches.length === 0) {
-              fetch("http://52.25.207.161/api/match/match_cards/", {
+              fetch("http://35.163.180.234/api/match/match_cards/", {
                 method: "GET",
                 headers: {
                   lat: this.state.currentLocation.lat,
