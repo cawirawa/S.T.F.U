@@ -8,7 +8,6 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_HOST_AUTH_METHOD=trust
   stfu:
-    restart: always
     build: .
     command: python manage.py runserver 0.0.0.0:80
     volumes:
