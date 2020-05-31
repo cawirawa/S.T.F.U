@@ -15,8 +15,8 @@ from datetime import *
 class MatchViewSet(viewsets.ModelViewSet):
     queryset = Match.objects.all()
     serializer_class = MatchSerializer
-    authentication_classes = (TokenAuthentication, )
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
+    # authentication_classes = (TokenAuthentication, )
+    permission_classes = (permissions.AllowAny, )
 
     @action(detail=False, methods=['POST'])
     def create_match(self, request, pk=None):
@@ -58,7 +58,7 @@ class MatchViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['POST'])
     def update_match(self, request, pk=None):
-        if 'id' in request.data and 'roster'  in request.data and 'name' in request.data and 'type' in request.data and 'age' in request.data and 'lat' in request.data and 'lon' in request.data and 'time' in request.data and 'maxPlayers' in request.data:
+        if 'roster'  in request.data and 'name' in request.data and 'type' in request.data and 'age' in request.data and 'lat' in request.data and 'lon' in request.data and 'time' in request.data and 'maxPlayers' in request.data and 'description' in request.data:
             try:
                 print(request.data['id'])
                 obj = Match.objects.get(id=request.data['id'])
@@ -79,6 +79,9 @@ class MatchViewSet(viewsets.ModelViewSet):
             obj.age = request.data['age']
             obj.lat = request.data['lat']
             obj.lon = request.data['lon']
+            obj.time = request.data['time']
+            obj.description = request.data['description']
+            obj.maxPlayers = request.data['maxPlayers']
             obj.location = Point(float(request.data['lat']), float(request.data['lon']))
             geolocator = Nominatim(user_agent="api")
             city = geolocator.reverse(str(request.data['lat']) + ", " + str(request.data['lon']))
@@ -87,9 +90,17 @@ class MatchViewSet(viewsets.ModelViewSet):
                 city = city['address']['city']
             except KeyError:
                 city = city['address']['state']
+
             obj.city = city
-            obj.time = request.data['time']
-            obj.maxPlayers = request.data['maxPlayers']
+            for i in range(len (request.data['roster'])):
+                try:
+                    user = User.objects.get(email=request.data['roster'][i]['email'])
+                except User.DoesNotExist:
+                    print(User)
+                    response = {'message': 'User in the roster does not exist!'}
+                    return Response(response, status=status.HTTP_404_NOT_FOUND)
+                obj.roster.add(user)
+            obj.save()
             obj.save()
             serializer = MatchSerializer(obj, many=False)
             response = {'message': 'Successfully updated match', 'result': serializer.data}
@@ -187,18 +198,23 @@ class ProfileViewSet(viewsets.ModelViewSet):
             
     @action(detail=False, methods=['POST'])
     def update_profile(self, request, pk=None):
-        if 'email' in request.data and 'phone' in request.data and 'age' in request.data and 'zip_code' in request.data and 'sports' in request.data and 'bio' in request.data and 'profile_image' in request.data:
+        if 'email' in request.data and 'name' in request.data and 'phone' in request.data and 'age' in request.data and 'lat' in request.data and 'lon' in request.data and 'sports' in request.data and 'bio' in request.data  and 'skill' in request.data and 'favoriteMatch' in request.data:
             try: 
-                user = User.objects.get(username=request.data['email'])
+                user = User.objects.get(email=request.data['email'])
                 profile = Profile.objects.get(user=user)
+                user.first_name = request.data['name']
                 profile.phone = request.data['phone']
                 profile.age = request.data['age']
-                profile.zip_code = request.data['zip_code']
+                profile.lon = request.data['lon']
+                profile.lat = request.data['lat']
                 profile.sports = request.data['sports']
                 profile.bio = request.data['bio']
-                profile.profile_image = request.data['profile_image']
+                profile.profile_image = request.FILES['profile_image']
+                profile.skill = request.data['skill']
+                profile.favoriteMatch = request.data['favoriteMatch']
+                user.save()
                 profile.save()
-                serializer = ProfileSerializer(obj, many=False)
+                serializer = ProfileSerializer(profile, many=False)
                 response = {'message': 'Successfully updated profile with profile image', 'result': serializer.data}
                 return Response(response, status=status.HTTP_200_OK)  
 
@@ -207,11 +223,12 @@ class ProfileViewSet(viewsets.ModelViewSet):
                 return Response(response, status=status.HTTP_400_BAD_REQUEST)
         elif 'email' in request.data and 'phone' in request.data and 'age' in request.data and 'zip_code' in request.data and 'sports' in request.data and 'bio' in request.data:
             try: 
-                user = User.objects.get(username=request.data['email'])
+                user = User.objects.get(email=request.data['email'])
                 profile = Profile.objects.get(user=user)
                 profile.phone = request.data['phone']
                 profile.age = request.data['age']
-                profile.zip_code = request.data['zip_code']
+                profile.lat = request.data['lat']
+                profile.lon = request.data['lon']
                 profile.sports = request.data['sports']
                 profile.bio = request.data['bio']
                 profile.save()
