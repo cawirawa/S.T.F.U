@@ -111,7 +111,7 @@ const styles = (theme) => ({
 class Dashboard extends Component {
   state = {
     open: true,
-    content: "1",
+    content: "4",
     lat: "",
     lon: "",
     match: [],

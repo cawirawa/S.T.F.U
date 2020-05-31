@@ -17,6 +17,7 @@ import {
   FormControlLabel,
   FormControl,
   FormLabel,
+  Fab
 } from "@material-ui/core";
 import { TextField } from "mui-rff";
 import { Form } from "react-final-form";
@@ -28,6 +29,7 @@ import SentimentSatisfiedIcon from "@material-ui/icons/SentimentSatisfied";
 import SentimentSatisfiedAltIcon from "@material-ui/icons/SentimentSatisfiedAltOutlined";
 import SentimentVerySatisfiedIcon from "@material-ui/icons/SentimentVerySatisfied";
 import SaveIcon from "@material-ui/icons/Save";
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -36,10 +38,9 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     marginLeft: "auto",
-    height: 100,
-    width: 100,
     flexShrink: 0,
     flexGrow: 0,
+    marginBottom: 25
   },
   divider: {
     marginBottom: 15,
@@ -56,6 +57,9 @@ const useStyles = makeStyles((theme) => ({
   rating: {
     verticalAlign: "text-top",
     top: 7,
+  },
+  input: {
+    display: "none"
   },
 }));
 
@@ -89,7 +93,7 @@ function IconContainer(props) {
 
 export default function ProfilePage(props) {
   const { className, ...rest } = props;
-  const [setSent] = React.useState(false);
+  const [sent, setSent] = useState(false);
   const classes = useStyles();
   const [state, setState] = useState({
     firstName: "",
@@ -104,7 +108,6 @@ export default function ProfilePage(props) {
     country: "",
     age: "",
     bio: "",
-    avatar: require("../Assets/shirley.jpg"),
   });
   const [sport, setSport] = useState({
     soccer: false,
@@ -113,6 +116,32 @@ export default function ProfilePage(props) {
     volleyball: false,
     baseball: false,
   });
+  const [mainState, setMainState] = useState("initial");
+  const [imageUploaded, setImageUploaded] = useState(0);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [rating, setRating] = useState({
+    soccer: 0,
+    basketball: 0,
+    football: 0,
+    volleyball: 0,
+    baseball: 0,
+  })
+
+  const handleUploadClick = event => {
+    console.log();
+    var file = event.target.files[0];
+    const reader = new FileReader();
+    var url = reader.readAsDataURL(file);
+
+    reader.onloadend = function (e) {
+      setSelectedFile([reader.result])
+    }.bind(this);
+    console.log(url);
+
+    setMainState("uploaded");
+    setImageUploaded(1);
+    setSelectedFile(event.target.files[0]);
+  };
 
   const validate = (state) => {
     const errors = required(
@@ -152,6 +181,10 @@ export default function ProfilePage(props) {
       [event.target.name]: event.target.checked,
     });
     setSent(true);
+    setRating({
+      ...rating,
+      [event.target.name]: event.target.value
+    })
   };
 
   return (
@@ -166,22 +199,48 @@ export default function ProfilePage(props) {
         {({ handleSubmit, submitting }) => (
           <form onSubmit={handleChange} className={classes.form} noValidate>
             <CardContent>
-              {state.firstName && state.lastName && (
-                <Fragment>
-                  <CardContent>
-                    <div className={classes.details}>
-                      <div>
-                        <Typography gutterBottom variant="h2">
-                          {state.firstName + " " + state.lastName}
-                        </Typography>
-                      </div>
-                      <Avatar className={classes.avatar} src={state.avatar} />
-                    </div>
-                  </CardContent>
-                  <Divider className={classes.divider} />
-                </Fragment>
-              )}
               <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Fragment>
+                    <CardContent>
+                      <div className={classes.details}>
+                        <div>
+                          <Typography gutterBottom variant="h5">
+                            {"Hello " + state.firstName + " " + state.lastName + " !"}
+                          </Typography>
+                        </div>
+                        <input
+                          accept="image/*"
+                          className={classes.input}
+                          id="contained-button-file"
+                          multiple
+                          type="file"
+                          onChange={handleUploadClick}
+                        />
+                        {mainState === "initial" ?
+                          (
+                            <label htmlFor="contained-button-file" className={classes.avatar}>
+                              <Fab component="span">
+                                <AccountCircleIcon fontSize="large" />
+                              </Fab>
+                            </label>
+                          ) :
+                          (
+                            <label htmlFor="contained-button-file" className={classes.avatar}>
+                              <Fab component="span" >
+                                <img
+                                  width="100%"
+                                  src={selectedFile}
+                                />
+                              </Fab>
+                            </label>
+                          )}
+
+                      </div>
+                    </CardContent>
+                    <Divider className={classes.divider} />
+                  </Fragment>
+                </Grid>
                 <Grid item md={6} xs={12}>
                   <TextField
                     fullWidth
@@ -400,7 +459,7 @@ export default function ProfilePage(props) {
                           label="Soccer"
                         />
                         <Rating
-                          name="customized-icons"
+                          name="soccer"
                           defaultValue={0}
                           getLabelText={(value) => customIcons[value].label}
                           IconContainerComponent={IconContainer}
@@ -420,7 +479,7 @@ export default function ProfilePage(props) {
                           label="Basketball"
                         />
                         <Rating
-                          name="customized-icons"
+                          name="basketball"
                           defaultValue={0}
                           getLabelText={(value) => customIcons[value].label}
                           IconContainerComponent={IconContainer}
@@ -440,7 +499,7 @@ export default function ProfilePage(props) {
                           label="Football"
                         />
                         <Rating
-                          name="customized-icons"
+                          name="football"
                           defaultValue={0}
                           getLabelText={(value) => customIcons[value].label}
                           IconContainerComponent={IconContainer}
@@ -454,13 +513,13 @@ export default function ProfilePage(props) {
                               color="primary"
                               checked={sport.volleyball}
                               onChange={handleChange}
-                              name="basketball"
+                              name="volleyball"
                             />
                           }
                           label="Volleyball"
                         />
                         <Rating
-                          name="customized-icons"
+                          name="volleyball"
                           defaultValue={0}
                           getLabelText={(value) => customIcons[value].label}
                           IconContainerComponent={IconContainer}
@@ -474,13 +533,13 @@ export default function ProfilePage(props) {
                               color="primary"
                               checked={sport.baseball}
                               onChange={handleChange}
-                              name="football"
+                              name="baseball"
                             />
                           }
                           label="Baseball"
                         />
                         <Rating
-                          name="customized-icons"
+                          name="baseball"
                           defaultValue={0}
                           getLabelText={(value) => customIcons[value].label}
                           IconContainerComponent={IconContainer}
