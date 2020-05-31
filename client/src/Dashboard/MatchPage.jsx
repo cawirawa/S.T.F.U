@@ -69,6 +69,7 @@ const useStyles = makeStyles((theme) => ({
   button: {
     marginTop: 40,
     margin: "0 auto",
+    width: 200,
   },
   icon: {
     marginRight: 2,

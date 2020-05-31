@@ -216,7 +216,6 @@ class Dashboard extends Component {
               <ChevronLeftIcon />
             </IconButton>
           </div>
-          <Divider />
           <ListItems onClick={this.setContent} />
         </Drawer>
         <main className={classes.content}>
