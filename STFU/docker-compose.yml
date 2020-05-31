@@ -1,0 +1,20 @@
+version: '3.7'
+services:
+  db:
+    image: mdillon/postgis:11
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_HOST_AUTH_METHOD=trust
+  stfu:
+    restart: always
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000"
+    depends_on:
+      - db
+

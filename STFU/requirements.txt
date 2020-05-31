@@ -1,0 +1,12 @@
+django
+djangorestframework
+django-cors-headers
+pillow
+django-image-cropping
+easy-thumbnails
+django_mysql
+django-phonenumber-field
+django-multiselectfield
+psycopg2
+phonenumbers
+geopy
