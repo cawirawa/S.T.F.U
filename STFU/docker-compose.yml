@@ -14,7 +14,7 @@ services:
     volumes:
       - .:/code
     ports:
-      - "8000"
+      - "443"
     depends_on:
       - db
 
