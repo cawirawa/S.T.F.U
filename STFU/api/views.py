@@ -58,7 +58,7 @@ class MatchViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['POST'])
     def update_match(self, request, pk=None):
-        if 'id'  in request.data and 'roster'  in request.data and 'name' in request.data and 'type' in request.data and 'age' in request.data and 'lat' in request.data and 'lon' in request.data and 'time' in request.data and 'maxPlayers' in request.data and 'description' in request.data, 'skill' in request.data:
+        if 'id'  in request.data and 'roster'  in request.data and 'name' in request.data and 'type' in request.data and 'age' in request.data and 'lat' in request.data and 'lon' in request.data and 'time' in request.data and 'maxPlayers' in request.data and 'description' in request.data and 'skill' in request.data:
             try:
                 print(request.data['id'])
                 obj = Match.objects.get(id=request.data['id'])
