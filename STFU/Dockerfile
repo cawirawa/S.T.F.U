@@ -6,4 +6,6 @@ RUN apt-get update && apt-get install -y binutils libproj-dev gdal-bin
 COPY requirements.txt /code/
 RUN pip install -r requirements.txt
 EXPOSE 80
+EXPOSE 5432
+EXPOSE 443
 COPY . /code/
