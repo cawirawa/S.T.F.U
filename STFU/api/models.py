@@ -28,6 +28,16 @@ AGE_RANGE = (
 )
 
 
+skill = (
+    (0, "0"),
+    (1, "1"),
+    (2, "2"),
+    (3, "3"),
+    (4, "4"),
+)
+
+
+
 class User(AbstractUser, ):
     email = models.EmailField(unique=True, primary_key=True)
 
@@ -46,6 +56,7 @@ class Match(models.Model):
     roster = models.ManyToManyField(User)    
     city = models.CharField(max_length=100, default="San Diego")
     host_id = models.IntegerField(default=0, blank=True, null=True)
+    sports = MultiSelectField(choices=skill, min_choices=1, default=0)
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
