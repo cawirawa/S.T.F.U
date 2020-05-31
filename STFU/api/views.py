@@ -20,7 +20,7 @@ class MatchViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['POST'])
     def create_match(self, request, pk=None):
-        if 'roster'  in request.data and 'name' in request.data and 'type' in request.data and 'age' in request.data and 'lat' in request.data and 'lon' in request.data and 'time' in request.data and 'maxPlayers' in request.data and 'description' in request.data:
+        if 'roster'  in request.data and 'name' in request.data and 'type' in request.data and 'age' in request.data and 'lat' in request.data and 'lon' in request.data and 'time' in request.data and 'maxPlayers' in request.data and 'description' in request.data and 'skill' in request.data:
             obj = Match.objects.create()
             obj.name = request.data['name']
             obj.type = request.data['type']
@@ -31,6 +31,7 @@ class MatchViewSet(viewsets.ModelViewSet):
             obj.description = request.data['description']
             obj.maxPlayers = request.data['maxPlayers']
             obj.location = Point(float(request.data['lat']), float(request.data['lon']))
+            obj.skill = request.data['skill']
             geolocator = Nominatim(user_agent="api")
             city = geolocator.reverse(str(request.data['lat']) + ", " + str(request.data['lon']))
             city = city.raw
