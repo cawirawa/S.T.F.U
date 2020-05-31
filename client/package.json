@@ -15,12 +15,16 @@
     "date-fns": "^2.13.0",
     "final-form": "^4.19.1",
     "firebase": "^7.14.3",
+    "google-maps-react": "^2.0.6",
     "mui-rff": "^2.1.15",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-final-form": "^6.4.0",
+    "react-geocode": "^0.2.1",
+    "react-google-places-autocomplete": "^2.0.6",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
+    "use-force-update": "^1.0.7",
     "validator": "^13.0.0"
   },
   "scripts": {
