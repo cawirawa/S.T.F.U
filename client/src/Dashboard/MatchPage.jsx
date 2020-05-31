@@ -12,9 +12,9 @@ import {
   MenuItem,
   FormLabel,
   CardContent,
-  Typography,
+  FormGroup,
+  Chip
 } from "@material-ui/core";
-import MatchCard from "./MatchCard";
 import MatchSearch from "./MatchSearch";
 import MatchFilter from "./MatchFilter";
 import { Form } from "react-final-form";
@@ -30,10 +30,11 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import LocationOnIcon from "@material-ui/icons/LocationOn";
-import parse from "autosuggest-highlight/parse";
-import throttle from "lodash/throttle";
+import GooglePlacesAutocomplete, { geocodeByPlaceId, geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
+import 'react-google-places-autocomplete/dist/index.min.css';
+import MapContainer from '../Components/GMaps';
+import useForceUpdate from 'use-force-update';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const useStyles = makeStyles((theme) => ({
   details: {
@@ -59,8 +60,11 @@ const useStyles = makeStyles((theme) => ({
     margin: 3,
   },
   rating: {
-    verticalAlign: "text-top",
-    top: 7,
+    marginLeft: 10,
+    top: -3,
+  },
+  skillLevel: {
+    margin: 7
   },
   root: {
     marginTop: 35,
@@ -81,21 +85,13 @@ const useStyles = makeStyles((theme) => ({
   createMatch: {
     marginRight: "4%",
   },
-}));
-
-function loadScript(src, position, id) {
-  if (!position) {
-    return;
+  mapCont: {
+    height: 300,
+    width: 510,
+    position: 'relative',
+    margin: 7
   }
-
-  const script = document.createElement("script");
-  script.setAttribute("async", "");
-  script.setAttribute("id", id);
-  script.src = src;
-  position.appendChild(script);
-}
-
-const autocompleteService = { current: null };
+}));
 
 const customIcons = {
   1: {
@@ -129,29 +125,99 @@ export default function MatchPage(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [state, setState] = useState({
-    matchName: "",
-    sportsType: "",
+    name: "",
     skillLevel: "",
     age: "",
     location: "",
-    duration: "",
-    numOfPlayers: "",
-    notes: "",
-    f_sportsType: "",
-    f_skilllevel: 2,
+    time: "",
+    maxPlayers: "",
+    description: "",
+    type: "",
+    skillLevel: 2,
     f_distance: 50,
     f_time1: false,
     f_time2: false,
     f_time3: false,
     f_time4: false,
     f_time5: false,
+    lat: 32.8801,
+    lon: -117.2340,
+    address: '',
+    roster: [],
+  });
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [userList, setUserList] = useState([]);
+  const [roster, setRoster] = useState([]);
+
+  const forceUpdate = useForceUpdate();
+  const mapCallbackLatLng = (mapAddress, mapLat, mapLng) => {
+    setState({
+      ...state,
+      address: mapAddress,
+      lat: mapLat,
+      lon: mapLng
+    })
+  }
+
+  useEffect(() => {
+    fetch("http://35.163.180.234/api/user/",
+      {
+        method: "GET",
+      }
+    )
+      .then(response => {
+        return response.json();
+      })
+      .then((res) => {
+        setUserList(res.map(info => info.email));
+      })
+      .catch((error) => {
+        console.error('Error: ', error)
+      })
   });
 
-  const [value, setValue] = useState(null);
-  const [inputValue, setInputValue] = useState("");
-  const [options, setOptions] = useState([]);
-  const loaded = useRef(false);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  async function handleSubmit() {
+    const createMatchData = {
+      name: state.name,
+      description: state.description,
+      type: state.type,
+      age: state.age,
+      lat: state.lat,
+      lon: state.lon,
+      time: selectedDate,
+      roster: roster,
+      maxPlayers: state.maxPlayers,
+      skillLevel: state.skillLevel
+    }
+    fetch("http://35.163.180.234/api/match/create_match/", {
+      method: "POST",
+      headers: {
+        'Authorization': 'Token 2323815b67246c4ba23664394f8998a2e982740f',
+      },
+      body: JSON.stringify(createMatchData),
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success: ', data)
+      })
+      .catch((error) => {
+        console.error('Error: ', error)
+      })
+  }
+
+  const handleSelect = (description) => {
+    geocodeByPlaceId(description.place_id)
+      .then(results => getLatLng(results[0]))
+      .then(({ lat, lng }) => {
+        console.log('Lat Lng: ', { lat, lng });
+        setState({
+          ...state,
+          lat: lat,
+          lon: lng
+        });
+        forceUpdate();
+      })
+  }
 
   const onTypeSubmit = (name, type) => {
     setState({ ...state, [name]: type });
@@ -185,70 +251,14 @@ export default function MatchPage(props) {
     setOpen(false);
   };
 
-  if (typeof window !== "undefined" && !loaded.current) {
-    if (!document.querySelector("#google-maps")) {
-      loadScript(
-        "https://maps.googleapis.com/maps/api/js?key=AIzaSyBwRp1e12ec1vOTtGiA4fcCt2sCUS78UYc&libraries=places",
-        document.querySelector("head"),
-        "google-maps"
-      );
-    }
-
-    loaded.current = true;
-  }
-
-  const fetch = useMemo(
-    () =>
-      throttle((request, callback) => {
-        autocompleteService.current.getPlacePredictions(request, callback);
-      }, 200),
-    []
-  );
-
-  useEffect(() => {
-    let active = true;
-
-    if (!autocompleteService.current && window.google) {
-      autocompleteService.current = new window.google.maps.places.AutocompleteService();
-    }
-    if (!autocompleteService.current) {
-      return undefined;
-    }
-
-    if (inputValue === "") {
-      setOptions(value ? [value] : []);
-      return undefined;
-    }
-
-    fetch({ input: inputValue }, (results) => {
-      if (active) {
-        let newOptions = [];
-
-        if (value) {
-          newOptions = [value];
-        }
-
-        if (results) {
-          newOptions = [...newOptions, ...results];
-        }
-
-        setOptions(newOptions);
-      }
-    });
-
-    return () => {
-      active = false;
-    };
-  }, [value, inputValue, fetch]);
-
   return (
     <Fragment>
       <Grid container className={classes.outer}>
         <Grid item xs={5}>
           <MatchSearch
             match={props.match}
-            type={state.f_sportsType}
-            level={state.f_skillLevel}
+            type={state.type}
+            level={state.skillLevel}
             dist={state.f_distance}
             time1={state.f_time1}
             time2={state.f_time2}
@@ -275,10 +285,10 @@ export default function MatchPage(props) {
           >
             <DialogTitle id="form-dialog-title">Create New Match</DialogTitle>
             <DialogContent>
-              <Form onSubmit={handleChange} subscription={{ submitting: true }}>
+              <Form onSubmit={handleSubmit} subscription={{ submitting: true }}>
                 {({ handleSubmit, submitting }) => (
                   <form
-                    onSubmit={handleChange}
+                    onSubmit={handleSubmit}
                     className={classes.form}
                     noValidate
                   >
@@ -288,34 +298,34 @@ export default function MatchPage(props) {
                         autoFocus
                         label="Match Name"
                         margin="dense"
-                        name="matchName"
+                        name="name"
                         variant="outlined"
                       />
                       <TextField
                         fullWidth
                         label="Sports Type"
                         margin="dense"
-                        name="sportsType"
+                        name="type"
                         variant="outlined"
                         select
                       >
                         <MenuItem value="" selected="selected">
                           Select Sports Type
                         </MenuItem>
-                        <MenuItem value="soccer">Soccer</MenuItem>
-                        <MenuItem value="basketball">Basketball</MenuItem>
-                        <MenuItem value="football">Football</MenuItem>
-                        <MenuItem value="volleyball">Volleyball</MenuItem>
-                        <MenuItem value="baseball">Baseball</MenuItem>
+                        <MenuItem value="SC">Soccer</MenuItem>
+                        <MenuItem value="BK">Basketball</MenuItem>
+                        <MenuItem value="BS">Baseball</MenuItem>
                       </TextField>
-                      <FormLabel component="legend">Skill Level</FormLabel>
-                      <Rating
-                        name="customized-icons"
-                        defaultValue={0}
-                        getLabelText={(value) => customIcons[value].label}
-                        IconContainerComponent={IconContainer}
-                        className={classes.rating}
-                      />
+                      <FormGroup row className={classes.skillLevel}>
+                        <FormLabel component="legend">Skill Level</FormLabel>
+                        <Rating
+                          name="skillLevel"
+                          defaultValue={0}
+                          getLabelText={(value) => customIcons[value].label}
+                          IconContainerComponent={IconContainer}
+                          className={classes.rating}
+                        />
+                      </FormGroup>
                       <TextField
                         fullWidth
                         label="Age Range"
@@ -335,12 +345,12 @@ export default function MatchPage(props) {
                       </TextField>
                       <TextField
                         fullWidth
-                        id="outlined-number"
                         label="Number of players"
                         type="number"
                         margin="dense"
-                        name="numOfPlayers"
+                        name="maxPlayers"
                         variant="outlined"
+                        select
                       >
                         <MenuItem value="" selected="selected">
                           Select a number
@@ -355,79 +365,35 @@ export default function MatchPage(props) {
                         <MenuItem value="8">8</MenuItem>
                         <MenuItem value="9">9</MenuItem>
                         <MenuItem value="10">10</MenuItem>
+                        <MenuItem value="11">11</MenuItem>
+                        <MenuItem value="12">12</MenuItem>
+                        <MenuItem value="13">13</MenuItem>
+                        <MenuItem value="14">14</MenuItem>
+                        <MenuItem value="15">15</MenuItem>
+                        <MenuItem value="16">16</MenuItem>
+                        <MenuItem value="17">17</MenuItem>
+                        <MenuItem value="18">18</MenuItem>
+                        <MenuItem value="19">19</MenuItem>
+                        <MenuItem value="20">20</MenuItem>
+                        <MenuItem value="21">21</MenuItem>
+                        <MenuItem value="22">22</MenuItem>
+                        <MenuItem value="23">23</MenuItem>
+                        <MenuItem value="24">24</MenuItem>
+                        <MenuItem value="25">25</MenuItem>
                       </TextField>
-                      <Autocomplete
-                        id="google-map-demo"
-                        fullWidth
-                        margin="dense"
-                        getOptionLabel={(option) =>
-                          typeof option === "string"
-                            ? option
-                            : option.description
-                        }
-                        filterOptions={(x) => x}
-                        options={options}
-                        autoComplete
-                        includeInputInList
-                        filterSelectedOptions
-                        value={value}
-                        onChange={(event, newValue) => {
-                          setOptions(
-                            newValue ? [newValue, ...options] : options
-                          );
-                          setValue(newValue);
-                        }}
-                        onInputChange={(event, newInputValue) => {
-                          setInputValue(newInputValue);
-                        }}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            label="Add a location"
-                            variant="outlined"
-                            fullWidth
-                          />
-                        )}
-                        renderOption={(option) => {
-                          const matches =
-                            option.structured_formatting
-                              .main_text_matched_substrings;
-                          const parts = parse(
-                            option.structured_formatting.main_text,
-                            matches.map((match) => [
-                              match.offset,
-                              match.offset + match.length,
-                            ])
-                          );
-
-                          return (
-                            <Grid container alignItems="center">
-                              <Grid item>
-                                <LocationOnIcon className={classes.icon} />
-                              </Grid>
-                              <Grid item xs>
-                                {parts.map((part, index) => (
-                                  <span
-                                    key={index}
-                                    style={{
-                                      fontWeight: part.highlight ? 700 : 400,
-                                    }}
-                                  >
-                                    {part.text}
-                                  </span>
-                                ))}
-
-                                <Typography
-                                  variant="body2"
-                                  color="textSecondary"
-                                >
-                                  {option.structured_formatting.secondary_text}
-                                </Typography>
-                              </Grid>
-                            </Grid>
-                          );
-                        }}
-                      />
+                      <div className={classes.skillLevel}>
+                        <GooglePlacesAutocomplete
+                          initialValue={state.address}
+                          placeholder={state.address}
+                          onSelect={handleSelect}
+                        />
+                      </div>
+                      <div className={classes.mapCont}>
+                        <MapContainer
+                          center={{ lat: state.lat, lng: state.lon }}
+                          callback={mapCallbackLatLng}
+                        />
+                      </div>
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <Grid container justify="space-around">
                           <KeyboardDatePicker
@@ -463,10 +429,35 @@ export default function MatchPage(props) {
                         label="Match Description"
                         fullWidth
                       />
+                      <Autocomplete
+                        multiple
+                        margin="dense"
+                        id="tags-outlined"
+                        options={userList.map(option => option)}
+                        freeSolo
+                        renderTags={(value, getTagProps) =>
+                          value.map((option, index) => {
+                            return <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+                          })
+                        }
+                        onChange={(event, value) => {
+                          setRoster(value)
+                        }
+                        }
+                        renderInput={params => (
+                          <TextField
+                            {...params}
+                            variant="outlined"
+                            label="Invite players"
+                            placeholder="Example: db@ucsd.edu"
+                            fullWidth
+                          />
+                        )}
+                      />
                     </CardContent>
                     <Divider />
                     <DialogActions>
-                      <Button color="primary" variant="contained">
+                      <Button type="submit" color="primary" variant="contained">
                         Create
                       </Button>
                       <Button onClick={handleClose} color="primary">

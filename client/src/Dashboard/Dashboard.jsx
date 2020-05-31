@@ -133,7 +133,7 @@ class Dashboard extends Component {
         this.setState({ lon: toString(res.longitude) });
       })
       .catch((err) => console.error("Problem fetching my IP", err));
-    fetch("http://52.25.207.161/api/match/", {
+    fetch("http://35.163.180.234/api/match/", {
       method: "GET",
     })
       .then((resp) => resp.json())
