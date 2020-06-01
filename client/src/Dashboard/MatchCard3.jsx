@@ -142,7 +142,7 @@ function IconContainer(props) {
     return <span {...other}>{customIcons[value].icon}</span>;
 }
 
-export default function MatchCard2(props) {
+export default function (props) {
     const classes = useStyles();
     const match = props.match;
     const [open, setOpen] = React.useState(false);
@@ -187,6 +187,13 @@ export default function MatchCard2(props) {
                             </p>
                         </Grid>
                         <Grid item xs={2}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={handleClickOpen}
+                            >
+                                Details
+                            </Button>
                             <Dialog
                                 open={open}
                                 onClose={handleClose}
@@ -316,6 +323,11 @@ export default function MatchCard2(props) {
                                         </div>
                                     </Typography>
                                 </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={handleClose} color="primary">
+                                        Cancel
+                                    </Button>
+                                </DialogActions>
                             </Dialog>
                         </Grid>
                         <Grid item xs={4}>
@@ -349,7 +361,7 @@ export default function MatchCard2(props) {
                                 className={classes.heading}
                                 style={{ textTransform: "capitalize" }}
                             >
-                                {/*match.roster[0].first_name*/}
+                                {match.roster[0].first_name}
                             </h2>
                         </div>
                     </Grid>
