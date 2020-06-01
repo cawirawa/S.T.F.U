@@ -232,8 +232,8 @@ export default function MatchPage(props) {
             <Grid container className={classes.outer}>
                 
                 <Grid item xs={5}>
-                    <MatchSearch match={props.match} type={state.f_sportsType} level={state.f_skilllevel} dist={state.f_distance} time1={state.f_time1} time2={state.f_time2}
-                                 time3={state.f_time3} time4={state.f_time4}  time5={state.f_time5}/>
+                    <MatchSearch match={props.match} lat={props.lat} lon={props.lon} type={state.f_sportsType} level={state.f_skilllevel} dist={state.f_distance} time1={state.f_time1} time2={state.f_time2}
+                                 time3={state.f_time3} time4={state.f_time4}  time5={state.f_time5} />
                 </Grid>
            
                 <Grid item xs={2} className={classes.createMatch}>

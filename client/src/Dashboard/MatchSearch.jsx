@@ -30,7 +30,6 @@ const useStyles = makeStyles(theme => ({
 //     'Bored in the house?',
 //     'In the house bored'
 // ];
-
 export default function MatchSearch(props) {
     const classes = useStyles();
     // const [, updateState] = React.useState();
@@ -43,24 +42,39 @@ export default function MatchSearch(props) {
     //         <MatchCard match={match} />
     //     </div>
     //     );}));
+    const [state, setState] = React.useState({
+        txt: "None",
+        reset: true,
+        recent: false,
+        level: false,
+        distance: false,
+        anchorEl: null,
+    });
+
     var test_lat = 32.8801;
     var test_lon = -117.2361;
+    let lat = props.lat;
+    let lon = props.lon;
 
     let options = props.match.map(a => {
         let username = a.roster[0] ? " - " + a.roster[0].username : "";
         return (a.name + username + " (" + a.id + ")");
     });
     
+    // filter sport type
     const [value, setValue] = useState(options[0]);
     let filter_match = props.match;
+    let filter_sort_match = props.match;
     filter_match = filter_match.filter(filter_match=>{
         return props.type == '' || props.type == filter_match.type;
     });
 
+    // filter skill level
     filter_match = filter_match.filter(filter_match=>{
         return props.level == 0 || (props.level >= filter_match.minSkill && props.level <= filter_match.maxSkill);
     });
 
+    // filter distance
     filter_match = filter_match.filter(filter_match=>{
         var lat1 = test_lat * (Math.PI/180);
         var lat2= filter_match.lat * (Math.PI/180);
@@ -81,105 +95,192 @@ export default function MatchSearch(props) {
         return dist <= props.dist;
     });
 
+    // filter time
     filter_match = filter_match.filter(filter_match=>{
-        var year = filter_match.time.slice(0,3);
-        var month = filter_match.time.slice(5,6);
-        var date = filter_match.time.slice(8,9);
-        var hour = filter_match.time.slice(11,12);
-        var min = filter_match.time.slice(14,15);
+        var year = filter_match.time.slice(0,4);
+        var month = filter_match.time.slice(5,7);
+        var date = filter_match.time.slice(8,10);
+        var hour = filter_match.time.slice(11,13);
+        var min = filter_match.time.slice(14,16);
         var sec = filter_match.time.slice(17,19);
 
-        const today = new Date();
-        const tomorrow = new Date(today);
-        tomorrow.setDate(tomorrow.getDate() + 1)
+        year = parseInt(year);
+        month = parseInt(month);
+        date = parseInt(date);
+        hour = parseInt(hour);
+        min = parseInt(min);
+        sec = parseInt(sec);
+        
+        var match_date = new Date();
+        match_date.setDate(date);
+        match_date.setHours(hour);
+        match_date.setFullYear(year);
+        match_date.setMinutes(min);
+        match_date.setSeconds(sec);
+        match_date.setMonth(month-1);
 
-        var c_date = new Date().getDate(); //To get the Current Date
-        var c_month = new Date().getMonth() + 1; //To get the Current Month
-        var c_year = new Date().getFullYear(); //To get the Current Year
-        var c_hours = new Date().getHours(); //To get the Current Hours
-        var c_min = new Date().getMinutes(); //To get the Current Minutes
-        var c_sec = new Date().getSeconds(); //To get the Current Seconds
+        var today = new Date();
+        var tomorrow = new Date(new Date().getTime() + 24*60*60*1000);
 
-        var options = true;
+        var output = true;
+
         if (props.time1 === true) {
-            if(date != c_date) {
-                options = options && false;
+            if((date === today.getDate()) && (month === today.getMonth()-1) && (year === today.getFullYear())) {
+                return true;
+            } else {
+                output = false;
             }
         }
-
         if (props.time2 === true) {
-            if(parseInt(date) != tomorrow.getDate()) {
-                options = options && false;
+            if(date === tomorrow.getDate() && month === tomorrow.getMonth()+1 && year === tomorrow.getFullYear()) {
+                return true;
+            } else {
+                output = false;
             }
         }
-
-        return options;
+        if (props.time3 === true) {
+            if(( (match_date.getTime() - today.getTime()) > 0 ) && (24*60*60*1000*3-(match_date.getTime() - today.getTime()) > 0)){
+                return true;
+            } else {
+                output = false;
+            }
+        }
+        if (props.time4 === true) {
+            if(( (match_date.getTime() - today.getTime()) > 0 ) && (24*60*60*1000*7 - (match_date.getTime() - today.getTime()) > 0)){
+                return true;
+            } else {
+                output = false;
+            }
+        }
+        if (props.time5 === true) {
+            if(( (match_date.getTime() - today.getTime()) > 0 ) && (24*60*60*1000*30-(match_date.getTime() - today.getTime()) > 0)){
+                return true;
+            } else {
+                output = false;
+            }
+        }
+        return output;
     });
 
-    let card = filter_match.map((match) => {
-        var year = match.time.slice(0,3);
-        var month = match.time.slice(5,6);
-        var date = match.time.slice(8,9);
-        var hour = match.time.slice(11,12);
-        var min = match.time.slice(14,15);
-        var sec = match.time.slice(17,19);
+    let card = filter_match.sort((a,b) => {
+        if(state.reset === true) {
+            return;
+        } else if(state.recent === true) {
+            var year1 = a.time.slice(0,4);
+            var month1 = a.time.slice(5,7);
+            var date1 = a.time.slice(8,10);
+            var hour1 = a.time.slice(11,13);
+            var min1 = a.time.slice(14,16);
+            var sec1 = a.time.slice(17,19);
+        
+            year1 = parseInt(year1);
+            month1 = parseInt(month1);
+            date1 = parseInt(date1);
+            hour1 = parseInt(hour1);
+            min1 = parseInt(min1);
+            sec1 = parseInt(sec1);    
+    
+            var match_date1 = new Date();
+            match_date1.setDate(date1);
+            match_date1.setHours(hour1);
+            match_date1.setFullYear(year1);
+            match_date1.setMinutes(min1);
+            match_date1.setSeconds(sec1);
+            match_date1.setMonth(month1-1);
+    
+            var year2 = b.time.slice(0,4);
+            var month2 = b.time.slice(5,7);
+            var date2 = b.time.slice(8,10);
+            var hour2 = b.time.slice(11,13);
+            var min2 = b.time.slice(14,16);
+            var sec2 = b.time.slice(17,19);
+        
+            year2 = parseInt(year2);
+            month2 = parseInt(month2);
+            date2 = parseInt(date2);
+            hour2 = parseInt(hour2);
+            min2 = parseInt(min2);
+            sec2 = parseInt(sec2);    
+    
+            var match_date2 = new Date();
+            match_date2.setDate(date2);
+            match_date2.setHours(hour2);
+            match_date2.setFullYear(year2);
+            match_date2.setMinutes(min2);
+            match_date2.setSeconds(sec2);
+            match_date2.setMonth(month2-1);
+    
+            return match_date1.getTime() - match_date2.getTime();
+        } else if (state.level === true) {
+            return a.maxSkill - b.maxSkill;
+        } else if (state.distance === true) {
 
-        var c_date = new Date().getDate(); //To get the Current Date
-        var c_month = new Date().getMonth() + 1; //To get the Current Month
-        var c_year = new Date().getFullYear(); //To get the Current Year
-        var c_hours = new Date().getHours(); //To get the Current Hours
-        var c_min = new Date().getMinutes(); //To get the Current Minutes
-        var c_sec = new Date().getSeconds(); //To get the Current Seconds
+            var lat_a1 = test_lat * (Math.PI/180);
+            var lat_a2= a.lat * (Math.PI/180);
+            var long_a1 = test_lon * (Math.PI/180);
+            var long_a2 = a.lon * (Math.PI/180);
+    
+            var dlat_a = lat_a2 - lat_a1;
+            var dlong_a = long_a2 - long_a1;
+    
+            var dist_a = Math.pow(Math.sin(dlat_a/2),2) + Math.cos(lat_a1) * Math.cos(lat_a2) * Math.pow(Math.sin(dlong_a/2), 2);
+            dist_a = 2 * Math.asin(Math.sqrt(dist_a));
+    
+            var radius = 3956;
+    
+            dist_a = dist_a * radius;
 
-        const today = new Date()
-        const tomorrow = new Date(today)
-        tomorrow.setDate(tomorrow.getDate() + 1)
+            var lat_b1 = test_lat.lat * (Math.PI/180);
+            var lat_b2= b.lat * (Math.PI/180);
+            var long_b1 = test_lon.lon * (Math.PI/180);
+            var long_b2 = b.lon * (Math.PI/180);
+    
+            var dlat_b = lat_b2 - lat_b1;
+            var dlong_b = long_b2 - long_b1;
+    
+            var dist_b = Math.pow(Math.sin(dlat_b/2),2) + Math.cos(lat_b1) * Math.cos(lat_b2) * Math.pow(Math.sin(dlong_b/2), 2);
+            dist_b = 2 * Math.asin(Math.sqrt(dist_b));
+            
+            return dist_a - dist_b;
+        }
 
+
+    }).map((match) => {
         return (
         <div key={match.id}>
             <MatchCard match={match} />
         </div>
         );})
 
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [txt, setTxt] = useState("None");
-
     const handleClick = (event) => {
-      setAnchorEl(event.currentTarget);
+      setState({ ...state, anchorEl: event.currentTarget});
     };
 
     const handleClose = () => {
-      setAnchorEl(null);
+        setState({ ...state, anchorEl: null});
     };
 
     const handleReset = () => {
-        setAnchorEl(null);
+        setState({ ...state, anchorEl:null, txt: "None", reset: true});
         filter_match = props.match;
-        setTxt("None");
       };
       
     const handleRecent = () => {
-        setAnchorEl(null);
-        filter_match.sort(function(a,b){
-            return a.time - b.time;
-        })
-        setTxt("Most Recent");
+        setState({ ...state, anchorEl:null, txt: "Most Recent", reset: false, recent: true, level: false, distance:false});
       };
 
     const handleSkill = () => {
-        setAnchorEl(null);
         filter_match.sort(function(a,b){
             return a.maxSkill - b.maxSkill;
         })
-        setTxt("Skill Level");
+        setState({ ...state, anchorEl:null, txt: "Skill Level",  reset: false, recent: false, level: true, distance:false});
       };
 
     const handleDist = () => {
-        setAnchorEl(null);
         filter_match.sort(function(a,b){
             return a.locaton - b.location;
         })
-        setTxt("Distance");
+        setState({ ...state, anchorEl:null, txt: "Distance",  reset: false, recent: false, level: false, distance:true});
       };
 
     // useEffect(() => {
@@ -224,14 +325,14 @@ export default function MatchSearch(props) {
                         />
 
                         <Button className={classes.button} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-                            Sort by: {txt}
+                            Sort by: {state.txt}
                         </Button>
                         
                         <Menu
                             id="simple-menu"
-                            anchorEl={anchorEl}
+                            anchorEl={state.anchorEl}
                             keepMounted
-                            open={Boolean(anchorEl)}
+                            open={Boolean(state.anchorEl)}
                             onClose={handleClose}
                         >
                             <MenuItem onClick={handleReset}>None</MenuItem>
@@ -242,7 +343,6 @@ export default function MatchSearch(props) {
 
                     </Grid>
                 </Grid>
-                                    
                 <Grid
                       container
                       direction="row"

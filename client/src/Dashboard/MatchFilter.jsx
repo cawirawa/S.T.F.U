@@ -155,7 +155,9 @@ export default function MatchFilter(props) {
         f_time2: false,
         f_time3: false,
         f_time4: false,
-        f_time5: false
+        f_time5: false,
+        disabled: false,
+        previous: 50,
     });
 
     var filterStyle = {
@@ -193,6 +195,16 @@ export default function MatchFilter(props) {
         }
     };
     
+    const handleDisable = name => (event) => {
+        if (state.disabled === false) {
+            setState({ ...state, previous: state.f_distance, f_distance: 999999, disabled: true });
+            props.onDist(name, 999999);
+        } else{
+            setState({ ...state, f_distance: state.previous, disabled: false });
+            props.onDist(name, state.f_distance); 
+        }
+    };
+
     return(
         <Fragment>
             <Box component="fieldset" mt={12} mb={3} borderColor="grey">
@@ -229,10 +241,20 @@ export default function MatchFilter(props) {
             </div>
 
             <div>
-                <FormLabel component="legend">Distance</FormLabel>
+                <FormControl component="fieldset" className={classes.formControl}>
+                    <FormLabel component="legend">Distance</FormLabel>
+                    <FormGroup>
+                        <FormControlLabel
+                            control={<Checkbox checked={state.disabled} onChange={handleDisable("f_distance")} name="disable" color="primary" />}
+                            label="Disable"
+                        />
+                    </FormGroup>
+                </FormControl>
+ 
                 <div style={filterStyle}>
-                <MySlider name="f_distance" onChange={handleDistanceChange("f_distance")} defaultValue={state.f_distance} marks={marks} valueLabelDisplay="on" />
+                <MySlider name="f_distance" disabled={state.disabled} onChange={handleDistanceChange("f_distance")} defaultValue={state.f_distance} marks={marks} valueLabelDisplay="on" />
                 </div>
+
             </div>
 
             <ExpansionPanel className={classes.expanded} defaultExpanded='true'>
