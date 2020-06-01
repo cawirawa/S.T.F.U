@@ -215,8 +215,9 @@ export default function MatchPage(props) {
     })
       .then(response => response.json())
       .then(data => {
-        console.log('Success: ', data)
-        handleClose()
+        console.log('Success: ', data);
+        handleClose();
+        window.location.reload(false); 
       })
       .catch((error) => {
         console.error('Error: ', error)
