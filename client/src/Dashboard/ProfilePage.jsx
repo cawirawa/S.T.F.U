@@ -123,8 +123,8 @@ export default function ProfilePage(props) {
     username: "",
     email: "",
     phone: "",
-    lat: "",
-    lon: "",
+    lat: null,
+    lon: null,
     age: "",
     bio: "",
     profile_image: null,
@@ -200,7 +200,7 @@ export default function ProfilePage(props) {
       .catch((error) => {
         console.error('Error: ', error)
       })
-  });
+  }, []);
 
   async function handleSubmit() {
     const updateProfileData = {

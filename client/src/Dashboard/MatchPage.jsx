@@ -150,11 +150,6 @@ export default function MatchPage(props) {
   const [userList, setUserList] = useState([]);
   const [roster, setRoster] = useState([]);
 
-  console.log('dateee', selectedDate);
-  console.log('lat', state.lat);
-  console.log('lon', state.lon);
-  console.log('roster', roster);
-
   const forceUpdate = useForceUpdate();
   const mapCallbackLatLng = (mapAddress, mapLat, mapLng) => {
     setState({
@@ -180,9 +175,14 @@ export default function MatchPage(props) {
       .catch((error) => {
         console.error('Error: ', error)
       })
-  });
+  }, []);
 
-  async function handleSubmit() {
+  function handleSubmit() {
+    let ros = []
+    for (let i = 0; i < roster.length; i++) {
+      ros.push({ "email": roster[i] })
+    }
+
     const createMatchData = {
       name: state.name,
       description: state.description,
@@ -191,11 +191,12 @@ export default function MatchPage(props) {
       lat: state.lat,
       lon: state.lon,
       time: selectedDate,
-      roster: roster,
+      roster: ros,
       maxPlayers: state.maxPlayers,
       minSkill: state.minSkill,
       maxSkill: state.maxSkill
     }
+    console.log(createMatchData);
     fetch("http://35.163.180.234/api/match/create_match/", {
       method: "POST",
       headers: {
@@ -292,8 +293,10 @@ export default function MatchPage(props) {
           >
             <DialogTitle id="form-dialog-title">Create New Match</DialogTitle>
             <DialogContent>
-              <Form onSubmit={handleSubmit} subscription={{ submitting: true }}>
-                {({ handleSubmit, submitting }) => (
+              <Form
+                onSubmit={handleSubmit}
+                subscription={{ submitting: true }}
+                render={({ handleSubmit, form, submitting, values }) => (
                   <form
                     onSubmit={handleSubmit}
                     className={classes.form}
@@ -307,6 +310,8 @@ export default function MatchPage(props) {
                         margin="dense"
                         name="name"
                         variant="outlined"
+                        required
+                        onChange={handleChange}
                       />
                       <TextField
                         fullWidth
@@ -315,6 +320,8 @@ export default function MatchPage(props) {
                         name="type"
                         variant="outlined"
                         select
+                        required
+                        onChange={handleChange}
                       >
                         <MenuItem value="" selected="selected">
                           Select Sports Type
@@ -325,7 +332,7 @@ export default function MatchPage(props) {
                         <MenuItem value="FB">Football</MenuItem>
                         <MenuItem value="VB">Volleyball</MenuItem>
                       </TextField>
-                      <FormGroup row className={classes.skillLevel}>
+                      <FormGroup required row className={classes.skillLevel}>
                         <FormLabel component="legend">Skill Level</FormLabel>
                         <Rating
                           name="minSkill"
@@ -333,14 +340,16 @@ export default function MatchPage(props) {
                           getLabelText={(value) => customIcons[value].label}
                           IconContainerComponent={IconContainer}
                           className={classes.rating}
+                          onChange={handleChange}
                         />
-                        { " to " }
+                        {" to "}
                         <Rating
                           name="maxSkill"
                           defaultValue={0}
                           getLabelText={(value) => customIcons[value].label}
                           IconContainerComponent={IconContainer}
                           className={classes.rating}
+                          onChange={handleChange}
                         />
                       </FormGroup>
                       <TextField
@@ -350,6 +359,8 @@ export default function MatchPage(props) {
                         name="age"
                         variant="outlined"
                         select
+                        required
+                        onChange={handleChange}
                       >
                         <MenuItem value="" selected="selected">
                           Select Age Range
@@ -368,6 +379,8 @@ export default function MatchPage(props) {
                         name="maxPlayers"
                         variant="outlined"
                         select
+                        required
+                        onChange={handleChange}
                       >
                         <MenuItem value="" selected="selected">
                           Select a number
@@ -442,11 +455,14 @@ export default function MatchPage(props) {
                         rowsMax={6}
                         margin="dense"
                         variant="outlined"
-                        name="notes"
+                        name="description"
                         label="Match Description"
                         fullWidth
+                        required
+                        onChange={handleChange}
                       />
                       <Autocomplete
+                        required
                         multiple
                         margin="dense"
                         id="tags-outlined"
@@ -483,7 +499,7 @@ export default function MatchPage(props) {
                     </DialogActions>
                   </form>
                 )}
-              </Form>
+              />
             </DialogContent>
           </Dialog>
           <MatchFilter

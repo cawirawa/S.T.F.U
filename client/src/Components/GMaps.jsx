@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Map, GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
 import Geocode from "react-geocode";
+import {style} from "typestyle";
 
 Geocode.setApiKey("AIzaSyAlkP8RNryCUugbHNVGBUNHoIzdgd695s8");
 Geocode.enableDebug();
@@ -10,10 +11,26 @@ const mapStyles = {
     height: '100%',
 };
 
+const niceColors = style({
+    transition: 'color .2s',
+    color: 'blue',
+    $nest: {
+        '&:hover': {
+            color: 'red'
+        }
+    }
+});
+
 
 export class MapContainer extends Component {
     constructor(props) {
         super(props);
+
+        let url = "https://www.google.com/maps/search/?api=1&query=";
+        url += this.props.center.lat;
+        url += ",";
+        url += this.props.center.lng;
+
 
         this.state = {
             showingInfoWindow: true,  //Hides or the shows the infoWindow
@@ -22,8 +39,10 @@ export class MapContainer extends Component {
             address: '',
             loc: {
                 lat: this.props.center.lat,
-                lng: this.props.center.lng
-            }
+                lng: this.props.center.lng,
+                url: url
+            },
+            hover: false
         };
         this.onMarkerDragEnd = this.onMarkerDragEnd.bind(this)
     }
@@ -55,6 +74,10 @@ export class MapContainer extends Component {
             console.log('props updates', nextProps.center);
             const lat = nextProps.center.lat;
             const lng = nextProps.center.lng;
+            let url = "https://www.google.com/maps/search/?api=1&query=";
+            url += lat;
+            url += ",";
+            url += lng;
             Geocode.fromLatLng( lat , lng ).then(
                 response => {
                     const address = response.results[0].formatted_address;
@@ -63,7 +86,8 @@ export class MapContainer extends Component {
                         address: ( address ) ? address : '',
                         loc: {
                             lat: lat,
-                            lng: lng
+                            lng: lng,
+                            url: url
                         },
                     } )
                 },
@@ -90,6 +114,10 @@ export class MapContainer extends Component {
         const lng = latLng.lng();
         console.log('markerdrag lat', lat);
         console.log('markerdrag lng', lng);
+        let url = "https://www.google.com/maps/search/?api=1&query=";
+        url += lat;
+        url += ",";
+        url += lng;
         Geocode.fromLatLng( lat , lng ).then(
             response => {
                 const address = response.results[0].formatted_address;
@@ -98,7 +126,8 @@ export class MapContainer extends Component {
                     address: ( address ) ? address : '',
                     loc: {
                         lat: lat,
-                        lng: lng
+                        lng: lng,
+                        url: url
                     },
                 } )
             },
@@ -146,9 +175,9 @@ export class MapContainer extends Component {
                     visible
                     position={{ lat: ( this.state.loc.lat + 0.0028 ), lng: this.state.loc.lng }}
                     onClose={this.onClose}>
-                    <div>
-                        <h4>{this.state.address}</h4>
-                    </div>
+                    <a className={niceColors} target="_blank" href={this.state.loc.url}>
+                        <div>{this.state.address} </div>
+                    </a>
                 </InfoWindow>
             </Map>
         );
