@@ -136,7 +136,7 @@ class Dashboard extends Component {
         this.setState({ lon: toString(res.longitude) });
       })
       .catch((err) => console.error("Problem fetching my IP", err));
-    fetch("http://52.25.207.161/api/match/", {
+    fetch("http://35.163.180.234/api/match/", {
       method: "GET",
     })
       .then((resp) => resp.json())
@@ -229,7 +229,7 @@ class Dashboard extends Component {
             <Grid container justify="center" alignItems="center">
               <Grid item>
                 {this.state.content === "1" ? (
-                  <MatchPage match={this.state.match} />
+                  <MatchPage match={this.state.match} lat={this.state.lat} lon={this.state.lon}/>
                 ) : null}
                 {this.state.content === "2" ? <VenuePage /> : null}
                 {this.state.content === "3" ? <RefereePage /> : null}

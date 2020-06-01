@@ -43,6 +43,9 @@ export default function MatchSearch(props) {
     //         <MatchCard match={match} />
     //     </div>
     //     );}));
+    var test_lat = 32.8801;
+    var test_lon = -117.2361;
+
     let options = props.match.map(a => {
         let username = a.roster[0] ? " - " + a.roster[0].username : "";
         return (a.name + username + " (" + a.id + ")");
@@ -54,7 +57,84 @@ export default function MatchSearch(props) {
         return props.type == '' || props.type == filter_match.type;
     });
 
+    filter_match = filter_match.filter(filter_match=>{
+        return props.level == 0 || (props.level >= filter_match.minSkill && props.level <= filter_match.maxSkill);
+    });
+
+    filter_match = filter_match.filter(filter_match=>{
+        var lat1 = test_lat * (Math.PI/180);
+        var lat2= filter_match.lat * (Math.PI/180);
+        var long1 = test_lon * (Math.PI/180);
+        var long2 = filter_match.lon * (Math.PI/180);
+
+        var dlat = lat2 - lat1;
+        var dlong = long2 - long1;
+
+        var dist = Math.pow(Math.sin(dlat/2),2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(dlong/2), 2);
+        dist = 2 * Math.asin(Math.sqrt(dist));
+
+        var radius = 3956;
+        // distance between location and uswer
+        dist = dist * radius;
+        
+        // distance should be less than f_dist
+        return dist <= props.dist;
+    });
+
+    filter_match = filter_match.filter(filter_match=>{
+        var year = filter_match.time.slice(0,3);
+        var month = filter_match.time.slice(5,6);
+        var date = filter_match.time.slice(8,9);
+        var hour = filter_match.time.slice(11,12);
+        var min = filter_match.time.slice(14,15);
+        var sec = filter_match.time.slice(17,19);
+
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1)
+
+        var c_date = new Date().getDate(); //To get the Current Date
+        var c_month = new Date().getMonth() + 1; //To get the Current Month
+        var c_year = new Date().getFullYear(); //To get the Current Year
+        var c_hours = new Date().getHours(); //To get the Current Hours
+        var c_min = new Date().getMinutes(); //To get the Current Minutes
+        var c_sec = new Date().getSeconds(); //To get the Current Seconds
+
+        var options = true;
+        if (props.time1 === true) {
+            if(date != c_date) {
+                options = options && false;
+            }
+        }
+
+        if (props.time2 === true) {
+            if(parseInt(date) != tomorrow.getDate()) {
+                options = options && false;
+            }
+        }
+
+        return options;
+    });
+
     let card = filter_match.map((match) => {
+        var year = match.time.slice(0,3);
+        var month = match.time.slice(5,6);
+        var date = match.time.slice(8,9);
+        var hour = match.time.slice(11,12);
+        var min = match.time.slice(14,15);
+        var sec = match.time.slice(17,19);
+
+        var c_date = new Date().getDate(); //To get the Current Date
+        var c_month = new Date().getMonth() + 1; //To get the Current Month
+        var c_year = new Date().getFullYear(); //To get the Current Year
+        var c_hours = new Date().getHours(); //To get the Current Hours
+        var c_min = new Date().getMinutes(); //To get the Current Minutes
+        var c_sec = new Date().getSeconds(); //To get the Current Seconds
+
+        const today = new Date()
+        const tomorrow = new Date(today)
+        tomorrow.setDate(tomorrow.getDate() + 1)
+
         return (
         <div key={match.id}>
             <MatchCard match={match} />
@@ -72,23 +152,36 @@ export default function MatchSearch(props) {
       setAnchorEl(null);
     };
 
+    const handleReset = () => {
+        setAnchorEl(null);
+        filter_match = props.match;
+        setTxt("None");
+      };
+      
     const handleRecent = () => {
         setAnchorEl(null);
+        filter_match.sort(function(a,b){
+            return a.time - b.time;
+        })
         setTxt("Most Recent");
       };
 
     const handleSkill = () => {
         setAnchorEl(null);
+        filter_match.sort(function(a,b){
+            return a.maxSkill - b.maxSkill;
+        })
         setTxt("Skill Level");
       };
 
     const handleDist = () => {
         setAnchorEl(null);
+        filter_match.sort(function(a,b){
+            return a.locaton - b.location;
+        })
         setTxt("Distance");
       };
 
-
-    
     // useEffect(() => {
     //         if (updatedMatch) {setMatch(updatedMatch);}
     //         else {setMatch(props.match);}
@@ -133,7 +226,7 @@ export default function MatchSearch(props) {
                         <Button className={classes.button} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
                             Sort by: {txt}
                         </Button>
-
+                        
                         <Menu
                             id="simple-menu"
                             anchorEl={anchorEl}
@@ -141,6 +234,7 @@ export default function MatchSearch(props) {
                             open={Boolean(anchorEl)}
                             onClose={handleClose}
                         >
+                            <MenuItem onClick={handleReset}>None</MenuItem>
                             <MenuItem onClick={handleRecent}>Most Recent</MenuItem>
                             <MenuItem onClick={handleSkill}>Skill level</MenuItem>
                             <MenuItem onClick={handleDist}>Distance</MenuItem>

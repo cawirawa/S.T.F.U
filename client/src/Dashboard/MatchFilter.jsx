@@ -162,7 +162,6 @@ export default function MatchFilter(props) {
         padding: 20
     }
     
-
     const handleDistanceChange = name => (event, newValue) => {
         setState({ ...state, [name]: newValue });
         props.onDist(name, newValue);
@@ -174,8 +173,14 @@ export default function MatchFilter(props) {
     };
 
     const handleLevelChange = name => (event, newValue) => {
-        setState({ ...state, [name]: newValue});
-        props.onSkill(name, newValue);
+        if (newValue != 1 && newValue != 2 && newValue != 3 && newValue != 4 && newValue != 5){
+            setState({ ...state, [name]: 0});
+            props.onSkill(name, 0);
+        }
+        else {
+            setState({ ...state, [name]: newValue}); 
+            props.onSkill(name, newValue);
+        }
     };
 
     const handleTypeClick = name => (event) => {
