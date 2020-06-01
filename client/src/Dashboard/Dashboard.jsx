@@ -224,7 +224,7 @@ class Dashboard extends Component {
             <Grid container justify="center" alignItems="center">
               <Grid item>
                 {this.state.content === "1" ? (
-                  <MatchPage match={this.state.match} />
+                  <MatchPage match={this.state.match} lat={this.state.lat} lon={this.state.lon}/>
                 ) : null}
                 {this.state.content === "2" ? <VenuePage /> : null}
                 {this.state.content === "3" ? <RefereePage /> : null}

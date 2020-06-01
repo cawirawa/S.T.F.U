@@ -120,11 +120,17 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
     flexDirection: "row",
   },
+<<<<<<< HEAD
   mapCont: {
     height: 300,
     width: 510,
     position: 'relative',
     margin: 7
+=======
+  rating: {
+    margin: 3,
+    top: 5
+>>>>>>> 329e49b4815c28d6ad55a23c3f241a73ec562aeb
   }
 }));
 
@@ -300,8 +306,16 @@ export default function (props) {
             </Grid>
             <Grid item xs={9}>
               <Rating
-                name="customized-icons"
-                defaultValue={2}
+                name="minSkill"
+                defaultValue={match.minSkill}
+                getLabelText={(value) => customIcons[value].label}
+                IconContainerComponent={IconContainer}
+                className={classes.rating}
+              />
+              {" - "}
+              <Rating
+                name="maxSkill"
+                defaultValue={match.maxSkill}
                 getLabelText={(value) => customIcons[value].label}
                 IconContainerComponent={IconContainer}
                 className={classes.rating}
@@ -359,6 +373,18 @@ export default function (props) {
                       </div>{" "}
                       <div className={classes.matchContent}>
                         {sports[match.type]}
+                      </div>
+                    </div>
+                  </Typography>
+                  <Typography gutterBottom display="flex">
+                    <div className={classes.matchdetail}>
+                      <div className={classes.matchLabel}>
+                        <label>
+                          <b>Skill: </b>
+                        </label>
+                      </div>{" "}
+                      <div className={classes.matchContent}>
+                        {(`${match.minSkill + 1}`) + " - " + (`${match.maxSkill + 1}`)}
                       </div>
                     </div>
                   </Typography>
@@ -523,10 +549,22 @@ export default function (props) {
         </CardContent>
       </Container>
       <Container className={classes.outerRight}>
-        <CardMedia
+        {match.type === "SC" ? <CardMedia
           className={classes.media}
           image={require("../Assets/soccer.jpg")}
-        />
+        /> : match.type === "BK" ? <CardMedia
+          className={classes.media}
+          image={require("../Assets/basketball.jpg")}
+        /> : match.type === "BS" ? <CardMedia
+          className={classes.media}
+          image={require("../Assets/baseball.jpg")}
+        /> : match.type === "FB" ? <CardMedia
+          className={classes.media}
+          image={require("../Assets/football.jpg")}
+        /> : match.type === "VB" ? <CardMedia
+          className={classes.media}
+          image={require("../Assets/volleyball.jpg")}
+        /> : null}
       </Container>
     </Card>
   );
