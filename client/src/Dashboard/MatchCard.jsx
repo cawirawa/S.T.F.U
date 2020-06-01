@@ -305,7 +305,7 @@ export default function (props) {
             <Grid item xs={9}>
               <Rating
                 name="minSkill"
-                defaultValue={match.minSkill}
+                defaultValue={match.minSkill === 0 ? 1 : match.minSkill}
                 // getLabelText={(value) => customIcons[value].label}
                 IconContainerComponent={IconContainer}
                 className={classes.rating}
@@ -314,7 +314,7 @@ export default function (props) {
               {" - "}
               <Rating
                 name="maxSkill"
-                defaultValue={match.maxSkill}
+                defaultValue={match.maxSkill === 0 ? 5: match.maxSkill }
                 // getLabelText={(value) => customIcons[value].label}
                 IconContainerComponent={IconContainer}
                 className={classes.rating}
