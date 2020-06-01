@@ -230,11 +230,11 @@ export default function MatchPage(props) {
                               select
                           >
                             <MenuItem value="" selected="selected">Select Sports Type</MenuItem>
-                            <MenuItem value="soccer">Soccer</MenuItem>
-                            <MenuItem value="basketball">Basketball</MenuItem>
-                            <MenuItem value="football">Football</MenuItem>
-                            <MenuItem value="volleyball">Volleyball</MenuItem>
-                            <MenuItem value="baseball">Baseball</MenuItem>
+                            <MenuItem value="SC">Soccer</MenuItem>
+                            <MenuItem value="BK">Basketball</MenuItem>
+                            <MenuItem value="FB">Football</MenuItem>
+                            <MenuItem value="VB">Volleyball</MenuItem>
+                            <MenuItem value="BS">Baseball</MenuItem>
                           </TextField>
                           <FormLabel component="legend">Skill Level</FormLabel>
                           <Rating
