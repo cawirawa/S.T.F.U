@@ -62,6 +62,7 @@ const useStyles = makeStyles((theme) => ({
   rating: {
     marginLeft: 10,
     top: -3,
+    marginRight: 15
   },
   skillLevel: {
     margin: 7
@@ -126,10 +127,10 @@ export default function MatchPage(props) {
   const [open, setOpen] = useState(false);
   const [state, setState] = useState({
     name: "",
-    skillLevel: "",
+    minSkill: "",
+    maxSkill: "",
     age: "",
     location: "",
-    time: "",
     maxPlayers: "",
     description: "",
     type: "",
@@ -148,6 +149,11 @@ export default function MatchPage(props) {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [userList, setUserList] = useState([]);
   const [roster, setRoster] = useState([]);
+
+  console.log('dateee', selectedDate);
+  console.log('lat', state.lat);
+  console.log('lon', state.lon);
+  console.log('roster', roster);
 
   const forceUpdate = useForceUpdate();
   const mapCallbackLatLng = (mapAddress, mapLat, mapLng) => {
@@ -187,12 +193,13 @@ export default function MatchPage(props) {
       time: selectedDate,
       roster: roster,
       maxPlayers: state.maxPlayers,
-      skillLevel: state.skillLevel
+      minSkill: state.minSkill,
+      maxSkill: state.maxSkill
     }
     fetch("http://35.163.180.234/api/match/create_match/", {
       method: "POST",
       headers: {
-        'Authorization': 'Token 2323815b67246c4ba23664394f8998a2e982740f',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(createMatchData),
     })
@@ -258,7 +265,7 @@ export default function MatchPage(props) {
           <MatchSearch
             match={props.match}
             type={state.type}
-            level={state.skillLevel}
+            level={state.minSkill}
             dist={state.f_distance}
             time1={state.f_time1}
             time2={state.f_time2}
@@ -315,11 +322,21 @@ export default function MatchPage(props) {
                         <MenuItem value="SC">Soccer</MenuItem>
                         <MenuItem value="BK">Basketball</MenuItem>
                         <MenuItem value="BS">Baseball</MenuItem>
+                        <MenuItem value="FB">Football</MenuItem>
+                        <MenuItem value="VB">Volleyball</MenuItem>
                       </TextField>
                       <FormGroup row className={classes.skillLevel}>
                         <FormLabel component="legend">Skill Level</FormLabel>
                         <Rating
-                          name="skillLevel"
+                          name="minSkill"
+                          defaultValue={0}
+                          getLabelText={(value) => customIcons[value].label}
+                          IconContainerComponent={IconContainer}
+                          className={classes.rating}
+                        />
+                        { " to " }
+                        <Rating
+                          name="maxSkill"
                           defaultValue={0}
                           getLabelText={(value) => customIcons[value].label}
                           IconContainerComponent={IconContainer}
@@ -337,11 +354,11 @@ export default function MatchPage(props) {
                         <MenuItem value="" selected="selected">
                           Select Age Range
                         </MenuItem>
-                        <MenuItem value="1">16-18</MenuItem>
-                        <MenuItem value="2">19-21</MenuItem>
-                        <MenuItem value="3">22-25</MenuItem>
-                        <MenuItem value="4">26-30</MenuItem>
-                        <MenuItem value="5">30+</MenuItem>
+                        <MenuItem value="0">16-18</MenuItem>
+                        <MenuItem value="1">19-21</MenuItem>
+                        <MenuItem value="2">22-25</MenuItem>
+                        <MenuItem value="3">26-30</MenuItem>
+                        <MenuItem value="4">30+</MenuItem>
                       </TextField>
                       <TextField
                         fullWidth
