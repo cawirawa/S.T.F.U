@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="0d4b0f67-d5df-4e6e-b9b3-059f9ee0e015" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/Dashboard/MatchCard3.jsx" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="C:\Users\Tea\Desktop\S.T.F.U\client\.idea" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectId" id="1bWUhRdPrsZRmsKj7jMfb86EPhp" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../CSE110_Lab9" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.standard" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.standard" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.standard" value="" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="yarn" />
+    <property name="settings.editor.selected.configurable" value="settings.nodejs" />
+    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\IntelliJ IDEA 2019.3.4\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0d4b0f67-d5df-4e6e-b9b3-059f9ee0e015" name="Default Changelist" comment="" />
+      <created>1588747461431</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1588747461431</updated>
+      <workItem from="1588747467877" duration="2234000" />
+      <workItem from="1588792495271" duration="54000" />
+      <workItem from="1589060731515" duration="4765000" />
+      <workItem from="1589397586925" duration="111000" />
+      <workItem from="1589523953458" duration="313000" />
+      <workItem from="1589524321486" duration="10503000" />
+      <workItem from="1589849451790" duration="726000" />
+      <workItem from="1590106573424" duration="50140000" />
+      <workItem from="1590957150692" duration="31807000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="239" y="402" key="#ESLint" timestamp="1590873158951">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="239" y="402" key="#ESLint/0.0.2560.1400@0.0.2560.1400" timestamp="1590873158951" />
+    <state x="1641" y="607" key="FileChooserDialogImpl" timestamp="1590612075501">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1641" y="607" key="FileChooserDialogImpl/0.0.2560.1400@0.0.2560.1400" timestamp="1590612075501" />
+    <state x="227" y="481" key="IDE.errors.dialog" timestamp="1590273726238">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="227" y="481" key="IDE.errors.dialog/0.0.2560.1400@0.0.2560.1400" timestamp="1590273726238" />
+    <state x="1541" y="522" key="RollbackChangesDialog" timestamp="1589063079954">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1541" y="522" key="RollbackChangesDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1589063079954" />
+    <state x="334" y="447" key="SettingsEditor" timestamp="1590971094306">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="334" y="447" key="SettingsEditor/0.0.2560.1400@0.0.2560.1400" timestamp="1590971094306" />
+    <state x="1556" y="676" key="com.intellij.ide.util.TipDialog" timestamp="1590957159281">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1556" y="676" key="com.intellij.ide.util.TipDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1590957159281" />
+    <state x="1217" y="334" key="new project wizard" timestamp="1590001259375">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1217" y="334" key="new project wizard/0.0.2560.1400@0.0.2560.1400" timestamp="1590001259375" />
+  </component>
+</project>

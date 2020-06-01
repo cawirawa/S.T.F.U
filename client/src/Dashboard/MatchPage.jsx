@@ -13,7 +13,8 @@ import {
   FormLabel,
   CardContent,
   FormGroup,
-  Chip
+  Chip,
+  Snackbar
 } from "@material-ui/core";
 import MatchSearch from "./MatchSearch";
 import MatchFilter from "./MatchFilter";
@@ -35,6 +36,11 @@ import 'react-google-places-autocomplete/dist/index.min.css';
 import MapContainer from '../Components/GMaps';
 import useForceUpdate from 'use-force-update';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import MuiAlert from '@material-ui/lab/Alert';
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles((theme) => ({
   details: {
@@ -125,10 +131,12 @@ function IconContainer(props) {
 export default function MatchPage(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [openSnack, setOpenSnack] = useState(false);
+  const [createSuccess, setCreateSuccess] = useState(false);
   const [state, setState] = useState({
     name: "",
-    minSkill: "",
-    maxSkill: "",
+    minSkill: null,
+    maxSkill: null,
     age: "",
     location: "",
     maxPlayers: "",
@@ -208,6 +216,7 @@ export default function MatchPage(props) {
       .then(response => response.json())
       .then(data => {
         console.log('Success: ', data)
+        handleClose()
       })
       .catch((error) => {
         console.error('Error: ', error)
@@ -252,12 +261,25 @@ export default function MatchPage(props) {
     });
   };
 
+
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleClickSnackBar = () => {
+    setOpenSnack(true);
+  };
+
+  const handleCloseSnackBar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenSnack(false);
   };
 
   return (
@@ -338,7 +360,6 @@ export default function MatchPage(props) {
                         <Rating
                           name="minSkill"
                           defaultValue={0}
-                          getLabelText={(value) => customIcons[value].label}
                           IconContainerComponent={IconContainer}
                           className={classes.rating}
                           onChange={handleChange}
@@ -347,7 +368,6 @@ export default function MatchPage(props) {
                         <Rating
                           name="maxSkill"
                           defaultValue={0}
-                          getLabelText={(value) => customIcons[value].label}
                           IconContainerComponent={IconContainer}
                           className={classes.rating}
                           onChange={handleChange}
@@ -464,7 +484,7 @@ export default function MatchPage(props) {
                       />
                       <Autocomplete
                         required
-                        multiple 
+                        multiple
                         margin="dense"
                         id="tags-outlined"
                         options={userList.map(option => option)}
@@ -491,9 +511,15 @@ export default function MatchPage(props) {
                     </CardContent>
                     <Divider />
                     <DialogActions>
-                      <Button type="submit" color="primary" variant="contained">
+                      <Button type="submit" color="primary" variant="contained" onClick={handleClickSnackBar}
+                      >
                         Create
                       </Button>
+                      <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleCloseSnackBar}>
+                        <Alert onClose={handleCloseSnackBar} severity="success">
+                          Your match is successfully created!
+                        </Alert>
+                      </Snackbar>
                       <Button onClick={handleClose} color="primary">
                         Cancel
                       </Button>

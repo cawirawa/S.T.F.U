@@ -60,7 +60,7 @@ export default function ListItems({ onClick }) {
         <ListItemIcon>
           <TimelineIcon style={{ color: "#05294b" }} fontSize="large" />
         </ListItemIcon>
-        <ListItemText primary="Match History" />
+        <ListItemText primary="My Match" />
       </ListItem>
       <Divider />
       <ListItem className={classes.button} />

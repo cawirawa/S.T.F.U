@@ -229,7 +229,7 @@ class Dashboard extends Component {
                 {this.state.content === "2" ? <VenuePage /> : null}
                 {this.state.content === "3" ? <RefereePage /> : null}
                 {this.state.content === "4" ? <ProfilePage /> : null}
-                {this.state.content === "5" ? <MatchHistoryPage /> : null}
+                {this.state.content === "5" ? (<MatchHistoryPage match={this.state.match} />) : null}
               </Grid>
             </Grid>
             <Box pt={4}>
