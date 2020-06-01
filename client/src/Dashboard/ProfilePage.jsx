@@ -282,7 +282,7 @@ class ProfilePage extends React.Component {
                         <div className={classes.details}>
                           <div>
                             <Typography gutterBottom variant="h4">
-                              {"Hello " + this.state.firstName + " !"}
+                              {"Hello " + this.state.output.firstName + " !"}
                             </Typography>
                           </div>
                           <input
@@ -427,7 +427,7 @@ class ProfilePage extends React.Component {
                       <MenuItem value="5">30+</MenuItem>
                     </TextField>
                   </Grid>
-                  <Grid item xs={12}>
+                  {/* <Grid item xs={12}>
                     <div className={classes.gmap}>
                       <GooglePlacesAutocomplete
                         initialValue={this.state.address}
@@ -441,7 +441,7 @@ class ProfilePage extends React.Component {
                         callback={this.mapCallbackLatLng}
                       />
                     </div>
-                  </Grid>
+                  </Grid> */}
                   <Grid item xs={12}>
                     <Grid container>
                       <FormControl

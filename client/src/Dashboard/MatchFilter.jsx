@@ -366,7 +366,7 @@ export default function MatchFilter(props) {
                         color="primary"
                       />
                     }
-                    label="In a 3 days"
+                    label="In 3 days"
                   />
                   <FormControlLabel
                     control={
