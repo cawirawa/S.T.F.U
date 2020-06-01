@@ -51,7 +51,7 @@ function SignIn({ history }) {
   };
 
   const getToken = () => {
-    fetch("http://52.25.207.161/api/profile/log_in/", {
+    fetch("http://35.163.180.234/api/profile/log_in/", {
       method: "GET",
       headers: {
         email: currentUser.email,
@@ -104,7 +104,6 @@ function SignIn({ history }) {
         .signInWithEmailAndPassword(Email.value, Password.value)
         .catch((error) => {
           handleClickOpen();
-          console.log(error);
         });
       getToken();
       return <Redirect to="/dashboard" token={token} />;
@@ -196,7 +195,8 @@ function SignIn({ history }) {
         >
           <DialogContent>
             <DialogContentText id="alert-dialog-slide-description">
-              User not found!!
+              Please make sure there is an account associatedwith that email.
+              Otherwise, please input the correct password (case matters).
             </DialogContentText>
           </DialogContent>
           <DialogActions>

@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 function SignUp({ history }) {
   const classes = useStyles();
-  const [sent, setSent] = React.useState(false);
+  const [sent] = React.useState(false);
   const [token, setToken] = React.useState("");
 
   const { currentUser } = useContext(AuthContext);
@@ -43,7 +43,7 @@ function SignUp({ history }) {
       name: fullName,
       email: Email,
     };
-    fetch("http://52.25.207.161/api/profile/create_user/", {
+    fetch("http://35.163.180.234/api/profile/create_user/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -53,7 +53,6 @@ function SignUp({ history }) {
       .then((resp) => resp.json())
       .then((res) => {
         setToken(res.token);
-        console.log(res);
       })
       .catch((error) => {
         console.log(error.message);
@@ -61,7 +60,7 @@ function SignUp({ history }) {
   };
 
   const getToken = () => {
-    fetch("http://52.25.207.161/api/profile/log_in/", {
+    fetch("http://35.163.180.234/api/profile/log_in/", {
       method: "GET",
       headers: {
         email: currentUser.email,
@@ -97,25 +96,19 @@ function SignUp({ history }) {
     return errors;
   };
 
-  const handleSubmit = (event) => {
-    setSent(true);
-  };
-
   const handleSignup = (event) => {
     event.preventDefault();
     const { Email, Password, FullName, Username } = event.target.elements;
-    try {
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(Email.value, Password.value)
-        .catch((error) => {
-          console.log(error);
-        });
-      createUser(Username.value, FullName.value, Email.value);
-      return <Redirect to="/dashboard" token={token} />;
-    } catch (error) {
-      alert(error);
-    }
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(Email.value, Password.value)
+      .catch((error) => {
+        alert(
+          "Please check on the following conditions: \nAll fields are filled out \nEmail is properly formatted"
+        );
+      });
+    createUser(Username.value, FullName.value, Email.value);
+    return <Redirect to="/dashboard" token={token} />;
   };
 
   return (

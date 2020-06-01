@@ -2,13 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import Hidden from "@material-ui/core/Hidden";
 import Container from "@material-ui/core/Container";
 import Typography from "../components/Typography";
-import TextField from "../components/TextField";
 import Button from "../components/Button";
 import Link from "@material-ui/core/Link";
-import illustration from "../../../Assets/illustration.jpg"
+import illustration from "../../../Assets/illustration.jpg";
 
 const styles = (theme) => ({
   divRoot: {
@@ -54,7 +52,7 @@ function Newsletter(props) {
   const { classes } = props;
 
   return (
-    <div className={classes.divRoot} >
+    <div className={classes.divRoot}>
       <Container className={classes.root} component="section">
         <Grid container>
           <Grid md={3}></Grid>
@@ -65,7 +63,11 @@ function Newsletter(props) {
                   variant="h2"
                   component="h2"
                   gutterBottom
-                  style={{ color: "white", paddingTop: 20, textAlign: 'center' }}
+                  style={{
+                    color: "white",
+                    paddingTop: 20,
+                    textAlign: "center",
+                  }}
                 >
                   Interested?
                 </Typography>

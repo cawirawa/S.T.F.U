@@ -7,7 +7,6 @@ import {
   Box,
   AppBar,
   Toolbar,
-  Typography,
   Divider,
   Container,
   Grid,
@@ -22,7 +21,6 @@ import Copyright from "./Copyright";
 import MatchPage from "./MatchPage";
 import VenuePage from "./VenuePage";
 import RefereePage from "./RefereePage";
-import InvitationPage from "./InvitationPage";
 import MatchHistoryPage from "./MatchHistoryPage";
 
 const drawerWidth = 240;
@@ -131,7 +129,6 @@ class Dashboard extends Component {
         return response.json();
       })
       .then((res) => {
-        console.log(res);
         this.setState({ lat: toString(res.latitude) });
         this.setState({ lon: toString(res.longitude) });
       })
@@ -142,7 +139,6 @@ class Dashboard extends Component {
       .then((resp) => resp.json())
       .then((res) => {
         this.setState({ match: res });
-        console.log(this.state.match);
       })
       .catch((error) => console.log(error));
   }
@@ -190,7 +186,7 @@ class Dashboard extends Component {
               variant="h6"
               underline="none"
               color="inherit"
-              href="/"
+              href="/dashboard"
               font="tahoma"
             >
               <img
@@ -220,7 +216,6 @@ class Dashboard extends Component {
               <ChevronLeftIcon />
             </IconButton>
           </div>
-          <Divider />
           <ListItems onClick={this.setContent} />
         </Drawer>
         <main className={classes.content}>

@@ -1,148 +1,161 @@
-import React, { Fragment, useState, useRef, useEffect, useMemo } from 'react';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
-import { Button, Grid, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Divider, MenuItem, FormLabel, CardContent, Typography } from '@material-ui/core';
+import React, { Fragment, useState, useRef, useEffect, useMemo } from "react";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
+import {
+  Button,
+  Grid,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Divider,
+  MenuItem,
+  FormLabel,
+  CardContent,
+  Typography,
+} from "@material-ui/core";
 // import MatchCard from './MatchCard';
-import MatchSearch from './MatchSearch';
+import MatchSearch from "./MatchSearch";
 import { Form } from "react-final-form";
-import Rating from '@material-ui/lab/Rating';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
-import SentimentDissatisfiedIcon from '@material-ui/icons/SentimentDissatisfied';
-import SentimentSatisfiedIcon from '@material-ui/icons/SentimentSatisfied';
-import SentimentSatisfiedAltIcon from '@material-ui/icons/SentimentSatisfiedAltOutlined';
-import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfied';
+import Rating from "@material-ui/lab/Rating";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import SentimentVeryDissatisfiedIcon from "@material-ui/icons/SentimentVeryDissatisfied";
+import SentimentDissatisfiedIcon from "@material-ui/icons/SentimentDissatisfied";
+import SentimentSatisfiedIcon from "@material-ui/icons/SentimentSatisfied";
+import SentimentSatisfiedAltIcon from "@material-ui/icons/SentimentSatisfiedAltOutlined";
+import SentimentVerySatisfiedIcon from "@material-ui/icons/SentimentVerySatisfied";
 
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+import FormControl from "@material-ui/core/FormControl";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
 
-import PropTypes from 'prop-types';
-import Slider from '@material-ui/core/Slider';
+import PropTypes from "prop-types";
+import Slider from "@material-ui/core/Slider";
 
-import Box from '@material-ui/core/Box';
+import Box from "@material-ui/core/Box";
 
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 const StyledRating = withStyles({
-    iconFilled: {
-      color: '#ff6d75',
-    },
-    iconHover: {
-      color: '#ff3d47',
-    },
-  })(Rating);
-  
-  const customIcons = {
-    1: {
-      icon: <SentimentVeryDissatisfiedIcon />,
-      label: 'Very Dissatisfied',
-    },
-    2: {
-      icon: <SentimentDissatisfiedIcon />,
-      label: 'Dissatisfied',
-    },
-    3: {
-      icon: <SentimentSatisfiedIcon />,
-      label: 'Neutral',
-    },
-    4: {
-      icon: <SentimentSatisfiedAltIcon />,
-      label: 'Satisfied',
-    },
-    5: {
-      icon: <SentimentVerySatisfiedIcon />,
-      label: 'Very Satisfied',
-    },
-  };
-  
-  function IconContainer(props) {
-    const { value, ...other } = props;
-    return <span {...other}>{customIcons[value].icon}</span>;
-  }
-  
-  IconContainer.propTypes = {
-    value: PropTypes.number.isRequired,
-  };
+  iconFilled: {
+    color: "#ff6d75",
+  },
+  iconHover: {
+    color: "#ff3d47",
+  },
+})(Rating);
+
+const customIcons = {
+  1: {
+    icon: <SentimentVeryDissatisfiedIcon />,
+    label: "Very Dissatisfied",
+  },
+  2: {
+    icon: <SentimentDissatisfiedIcon />,
+    label: "Dissatisfied",
+  },
+  3: {
+    icon: <SentimentSatisfiedIcon />,
+    label: "Neutral",
+  },
+  4: {
+    icon: <SentimentSatisfiedAltIcon />,
+    label: "Satisfied",
+  },
+  5: {
+    icon: <SentimentVerySatisfiedIcon />,
+    label: "Very Satisfied",
+  },
+};
+
+function IconContainer(props) {
+  const { value, ...other } = props;
+  return <span {...other}>{customIcons[value].icon}</span>;
+}
+
+IconContainer.propTypes = {
+  value: PropTypes.number.isRequired,
+};
 
 const useStyles = makeStyles((theme) => ({
-    details: {
-        display: 'flex'
+  details: {
+    display: "flex",
+  },
+  locationText: {
+    marginLeft: 6,
+  },
+  formControl: {
+    margin: 3,
+  },
+  rating: {
+    verticalAlign: "text-top",
+    top: 7,
+  },
+  root: {
+    marginTop: 10,
+    margin: "0 auto",
+  },
+  icon: {
+    marginRight: 2,
+  },
+  root: {
+    width: 250,
+  },
+  input: {
+    width: 42,
+  },
+  expanded: {
+    "&.MuiExpansionPanel-root:before": {
+      display: "none",
     },
-    locationText: {
-        marginLeft: 6
-    },
-    formControl: {
-        margin: 3
-    },
-    rating: {
-        verticalAlign: 'text-top',
-        top: 7
-    },
-    root: {
-        marginTop: 35,
-        margin: '0 auto',
-    },
-    icon: {
-        marginRight: 2,
-    },
-    root: {
-        width: 250,
-    },
-    input: {
-        width: 42,
-    },
-    expanded: {
-        '&.MuiExpansionPanel-root:before': {
-        display: 'none',
-        },
-        boxShadow: 'none',
-        margin: '0 auto',
-    },
+    boxShadow: "none",
+    margin: "0 auto",
+  },
 }));
 
 const MySlider = withStyles({
-    root: {
-      color: '#3880ff',
-      height: 2,
-      padding: '15px 0',
+  root: {
+    color: "#3880ff",
+    height: 2,
+    padding: "15px 0",
+  },
+  active: {},
+  valueLabel: {
+    top: -18,
+    "& *": {
+      background: "transparent",
+      color: "#000",
     },
-    active: {},
-    valueLabel: {
-      top: -18,
-      '& *': {
-        background: 'transparent',
-        color: '#000',
-      },
-    },
-    track: {
-      height: 2,
-    },
-    rail: {
-      height: 2,
-      opacity: 0.5,
-      backgroundColor: '#bfbfbf',
-    }
+  },
+  track: {
+    height: 2,
+  },
+  rail: {
+    height: 2,
+    opacity: 0.5,
+    backgroundColor: "#bfbfbf",
+  },
 })(Slider);
 
 const marks = [
-    {
-      value: 0,
-      label: '0 mi',
-    },
-    {
-      value: 50,
-      label: '50 mi',
-    },
-    {
-      value: 100,
-      label: '100 mi',
-    }
-  ];
+  {
+    value: 0,
+    label: "0 mi",
+  },
+  {
+    value: 50,
+    label: "50 mi",
+  },
+  {
+    value: 100,
+    label: "100 mi",
+  },
+];
 
 export default function MatchFilter(props) {
     const classes = useStyles();
@@ -293,8 +306,5 @@ export default function MatchFilter(props) {
 
             </Box>
         </Fragment>
-    );
-
-
+  );
 }
-

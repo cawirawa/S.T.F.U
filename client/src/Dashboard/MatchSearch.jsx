@@ -1,66 +1,52 @@
-import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import MatchCard from './MatchCard';
+import React, { useState, useEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
+import MatchCard from "./MatchCard";
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        width: '70%',
-        marginTop: 30,
-        marginBottom: 25,
-        margin: '0 auto',
-        alignItems: 'center',
-        '& > * + *': {
-            marginTop: theme.spacing(3),
-        },
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "70%",
+    marginTop: 30,
+    marginBottom: 25,
+    margin: "0 auto",
+    alignItems: "center",
+    "& > * + *": {
+      marginTop: theme.spacing(3),
     },
-    button: {
-        textTransform: "none"
-    },
+  },
+  button: {
+    textTransform: "none",
+    marginLeft: -265,
+  },
 }));
 
-// const options = [
-//     'Woiks Friendly Match',
-//     'FIFA2020 GAME ON',
-//     'Bored in the house?',
-//     'In the house bored'
-// ];
 export default function MatchSearch(props) {
-    const classes = useStyles();
-    // const [, updateState] = React.useState();
-    // const forceUpdate = React.useCallback(() => updateState({}), []);
-    const [match, setMatch] = React.useState(null);
-    // const [card, setCard] = React.useState(
-    //     match.map((match) => {
-    //     return (
-    //     <div key={match.id}>
-    //         <MatchCard match={match} />
-    //     </div>
-    //     );}));
-    const [state, setState] = React.useState({
-        txt: "None",
-        reset: true,
-        recent: false,
-        level: false,
-        distance: false,
-        anchorEl: null,
-    });
+  const classes = useStyles();
+  const [match, setMatch] = React.useState(null);
+  const [state, setState] = React.useState({
+    txt: "None",
+    reset: true,
+    recent: false,
+    level: false,
+    distance: false,
+    anchorEl: null,
+  });
 
-    var test_lat = 32.8801;
-    var test_lon = -117.2361;
-    let lat = props.lat;
-    let lon = props.lon;
+  var test_lat = 32.8801;
+  var test_lon = -117.2361;
+  let lat = props.lat;
+  let lon = props.lon;
 
-    let options = props.match.map(a => {
-        let username = a.roster[0] ? " - " + a.roster[0].username : "";
-        return (a.name + username + " (" + a.id + ")");
-    });
-    
+  let options = props.match.map((a) => {
+    let username = a.roster[0] ? " - " + a.roster[0].username : "";
+    return a.name + username + " (" + a.id + ")";
+  });
+
     // filter sport type
     const [value, setValue] = useState(options[0]);
     let filter_match = props.match;
@@ -125,7 +111,7 @@ export default function MatchSearch(props) {
         var output = true;
 
         if (props.time1 === true) {
-            if((date === today.getDate()) && (month === today.getMonth()-1) && (year === today.getFullYear())) {
+            if((date === today.getDate()) && (month === today.getMonth()+1) && (year === today.getFullYear())) {
                 return true;
             } else {
                 output = false;
@@ -283,77 +269,64 @@ export default function MatchSearch(props) {
         setState({ ...state, anchorEl:null, txt: "Distance",  reset: false, recent: false, level: false, distance:true});
       };
 
-    // useEffect(() => {
-    //         if (updatedMatch) {setMatch(updatedMatch);}
-    //         else {setMatch(props.match);}
-    //         setCard(match.map((match) => {
-    //             return (
-    //             <div key={match.id}>
-    //                 <MatchCard match={match} />
-    //             </div>
-    //             );}))
+  return (
+    <React.Fragment>
+      <div className={classes.root}>
+        <Grid container spacing={1}>
+          <Grid item xs={12}>
+            <Autocomplete
+              value={value}
+              onChange={(event, newValue) => {
+                setValue(newValue);
+                let matchId = /\d\d\d-\d\d\d\d/.exec(newValue);
+                let filteredMatch;
+                if (newValue) {
+                  filteredMatch = props.match.filter(
+                    (match) => matchId == match.id
+                  );
+                }
+                setMatch(filteredMatch);
+              }}
+              id="controllable-states-demo"
+              options={options}
+              renderInput={(params) => (
+                <TextField
+                  style={{ width: "57.5vw" }}
+                  {...params}
+                  label="Search available matches"
+                  variant="outlined"
+                />
+              )}
+            />
 
-    // },[match, value]);
-    // let card = match.map((match) => {
-    //     return (
-    //     <div key={match.id}>
-    //         <MatchCard match={match} />
-    //     </div>
-    //     );})
+            <Button
+              className={classes.button}
+              aria-controls="simple-menu"
+              aria-haspopup="true"
+              onClick={handleClick}
+            >
+              Sort by: {state.txt}
+            </Button>
 
-    return (
-        <React.Fragment>
-            <div className={classes.root}>
-                <Grid container spacing={1}>
-                    <Grid item xs={12}>
-                        <Autocomplete
-                            value={value}
-                            onChange={(event, newValue) => {
-                                setValue(newValue);
-                                console.log("newvalue: " + newValue)
-                                let matchId = /\d\d\d-\d\d\d\d/.exec(newValue);
-                                let filteredMatch;
-                                if (newValue) {
-                                    filteredMatch = props.match.filter(match => matchId == match.id)
-                                }
-                                console.log(filteredMatch)
-                                setMatch(filteredMatch);
-                            }}
-                            id="controllable-states-demo"
-                            options={options}
-                            renderInput={(params) => <TextField {...params} label="Search available matches" variant="outlined" />}
-                        />
+            <Menu
+              id="simple-menu"
+              anchorEl={state.anchorEl}
+              keepMounted
+              open={Boolean(state.anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={handleReset}>None</MenuItem>  
+              <MenuItem onClick={handleRecent}>Most Recent</MenuItem>
+              <MenuItem onClick={handleSkill}>Skill level</MenuItem>
+              <MenuItem onClick={handleDist}>Distance</MenuItem>
+            </Menu>
 
-                        <Button className={classes.button} aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-                            Sort by: {state.txt}
-                        </Button>
-                        
-                        <Menu
-                            id="simple-menu"
-                            anchorEl={state.anchorEl}
-                            keepMounted
-                            open={Boolean(state.anchorEl)}
-                            onClose={handleClose}
-                        >
-                            <MenuItem onClick={handleReset}>None</MenuItem>
-                            <MenuItem onClick={handleRecent}>Most Recent</MenuItem>
-                            <MenuItem onClick={handleSkill}>Skill level</MenuItem>
-                            <MenuItem onClick={handleDist}>Distance</MenuItem>
-                        </Menu>
-
-                    </Grid>
-                </Grid>
-                <Grid
-                      container
-                      direction="row"
-                      justify="center"
-                      alignItems="center"
-                    >
-                        {card}
-                </Grid>
-            </div>
-
-        </React.Fragment>
-
-    );
+          </Grid>
+        </Grid>
+        <Grid container direction="row" justify="center" alignItems="center">
+          {card}
+        </Grid>
+      </div>
+    </React.Fragment>
+  );
 }
