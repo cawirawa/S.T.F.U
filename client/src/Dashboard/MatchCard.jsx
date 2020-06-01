@@ -120,17 +120,15 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
     flexDirection: "row",
   },
-<<<<<<< HEAD
   mapCont: {
     height: 300,
     width: 510,
     position: 'relative',
     margin: 7
-=======
+  },
   rating: {
     margin: 3,
     top: 5
->>>>>>> 329e49b4815c28d6ad55a23c3f241a73ec562aeb
   }
 }));
 
