@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { makeStyles } from "@material-ui/styles";
 import {
   Card,
@@ -22,20 +22,17 @@ import SentimentVerySatisfiedIcon from "@material-ui/icons/SentimentVerySatisfie
 import PlaceIcon from "@material-ui/icons/Place";
 import EventIcon from "@material-ui/icons/Event";
 import AlarmIcon from "@material-ui/icons/Alarm";
-import FavoriteIcon from "@material-ui/icons/Favorite";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import ContactSupportIcon from "@material-ui/icons/ContactSupport";
-import ShareIcon from "@material-ui/icons/Share";
 import sports from "../Constant/Sports";
 import ages from "../Constant/Ages";
 import MapContainer from "../Components/staticMap";
 import ToggleIcon from "material-ui-toggle-icon";
 import { AuthContext } from "../auth/Auth";
-import firebase from "../base";
 
-const IconButton = require('@material-ui/core/IconButton').default;
-const FavBorder = require('@material-ui/icons/FavoriteBorder').default;
-const Fav = require('@material-ui/icons/Favorite').default;
+const IconButton = require("@material-ui/core/IconButton").default;
+const FavBorder = require("@material-ui/icons/FavoriteBorder").default;
+const Fav = require("@material-ui/icons/Favorite").default;
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -51,9 +48,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "grey",
     borderRadius: 12,
     boxShadow: "0 2px 8px 0 #c1c9d7, 0 -2px 8px 0 #cce1e9",
-  },
-  rating: {
-    verticalAlign: "text-top",
   },
   content: {
     padding: 2,
@@ -123,13 +117,14 @@ const useStyles = makeStyles((theme) => ({
   mapCont: {
     height: 300,
     width: 510,
-    position: 'relative',
-    margin: 7
+    position: "relative",
+    margin: 7,
   },
   rating: {
     margin: 3,
-    top: 5
-  }
+    top: 5,
+    verticalAlign: "text-top",
+  },
 }));
 
 const customIcons = {
@@ -171,9 +166,6 @@ export default function (props) {
 
   const { currentUser } = useContext(AuthContext);
 
-
-
-
   // console.log("user", currentUser.email)
 
   // console.log("user", match.roster)
@@ -181,9 +173,9 @@ export default function (props) {
     setOpen(false);
   };
 
-  const [state,setState] = useState({
-    favToggle: false
-  })
+  const [state, setState] = useState({
+    favToggle: false,
+  });
 
   var date =
     /-\d\d-\d\d/.exec(match.time)[0] + "/" + /\d\d\d\d/.exec(match.time)[0];
@@ -192,22 +184,19 @@ export default function (props) {
 
   var time = /T\d\d:\d\d/.exec(match.time)[0];
   time = time.replace("T", "");
-  
+
   useEffect(() => {
-    for(let b = 0; b < match.roster.length; b++){
-      if (currentUser.email === match.roster[b].email){
+    for (let b = 0; b < match.roster.length; b++) {
+      if (currentUser.email === match.roster[b].email) {
         setJoin("quit");
       }
-    };  
-  }, [])
-
-
-  // console.log("join value", displayJoin);
+    }
+  }, []);
 
   const handleJoin = () => {
     let userEmail = currentUser.email;
     let ros = match.roster;
-    ros.push({"email": userEmail})
+    ros.push({ email: userEmail });
 
     const updateMatchData = {
       id: match.id,
@@ -221,8 +210,8 @@ export default function (props) {
       roster: ros,
       maxPlayers: match.maxPlayers,
       minSkill: match.minSkill,
-      maxSkill: match.maxSkill
-    }
+      maxSkill: match.maxSkill,
+    };
 
     console.log(updateMatchData);
     fetch("http://35.163.180.234/api/match/update_match/", {
@@ -232,23 +221,21 @@ export default function (props) {
       },
       body: JSON.stringify(updateMatchData),
     })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Success: ', data)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success: ", data);
       })
       .catch((error) => {
-        console.error('Error: ', error)
-      })
-    
-  }
+        console.error("Error: ", error);
+      });
+  };
 
   const handleQuit = () => {
     let userEmail = currentUser.email;
     console.log("roster before", match.roster);
-    let ros = match.roster.filter(e => e.email !== userEmail) ;
+    let ros = match.roster.filter((e) => e.email !== userEmail);
     console.log("roster after", ros);
 
-    
     const updateMatchData = {
       id: match.id,
       name: match.name,
@@ -261,8 +248,8 @@ export default function (props) {
       roster: ros,
       maxPlayers: match.maxPlayers,
       minSkill: match.minSkill,
-      maxSkill: match.maxSkill
-    }
+      maxSkill: match.maxSkill,
+    };
 
     console.log(updateMatchData);
     fetch("http://35.163.180.234/api/match/update_match/", {
@@ -272,27 +259,24 @@ export default function (props) {
       },
       body: JSON.stringify(updateMatchData),
     })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Success: ', data)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success: ", data);
       })
       .catch((error) => {
-        console.error('Error: ', error)
-      })
-    
-  }
+        console.error("Error: ", error);
+      });
+  };
 
   //wrapper
   const handleUpdate = () => {
-    if (displayJoin === "join"){
+    if (displayJoin === "join") {
       handleJoin();
-    }
-    else {
+    } else {
       handleQuit();
     }
     window.location.reload(false);
-  }
-
+  };
 
   return (
     <Card className={classes.card} elevation={0}>
@@ -314,7 +298,7 @@ export default function (props) {
               {" - "}
               <Rating
                 name="maxSkill"
-                defaultValue={match.maxSkill === 0 ? 5: match.maxSkill }
+                defaultValue={match.maxSkill === 0 ? 5 : match.maxSkill}
                 // getLabelText={(value) => customIcons[value].label}
                 IconContainerComponent={IconContainer}
                 className={classes.rating}
@@ -384,7 +368,9 @@ export default function (props) {
                         </label>
                       </div>{" "}
                       <div className={classes.matchContent}>
-                        {(`${match.minSkill + 1}`) + " - " + (`${match.maxSkill + 1}`)}
+                        {`${match.minSkill + 1}` +
+                          " - " +
+                          `${match.maxSkill + 1}`}
                       </div>
                     </div>
                   </Typography>
@@ -477,9 +463,7 @@ export default function (props) {
                     </div>
                   </Typography>
                   <div className={classes.mapCont}>
-                        <MapContainer
-                          center={{ lat: match.lat, lng: match.lon }}
-                        />
+                    <MapContainer center={{ lat: match.lat, lng: match.lon }} />
                   </div>
                 </DialogContent>
                 <DialogActions>
@@ -491,23 +475,21 @@ export default function (props) {
             </Grid>
             <Grid item xs={2}>
               <Button
-                  variant="contained"
-                  color={displayJoin === "join" ? "primary" : "secondary"}
-                  onClick={handleUpdate}
-                >
-                  {displayJoin}
+                variant="contained"
+                color={displayJoin === "join" ? "primary" : "secondary"}
+                onClick={handleUpdate}
+              >
+                {displayJoin}
               </Button>
             </Grid>
             <Grid item xs={4}>
-            <IconButton
-              onClick={() => setState({ on: !state.on })}
-            >
-              <ToggleIcon
-                on={state.on}
-                onIcon={<Fav color="secondary"/>}
-                offIcon={<FavBorder  />}
-              />
-            </IconButton>
+              <IconButton onClick={() => setState({ on: !state.on })}>
+                <ToggleIcon
+                  on={state.on}
+                  onIcon={<Fav color="secondary" />}
+                  offIcon={<FavBorder />}
+                />
+              </IconButton>
               {/* <Button>
                 <ShareIcon color="secondary" className={classes.icon} />
               </Button>
@@ -549,22 +531,32 @@ export default function (props) {
         </CardContent>
       </Container>
       <Container className={classes.outerRight}>
-        {match.type === "SC" ? <CardMedia
-          className={classes.media}
-          image={require("../Assets/soccer.jpg")}
-        /> : match.type === "BK" ? <CardMedia
-          className={classes.media}
-          image={require("../Assets/basketball.jpg")}
-        /> : match.type === "BS" ? <CardMedia
-          className={classes.media}
-          image={require("../Assets/baseball.jpg")}
-        /> : match.type === "FB" ? <CardMedia
-          className={classes.media}
-          image={require("../Assets/football.jpg")}
-        /> : match.type === "VB" ? <CardMedia
-          className={classes.media}
-          image={require("../Assets/volleyball.jpg")}
-        /> : null}
+        {match.type === "SC" ? (
+          <CardMedia
+            className={classes.media}
+            image={require("../Assets/soccer.jpg")}
+          />
+        ) : match.type === "BK" ? (
+          <CardMedia
+            className={classes.media}
+            image={require("../Assets/basketball.jpg")}
+          />
+        ) : match.type === "BS" ? (
+          <CardMedia
+            className={classes.media}
+            image={require("../Assets/baseball.jpg")}
+          />
+        ) : match.type === "FB" ? (
+          <CardMedia
+            className={classes.media}
+            image={require("../Assets/football.jpg")}
+          />
+        ) : match.type === "VB" ? (
+          <CardMedia
+            className={classes.media}
+            image={require("../Assets/volleyball.jpg")}
+          />
+        ) : null}
       </Container>
     </Card>
   );

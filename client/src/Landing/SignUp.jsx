@@ -110,7 +110,7 @@ function SignUp({ history }) {
       Username,
     } = event.target.elements;
 
-    if (Password.value == confPassword.value) {
+    if (Password.value === confPassword.value) {
       firebase
         .auth()
         .createUserWithEmailAndPassword(Email.value, Password.value)

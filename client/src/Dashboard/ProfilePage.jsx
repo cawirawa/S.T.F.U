@@ -17,7 +17,7 @@ import {
   FormControlLabel,
   FormControl,
   FormLabel,
-  Fab
+  Fab,
 } from "@material-ui/core";
 import { TextField } from "mui-rff";
 import { Form } from "react-final-form";
@@ -29,10 +29,14 @@ import SentimentSatisfiedIcon from "@material-ui/icons/SentimentSatisfied";
 import SentimentSatisfiedAltIcon from "@material-ui/icons/SentimentSatisfiedAltOutlined";
 import SentimentVerySatisfiedIcon from "@material-ui/icons/SentimentVerySatisfied";
 import SaveIcon from "@material-ui/icons/Save";
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import GooglePlacesAutocomplete, { geocodeByPlaceId, geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
-import 'react-google-places-autocomplete/dist/index.min.css';
-import MapContainer from '../Components/GMaps';
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import GooglePlacesAutocomplete, {
+  geocodeByPlaceId,
+  geocodeByAddress,
+  getLatLng,
+} from "react-google-places-autocomplete";
+import "react-google-places-autocomplete/dist/index.min.css";
+import MapContainer from "../Components/GMaps";
 import { withStyles } from "@material-ui/core/styles";
 import firebase from "../base";
 
@@ -45,7 +49,7 @@ const styles = {
     marginLeft: "auto",
     flexShrink: 0,
     flexGrow: 0,
-    marginBottom: 25
+    marginBottom: 25,
   },
   divider: {
     marginBottom: 15,
@@ -64,18 +68,18 @@ const styles = {
     top: 7,
   },
   input: {
-    display: "none"
+    display: "none",
   },
   mapCont: {
     height: 300,
     width: "99%",
-    position: 'relative',
+    position: "relative",
     margin: 10,
   },
   gmap: {
     margin: 7,
-    width: "100%"
-  }
+    width: "100%",
+  },
 };
 
 const customIcons = {
@@ -119,58 +123,56 @@ class ProfilePage extends React.Component {
       bio: "",
       profile_image: null,
       sports: [],
-      skill: [0,0,0,0,0]
-   },
+      skill: [0, 0, 0, 0, 0],
+    },
 
-    address: '',
-    mainState : 0,
+    address: "",
+    mainState: 0,
     selectedFile: null,
     currentUser: firebase.auth().currentUser,
     imageUploaded: 0,
     sport: {
       SC: false,
-      BK:false,
+      BK: false,
       BS: false,
       VB: false,
-      FB: false
-    }
-  }
+      FB: false,
+    },
+  };
   mapCallbackLatLng(mapAddress, mapLat, mapLng) {
     this.setState({
       address: mapAddress,
       lat: mapLat,
-      lon: mapLng
-    })
+      lon: mapLng,
+    });
   }
-  
 
   handleSelect(description) {
     geocodeByPlaceId(description.place_id)
-      .then(results => getLatLng(results[0]))
+      .then((results) => getLatLng(results[0]))
       .then(({ lat, lng }) => {
         this.setState({
           lat: lat,
-          lon: lng
+          lon: lng,
         });
-      })
+      });
   }
 
   componentDidMount() {
-    console.log(this.setState.currentUser)
-    fetch("http://35.163.180.234/api/profile/get_profile/",
-      {
-        method: "GET",
-        headers: {
-          email: this.state.currentUser.email,
-        }
-      })
-      .then(response => {
+    console.log(this.setState.currentUser);
+    fetch("http://35.163.180.234/api/profile/get_profile/", {
+      method: "GET",
+      headers: {
+        email: this.state.currentUser.email,
+      },
+    })
+      .then((response) => {
         return response.json();
       })
       .then((res) => {
-        console.log(res)
+        console.log(res);
         this.setState({
-          output:{
+          output: {
             firstName: res.result.user.first_name,
             email: res.result.user.email,
             username: res.result.user.username,
@@ -179,73 +181,70 @@ class ProfilePage extends React.Component {
             lat: res.result.lat,
             lon: res.result.lon,
             sports: res.result.sports,
-            skill: res.result.skill.length === 0 ? [0,0,0,0,0] : res.result.skill,
+            skill:
+              res.result.skill.length === 0
+                ? [0, 0, 0, 0, 0]
+                : res.result.skill,
             lat: res.result.lat,
             bio: res.result.bio,
-            selectedFile: res.result.profile_image
-          }
-          
+            selectedFile: res.result.profile_image,
+          },
         });
-        console.log("state: ",this.state)
+        console.log("state: ", this.state);
       })
       .catch((error) => {
-        console.error('Error: ', error)
-      })
+        console.error("Error: ", error);
+      });
+  }
 
-      handleSubmit () {
-        const updateProfileData = {
-          username: this.state.username,
-          first_name: this.state.firstName,
-          email: this.state.email,
-          phone: this.state.phone,
-          age: this.state.age,
-          lat: this.state.lat,
-          lon: this.state.lon,
-          sports: this.state.sports,
-          bio: this.state.bio,
-          profile_image: this.state.profile_image,
-          skill: this.state.skill,
-        }
-      }
-      handleUploadClick (event) {
-        var file = event.target.files[0];
-        const reader = new FileReader();
-        var url = reader.readAsDataURL(file);
-    
-        reader.onloadend = function (e) {
-          this.setState({selectedFile: reader.result})
-        }.bind(this);
-        console.log(url);
-    
-        this.setState({ mainState:"uploaded"});
-        this.setState({imageUploaded: 1});
-        this.setState({selectedFile:event.target.files[0]});
-      };
-    
-      validate(values) {
-        const errors = required(
-          [
-            "firstName",
-            "age",
-          ],
-          values
-        );
-        return errors;
+  handleSubmit() {
+    const updateProfileData = {
+      username: this.state.username,
+      first_name: this.state.firstName,
+      email: this.state.email,
+      phone: this.state.phone,
+      age: this.state.age,
+      lat: this.state.lat,
+      lon: this.state.lon,
+      sports: this.state.sports,
+      bio: this.state.bio,
+      profile_image: this.state.profile_image,
+      skill: this.state.skill,
     };
-    handleCheck = (event) => {
-      let name = event.target.name;
-      let value = event.target.checked;
-      this.setState(prev => {
-        prev['sport'][name] = value;
-        return prev;
-      })
-    };
-  
+  }
+  handleUploadClick(event) {
+    var file = event.target.files[0];
+    const reader = new FileReader();
+    var url = reader.readAsDataURL(file);
+
+    reader.onloadend = function (e) {
+      this.setState({ selectedFile: reader.result });
+    }.bind(this);
+    console.log(url);
+
+    this.setState({ mainState: "uploaded" });
+    this.setState({ imageUploaded: 1 });
+    this.setState({ selectedFile: event.target.files[0] });
+  }
+
+  validate(values) {
+    const errors = required(["firstName", "age"], values);
+    return errors;
+  }
+  handleCheck = (event) => {
+    let name = event.target.name;
+    let value = event.target.checked;
+    this.setState((prev) => {
+      prev["sport"][name] = value;
+      return prev;
+    });
+  };
+
   render() {
     const { classes } = this.props;
 
     return (
-      <Card  className={classes.root}>
+      <Card className={classes.root}>
         <CardHeader title="Profile" />
         <Divider />
         <Form
@@ -254,7 +253,11 @@ class ProfilePage extends React.Component {
           validate={this.validate}
         >
           {({ handleSubmit, submitting }) => (
-            <form onSubmit={this.handleSubmit} className={classes.form} noValidate>
+            <form
+              onSubmit={this.handleSubmit}
+              className={classes.form}
+              noValidate
+            >
               <CardContent>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
@@ -274,25 +277,29 @@ class ProfilePage extends React.Component {
                             type="file"
                             onChange={this.handleUploadClick}
                           />
-                          {this.state.mainState === "initial" ?
-                            (
-                              <label htmlFor="contained-button-file" className={classes.avatar}>
-                                <Fab component="span">
-                                  <AccountCircleIcon fontSize="large" />
-                                </Fab>
-                              </label>
-                            ) :
-                            (
-                              <label htmlFor="contained-button-file" className={classes.avatar}>
-                                <Fab component="span" >
-                                  <img
-                                    width="150%"
-                                    height="150%"
-                                    src={this.state.selectedFile}
-                                  />
-                                </Fab>
-                              </label>
-                            )}
+                          {this.state.mainState === "initial" ? (
+                            <label
+                              htmlFor="contained-button-file"
+                              className={classes.avatar}
+                            >
+                              <Fab component="span">
+                                <AccountCircleIcon fontSize="large" />
+                              </Fab>
+                            </label>
+                          ) : (
+                            <label
+                              htmlFor="contained-button-file"
+                              className={classes.avatar}
+                            >
+                              <Fab component="span">
+                                <img
+                                  width="150%"
+                                  height="150%"
+                                  src={this.state.selectedFile}
+                                />
+                              </Fab>
+                            </label>
+                          )}
                         </div>
                       </CardContent>
                       <Divider className={classes.divider} />
@@ -311,12 +318,15 @@ class ProfilePage extends React.Component {
                       variant="outlined"
                       onChange={(event) => {
                         let value = event.target.value;
-                        this.setState(prev => {
-                            return ({output: {
+                        this.setState((prev) => {
+                          return {
+                            output: {
                               ...prev.output,
-                              firstName: value
-                          }})
-                        })}}
+                              firstName: value,
+                            },
+                          };
+                        });
+                      }}
                     />
                   </Grid>
                   <Grid item md={6} xs={12}>
@@ -358,12 +368,15 @@ class ProfilePage extends React.Component {
                       value={this.state.output.phone}
                       onChange={(event) => {
                         let value = event.target.value;
-                        this.setState(prev => {
-                            return ({output: {
+                        this.setState((prev) => {
+                          return {
+                            output: {
                               ...prev.output,
-                              phone: value
-                          }})
-                        })}}
+                              phone: value,
+                            },
+                          };
+                        });
+                      }}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -378,12 +391,15 @@ class ProfilePage extends React.Component {
                       value={this.state.output.age}
                       onChange={(event) => {
                         let value = event.target.value;
-                        this.setState(prev => {
-                            return ({output: {
+                        this.setState((prev) => {
+                          return {
+                            output: {
                               ...prev.output,
-                              age: value
-                          }})
-                        })}}
+                              age: value,
+                            },
+                          };
+                        });
+                      }}
                     >
                       <MenuItem value="" selected="selected">
                         Select Age Range
@@ -535,12 +551,15 @@ class ProfilePage extends React.Component {
                       value={this.state.output.bio}
                       onChange={(event) => {
                         let value = event.target.value;
-                        this.setState(prev => {
-                            return ({output: {
+                        this.setState((prev) => {
+                          return {
+                            output: {
                               ...prev.output,
-                              bio: value
-                          }})
-                        })}}
+                              bio: value,
+                            },
+                          };
+                        });
+                      }}
                     />
                   </Grid>
                 </Grid>
@@ -564,6 +583,4 @@ class ProfilePage extends React.Component {
   }
 }
 
-
 export default withStyles(styles)(ProfilePage);
-

@@ -7,7 +7,6 @@ import {
   Box,
   AppBar,
   Toolbar,
-  Divider,
   Container,
   Grid,
   Link,
@@ -224,12 +223,18 @@ class Dashboard extends Component {
             <Grid container justify="center" alignItems="center">
               <Grid item>
                 {this.state.content === "1" ? (
-                  <MatchPage match={this.state.match} lat={this.state.lat} lon={this.state.lon}/>
+                  <MatchPage
+                    match={this.state.match}
+                    lat={this.state.lat}
+                    lon={this.state.lon}
+                  />
                 ) : null}
                 {this.state.content === "2" ? <VenuePage /> : null}
                 {this.state.content === "3" ? <RefereePage /> : null}
                 {this.state.content === "4" ? <ProfilePage /> : null}
-                {this.state.content === "5" ? (<MatchHistoryPage match={this.state.match} />) : null}
+                {this.state.content === "5" ? (
+                  <MatchHistoryPage match={this.state.match} />
+                ) : null}
               </Grid>
             </Grid>
             <Box pt={4}>

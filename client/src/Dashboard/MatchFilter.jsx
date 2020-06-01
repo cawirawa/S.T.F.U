@@ -1,20 +1,6 @@
-import React, { Fragment, useState, useRef, useEffect, useMemo } from "react";
+import React, { Fragment } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
-import {
-  Button,
-  Grid,
-  TextField,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Divider,
-  MenuItem,
-  FormLabel,
-  CardContent,
-  Typography,
-} from "@material-ui/core";
-// import MatchCard from './MatchCard';
+import { FormLabel, Typography } from "@material-ui/core";
 import MatchSearch from "./MatchSearch";
 import { Form } from "react-final-form";
 import Rating from "@material-ui/lab/Rating";
@@ -158,153 +144,258 @@ const marks = [
 ];
 
 export default function MatchFilter(props) {
-    const classes = useStyles();
+  const classes = useStyles();
 
-    const [state, setState] = React.useState({
-        f_sportsType: '',
-        f_skilllevel: 0,
-        f_distance: 50,
-        f_time1: false,
-        f_time2: false,
-        f_time3: false,
-        f_time4: false,
-        f_time5: false,
-        disabled: false,
-        previous: 50,
-    });
+  const [state, setState] = React.useState({
+    f_sportsType: "",
+    f_skilllevel: 0,
+    f_distance: 50,
+    f_time1: false,
+    f_time2: false,
+    f_time3: false,
+    f_time4: false,
+    f_time5: false,
+    disabled: false,
+    previous: 50,
+  });
 
-    var filterStyle = {
-        padding: 20
+  var filterStyle = {
+    padding: 20,
+  };
+
+  const handleDistanceChange = (name) => (event, newValue) => {
+    setState({ ...state, [name]: newValue });
+    props.onDist(name, newValue);
+  };
+
+  const handleTimeChange = (event) => {
+    setState({ ...state, [event.target.name]: event.target.checked });
+    props.onTime(event.target.name, event.target.checked);
+  };
+
+  const handleLevelChange = (name) => (event, newValue) => {
+    if (
+      newValue != 1 &&
+      newValue != 2 &&
+      newValue != 3 &&
+      newValue != 4 &&
+      newValue != 5
+    ) {
+      setState({ ...state, [name]: 0 });
+      props.onSkill(name, 0);
+    } else {
+      setState({ ...state, [name]: newValue });
+      props.onSkill(name, newValue);
     }
-    
-    const handleDistanceChange = name => (event, newValue) => {
-        setState({ ...state, [name]: newValue });
-        props.onDist(name, newValue);
-      };
+  };
 
-    const handleTimeChange = (event) => {
-        setState({ ...state, [event.target.name]: event.target.checked });
-        props.onTime(event.target.name,event.target.checked);
-    };
+  const handleTypeClick = (name) => (event) => {
+    if (event.target.value === state.f_sportsType) {
+      setState({ ...state, [name]: "" });
+      props.onType(name, "");
+    } else {
+      setState({ ...state, [name]: event.target.value });
+      props.onType(name, event.target.value);
+    }
+  };
 
-    const handleLevelChange = name => (event, newValue) => {
-        if (newValue != 1 && newValue != 2 && newValue != 3 && newValue != 4 && newValue != 5){
-            setState({ ...state, [name]: 0});
-            props.onSkill(name, 0);
-        }
-        else {
-            setState({ ...state, [name]: newValue}); 
-            props.onSkill(name, newValue);
-        }
-    };
+  const handleDisable = (name) => (event) => {
+    if (state.disabled === false) {
+      setState({
+        ...state,
+        previous: state.f_distance,
+        f_distance: 999999,
+        disabled: true,
+      });
+      props.onDist(name, 999999);
+    } else {
+      setState({ ...state, f_distance: state.previous, disabled: false });
+      props.onDist(name, state.f_distance);
+    }
+  };
 
-    const handleTypeClick = name => (event) => {
-        if (event.target.value === state.f_sportsType) {
-            setState({ ...state, [name]: ''});
-            props.onType(name,'');
-        } else {
-            setState({ ...state, [name]: event.target.value});
-            props.onType(name,event.target.value);
-        }
-    };
-    
-    const handleDisable = name => (event) => {
-        if (state.disabled === false) {
-            setState({ ...state, previous: state.f_distance, f_distance: 999999, disabled: true });
-            props.onDist(name, 999999);
-        } else{
-            setState({ ...state, f_distance: state.previous, disabled: false });
-            props.onDist(name, state.f_distance); 
-        }
-    };
+  return (
+    <Fragment>
+      <Box component="fieldset" mt={12} mb={3} borderColor="grey">
+        <ExpansionPanel className={classes.expanded} defaultExpanded="true">
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography className={classes.heading}> Sports Type</Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <form>
+              <FormControl component="fieldset">
+                <RadioGroup
+                  aria-label="sportstype"
+                  name="f_sportsType"
+                  value={state.f_sportsType}
+                >
+                  <FormControlLabel
+                    value="SC"
+                    control={
+                      <Radio
+                        onClick={handleTypeClick("f_sportsType")}
+                        color="primary"
+                      />
+                    }
+                    label="Soccer"
+                  />
+                  <FormControlLabel
+                    value="BK"
+                    control={
+                      <Radio
+                        onClick={handleTypeClick("f_sportsType")}
+                        color="primary"
+                      />
+                    }
+                    label="Basketball"
+                  />
+                  <FormControlLabel
+                    value="FB"
+                    control={
+                      <Radio
+                        onClick={handleTypeClick("f_sportsType")}
+                        color="primary"
+                      />
+                    }
+                    label="Football"
+                  />
+                  <FormControlLabel
+                    value="VB"
+                    control={
+                      <Radio
+                        onClick={handleTypeClick("f_sportsType")}
+                        color="primary"
+                      />
+                    }
+                    label="Volleyball"
+                  />
+                  <FormControlLabel
+                    value="BS"
+                    control={
+                      <Radio
+                        onClick={handleTypeClick("f_sportsType")}
+                        color="primary"
+                      />
+                    }
+                    label="Baseball"
+                  />
+                </RadioGroup>
+              </FormControl>
+            </form>
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
 
-    return(
-        <Fragment>
-            <Box component="fieldset" mt={12} mb={3} borderColor="grey">
+        <div style={filterStyle}>
+          <FormLabel component="legend">Skill Level</FormLabel>
+          <Rating
+            name="f_skilllevel"
+            value={state.f_skilllevel}
+            defaultValue={2}
+            onChange={handleLevelChange("f_skilllevel")}
+            getLabelText={(value) => customIcons[value].label}
+            IconContainerComponent={IconContainer}
+          />
+        </div>
 
-            <ExpansionPanel className={classes.expanded} defaultExpanded='true'>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography className={classes.heading}> Sports Type</Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                    <form>
-                        <FormControl component="fieldset">    
-                            <RadioGroup aria-label="sportstype" name="f_sportsType" value={state.f_sportsType}>
-                                <FormControlLabel value="SC" control={<Radio onClick={handleTypeClick("f_sportsType")} color="primary" />} label="Soccer" />
-                                <FormControlLabel value="BK" control={<Radio onClick={handleTypeClick("f_sportsType")} color="primary" />} label="Basketball" />
-                                <FormControlLabel value="FB" control={<Radio onClick={handleTypeClick("f_sportsType")} color="primary" />} label="Football" />
-                                <FormControlLabel value="VB" control={<Radio onClick={handleTypeClick("f_sportsType")} color="primary" />} label="Volleyball" />
-                                <FormControlLabel value="BS" control={<Radio onClick={handleTypeClick("f_sportsType")} color="primary" />} label="Baseball" />
-                            </RadioGroup>
-                        </FormControl>
-                    </form>
-                </ExpansionPanelDetails>
-            </ExpansionPanel>
+        <div>
+          <FormControl component="fieldset" className={classes.formControl}>
+            <FormLabel component="legend">Distance</FormLabel>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={state.disabled}
+                    onChange={handleDisable("f_distance")}
+                    name="disable"
+                    color="primary"
+                  />
+                }
+                label="Disable"
+              />
+            </FormGroup>
+          </FormControl>
 
-            <div style={filterStyle}>
-                <FormLabel component="legend">Skill Level</FormLabel>
-                <Rating
-                name="f_skilllevel"
-                value={state.f_skilllevel}
-                defaultValue={2}
-                onChange={handleLevelChange("f_skilllevel")}
-                getLabelText={(value) => customIcons[value].label}
-                IconContainerComponent={IconContainer}
-                />
-            </div>
+          <div style={filterStyle}>
+            <MySlider
+              name="f_distance"
+              disabled={state.disabled}
+              onChange={handleDistanceChange("f_distance")}
+              defaultValue={state.f_distance}
+              marks={marks}
+              valueLabelDisplay="on"
+            />
+          </div>
+        </div>
 
+        <ExpansionPanel className={classes.expanded} defaultExpanded="true">
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography className={classes.heading}> Time</Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
             <div>
-                <FormControl component="fieldset" className={classes.formControl}>
-                    <FormLabel component="legend">Distance</FormLabel>
-                    <FormGroup>
-                        <FormControlLabel
-                            control={<Checkbox checked={state.disabled} onChange={handleDisable("f_distance")} name="disable" color="primary" />}
-                            label="Disable"
-                        />
-                    </FormGroup>
-                </FormControl>
- 
-                <div style={filterStyle}>
-                <MySlider name="f_distance" disabled={state.disabled} onChange={handleDistanceChange("f_distance")} defaultValue={state.f_distance} marks={marks} valueLabelDisplay="on" />
-                </div>
-
+              <FormControl component="fieldset" className={classes.formControl}>
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={state.f_time1}
+                        onChange={handleTimeChange}
+                        name="f_time1"
+                        color="primary"
+                      />
+                    }
+                    label="Today"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={state.f_time2}
+                        onChange={handleTimeChange}
+                        name="f_time2"
+                        color="primary"
+                      />
+                    }
+                    label="Tomorrow "
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={state.f_time3}
+                        onChange={handleTimeChange}
+                        name="f_time3"
+                        color="primary"
+                      />
+                    }
+                    label="In a 3 days"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={state.f_time4}
+                        onChange={handleTimeChange}
+                        name="f_time4"
+                        color="primary"
+                      />
+                    }
+                    label="In a week"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={state.f_time5}
+                        onChange={handleTimeChange}
+                        name="f_time5"
+                        color="primary"
+                      />
+                    }
+                    label="In a month"
+                  />
+                </FormGroup>
+              </FormControl>
             </div>
-
-            <ExpansionPanel className={classes.expanded} defaultExpanded='true'>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography className={classes.heading}> Time</Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                    <div>
-                        <FormControl component="fieldset" className={classes.formControl}>
-                            <FormGroup>
-                                <FormControlLabel
-                                    control={<Checkbox checked={state.f_time1} onChange={handleTimeChange} name="f_time1" color="primary" />}
-                                    label="Today"
-                                />
-                                <FormControlLabel
-                                    control={<Checkbox checked={state.f_time2} onChange={handleTimeChange} name="f_time2" color="primary" />}
-                                    label="Tomorrow "
-                                />
-                                <FormControlLabel
-                                    control={<Checkbox checked={state.f_time3} onChange={handleTimeChange} name="f_time3" color="primary" />}
-                                    label="In a 3 days"
-                                />
-                                <FormControlLabel
-                                    control={<Checkbox checked={state.f_time4} onChange={handleTimeChange} name="f_time4" color="primary" />}
-                                    label="In a week"
-                                />
-                                <FormControlLabel
-                                    control={<Checkbox checked={state.f_time5} onChange={handleTimeChange} name="f_time5" color="primary" />}
-                                    label="In a month"
-                                />
-                            </FormGroup>
-                        </FormControl>
-                    </div>
-                </ExpansionPanelDetails>
-            </ExpansionPanel>
-
-            </Box>
-        </Fragment>
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
+      </Box>
+    </Fragment>
   );
 }
