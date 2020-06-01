@@ -44,7 +44,6 @@ export class MapContainer extends Component {
             },
             hover: false
         };
-        this.onMarkerDragEnd = this.onMarkerDragEnd.bind(this)
     }
 
     //     /**
@@ -66,76 +65,6 @@ export class MapContainer extends Component {
             }
         );
     };
-
-    shouldComponentUpdate( nextProps, nextState ){
-        if (nextProps.center.lat !== this.state.loc.lat) {
-            //maybe get address from here.
-            // this.props.callback(nextState.address, nextProps.center.lat, nextProps.center.lng);
-            console.log('props updates', nextProps.center);
-            const lat = nextProps.center.lat;
-            const lng = nextProps.center.lng;
-            let url = "https://www.google.com/maps/search/?api=1&query=";
-            url += lat;
-            url += ",";
-            url += lng;
-            Geocode.fromLatLng( lat , lng ).then(
-                response => {
-                    const address = response.results[0].formatted_address;
-                    console.log('address change on shouldComponentUpdate', address);
-                    this.setState( {
-                        address: ( address ) ? address : '',
-                        loc: {
-                            lat: lat,
-                            lng: lng,
-                            url: url
-                        },
-                    } )
-                },
-                error => {
-                    console.error(error);
-                }
-            );
-            console.log('props updates nextstate', nextState);
-            return true
-        }
-        else if (this.state.address !== nextState.address) {
-            this.props.callback(nextState.address, nextState.loc.lat, nextState.loc.lng);
-            console.log('state updates', nextState);
-            return true
-        }
-        else{
-            return false
-        }
-    }
-
-    onMarkerDragEnd(one, two, three) {
-        const { latLng } = three;
-        const lat = latLng.lat();
-        const lng = latLng.lng();
-        console.log('markerdrag lat', lat);
-        console.log('markerdrag lng', lng);
-        let url = "https://www.google.com/maps/search/?api=1&query=";
-        url += lat;
-        url += ",";
-        url += lng;
-        Geocode.fromLatLng( lat , lng ).then(
-            response => {
-                const address = response.results[0].formatted_address;
-                console.log('address change on marker drag', address);
-                this.setState( {
-                    address: ( address ) ? address : '',
-                    loc: {
-                        lat: lat,
-                        lng: lng,
-                        url: url
-                    },
-                } )
-            },
-            error => {
-                console.error(error);
-            }
-        );
-    }
 
     onMarkerClick = (props, marker, e) =>
         this.setState({
@@ -166,8 +95,6 @@ export class MapContainer extends Component {
                 }}
             >
                 <Marker
-                    draggable={true}
-                    onDragend={ this.onMarkerDragEnd }
                     onClick={this.onMarkerClick}
                     position={{ lat: ( this.state.loc.lat ), lng: this.state.loc.lng }}
                 />

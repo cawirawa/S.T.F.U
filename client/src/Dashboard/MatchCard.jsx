@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useContext, useEffect} from "react";
 import { makeStyles } from "@material-ui/styles";
 import {
   Card,
@@ -28,6 +28,14 @@ import ContactSupportIcon from "@material-ui/icons/ContactSupport";
 import ShareIcon from "@material-ui/icons/Share";
 import sports from "../Constant/Sports";
 import ages from "../Constant/Ages";
+import MapContainer from "../Components/staticMap";
+import ToggleIcon from "material-ui-toggle-icon";
+import { AuthContext } from "../auth/Auth";
+import firebase from "../base";
+
+const IconButton = require('@material-ui/core/IconButton').default;
+const FavBorder = require('@material-ui/icons/FavoriteBorder').default;
+const Fav = require('@material-ui/icons/Favorite').default;
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -112,6 +120,16 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
     flexDirection: "row",
   },
+  mapCont: {
+    height: 300,
+    width: 510,
+    position: 'relative',
+    margin: 7
+  },
+  rating: {
+    margin: 3,
+    top: 5
+  }
 }));
 
 const customIcons = {
@@ -146,13 +164,26 @@ export default function (props) {
   const classes = useStyles();
   const match = props.match;
   const [open, setOpen] = React.useState(false);
+  const [displayJoin, setJoin] = React.useState("join");
   const handleClickOpen = () => {
     setOpen(true);
   };
 
+  const { currentUser } = useContext(AuthContext);
+
+
+
+
+  // console.log("user", currentUser.email)
+
+  // console.log("user", match.roster)
   const handleClose = () => {
     setOpen(false);
   };
+
+  const [state,setState] = useState({
+    favToggle: false
+  })
 
   var date =
     /-\d\d-\d\d/.exec(match.time)[0] + "/" + /\d\d\d\d/.exec(match.time)[0];
@@ -161,6 +192,107 @@ export default function (props) {
 
   var time = /T\d\d:\d\d/.exec(match.time)[0];
   time = time.replace("T", "");
+  
+  useEffect(() => {
+    for(let b = 0; b < match.roster.length; b++){
+      if (currentUser.email === match.roster[b].email){
+        setJoin("quit");
+      }
+    };  
+  }, [])
+
+
+  // console.log("join value", displayJoin);
+
+  const handleJoin = () => {
+    let userEmail = currentUser.email;
+    let ros = match.roster;
+    ros.push({"email": userEmail})
+
+    const updateMatchData = {
+      id: match.id,
+      name: match.name,
+      description: match.description,
+      type: match.type,
+      age: match.age,
+      lat: match.lat,
+      lon: match.lon,
+      time: match.time,
+      roster: ros,
+      maxPlayers: match.maxPlayers,
+      minSkill: match.minSkill,
+      maxSkill: match.maxSkill
+    }
+
+    console.log(updateMatchData);
+    fetch("http://35.163.180.234/api/match/update_match/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updateMatchData),
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success: ', data)
+      })
+      .catch((error) => {
+        console.error('Error: ', error)
+      })
+    
+  }
+
+  const handleQuit = () => {
+    let userEmail = currentUser.email;
+    console.log("roster before", match.roster);
+    let ros = match.roster.filter(e => e.email !== userEmail) ;
+    console.log("roster after", ros);
+
+    
+    const updateMatchData = {
+      id: match.id,
+      name: match.name,
+      description: match.description,
+      type: match.type,
+      age: match.age,
+      lat: match.lat,
+      lon: match.lon,
+      time: match.time,
+      roster: ros,
+      maxPlayers: match.maxPlayers,
+      minSkill: match.minSkill,
+      maxSkill: match.maxSkill
+    }
+
+    console.log(updateMatchData);
+    fetch("http://35.163.180.234/api/match/update_match/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updateMatchData),
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success: ', data)
+      })
+      .catch((error) => {
+        console.error('Error: ', error)
+      })
+    
+  }
+
+  //wrapper
+  const handleUpdate = () => {
+    if (displayJoin === "join"){
+      handleJoin();
+    }
+    else {
+      handleQuit();
+    }
+    window.location.reload(false);
+  }
+
 
   return (
     <Card className={classes.card} elevation={0}>
@@ -172,11 +304,21 @@ export default function (props) {
             </Grid>
             <Grid item xs={9}>
               <Rating
-                name="customized-icons"
-                defaultValue={2}
-                getLabelText={(value) => customIcons[value].label}
+                name="minSkill"
+                defaultValue={match.minSkill === 0 ? 1 : match.minSkill}
+                // getLabelText={(value) => customIcons[value].label}
                 IconContainerComponent={IconContainer}
                 className={classes.rating}
+                readOnly
+              />
+              {" - "}
+              <Rating
+                name="maxSkill"
+                defaultValue={match.maxSkill === 0 ? 5: match.maxSkill }
+                // getLabelText={(value) => customIcons[value].label}
+                IconContainerComponent={IconContainer}
+                className={classes.rating}
+                readOnly
               />
             </Grid>
             <Grid item xs={12}>
@@ -192,7 +334,7 @@ export default function (props) {
                 color="primary"
                 onClick={handleClickOpen}
               >
-                Join
+                View
               </Button>
               <Dialog
                 open={open}
@@ -231,6 +373,18 @@ export default function (props) {
                       </div>{" "}
                       <div className={classes.matchContent}>
                         {sports[match.type]}
+                      </div>
+                    </div>
+                  </Typography>
+                  <Typography gutterBottom display="flex">
+                    <div className={classes.matchdetail}>
+                      <div className={classes.matchLabel}>
+                        <label>
+                          <b>Skill: </b>
+                        </label>
+                      </div>{" "}
+                      <div className={classes.matchContent}>
+                        {(`${match.minSkill + 1}`) + " - " + (`${match.maxSkill + 1}`)}
                       </div>
                     </div>
                   </Typography>
@@ -322,20 +476,44 @@ export default function (props) {
                       </div>
                     </div>
                   </Typography>
+                  <div className={classes.mapCont}>
+                        <MapContainer
+                          center={{ lat: match.lat, lng: match.lon }}
+                        />
+                  </div>
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleClose} color="primary">
-                    Cancel
-                  </Button>
-                  <Button onClick={handleClose} color="primary">
-                    Confirm
+                    Close
                   </Button>
                 </DialogActions>
               </Dialog>
             </Grid>
+            <Grid item xs={2}>
+              <Button
+                  variant="contained"
+                  color={displayJoin === "join" ? "primary" : "secondary"}
+                  onClick={handleUpdate}
+                >
+                  {displayJoin}
+              </Button>
+            </Grid>
             <Grid item xs={4}>
-              <ShareIcon color="secondary" className={classes.icon} />
-              <FavoriteIcon color="secondary" className={classes.icon} />
+            <IconButton
+              onClick={() => setState({ on: !state.on })}
+            >
+              <ToggleIcon
+                on={state.on}
+                onIcon={<Fav color="secondary"/>}
+                offIcon={<FavBorder  />}
+              />
+            </IconButton>
+              {/* <Button>
+                <ShareIcon color="secondary" className={classes.icon} />
+              </Button>
+              <Button>
+                <FavoriteIcon color="secondary" className={classes.icon} />
+              </Button> */}
             </Grid>
           </Grid>
 
@@ -371,10 +549,22 @@ export default function (props) {
         </CardContent>
       </Container>
       <Container className={classes.outerRight}>
-        <CardMedia
+        {match.type === "SC" ? <CardMedia
           className={classes.media}
           image={require("../Assets/soccer.jpg")}
-        />
+        /> : match.type === "BK" ? <CardMedia
+          className={classes.media}
+          image={require("../Assets/basketball.jpg")}
+        /> : match.type === "BS" ? <CardMedia
+          className={classes.media}
+          image={require("../Assets/baseball.jpg")}
+        /> : match.type === "FB" ? <CardMedia
+          className={classes.media}
+          image={require("../Assets/football.jpg")}
+        /> : match.type === "VB" ? <CardMedia
+          className={classes.media}
+          image={require("../Assets/volleyball.jpg")}
+        /> : null}
       </Container>
     </Card>
   );

@@ -82,7 +82,7 @@ function SignUp({ history }) {
 
   const validate = (values) => {
     const errors = required(
-      ["firstName", "lastName", "email", "password"],
+      ["firstName", "lastName", "email", "password", "confPassword"],
       values
     );
 
@@ -93,22 +93,39 @@ function SignUp({ history }) {
       }
     }
 
+    // if (password != confPassword){
+
+    // }
+
     return errors;
   };
 
   const handleSignup = (event) => {
     event.preventDefault();
-    const { Email, Password, FullName, Username } = event.target.elements;
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(Email.value, Password.value)
-      .catch((error) => {
-        alert(
-          "Please check on the following conditions: \nAll fields are filled out \nEmail is properly formatted"
-        );
-      });
-    createUser(Username.value, FullName.value, Email.value);
-    return <Redirect to="/dashboard" token={token} />;
+    const {
+      Email,
+      Password,
+      confPassword,
+      FullName,
+      Username,
+    } = event.target.elements;
+
+    if (Password.value == confPassword.value) {
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(Email.value, Password.value)
+        .catch((error) => {
+          console.log(error);
+          alert(
+            "Please check on the following conditions: \nAll fields are filled out \nEmail is properly formatted \nPassword matches and at least six characters"
+          );
+        });
+      createUser(Username.value, FullName.value, Email.value);
+      return <Redirect to="/dashboard" token={token} />;
+    } else {
+      alert("Password does not match");
+      return <Redirect to="/signup" />;
+    }
   };
 
   return (
@@ -173,6 +190,17 @@ function SignUp({ history }) {
                 name="Password"
                 autoComplete="current-password"
                 label="Password"
+                type="password"
+                margin="normal"
+              />
+              <Field
+                fullWidth
+                component={RFTextField}
+                disabled={submitting || sent}
+                required
+                name="confPassword"
+                autoComplete="off"
+                label="Confirm Password"
                 type="password"
                 margin="normal"
               />

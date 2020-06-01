@@ -49,9 +49,9 @@ function ForgotPassword() {
   };
 
   const handleSubmit2 = (event) => {
+    alert("A password reset link has been sent to your email address");
     const { Email } = event.target.elements;
     firebase.auth().sendPasswordResetEmail(Email.value);
-    alert("A password reset link has been sent to your email address");
   };
 
   const handlePage = () => {

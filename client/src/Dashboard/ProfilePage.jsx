@@ -121,6 +121,7 @@ class ProfilePage extends React.Component {
       sports: [],
       skill: [0,0,0,0,0]
    },
+
     address: '',
     mainState : 0,
     selectedFile: null,
@@ -190,7 +191,7 @@ class ProfilePage extends React.Component {
       .catch((error) => {
         console.error('Error: ', error)
       })
-    }
+
       handleSubmit () {
         const updateProfileData = {
           username: this.state.username,
