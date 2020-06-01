@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { makeStyles } from "@material-ui/styles";
 import {
   Card,
@@ -6,10 +6,12 @@ import {
   CardMedia,
   Container,
   Grid,
+  Button,
   Typography,
   Dialog,
   DialogTitle,
   DialogContent,
+  DialogActions,
 } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import SentimentVeryDissatisfiedIcon from "@material-ui/icons/SentimentVeryDissatisfied";
@@ -20,17 +22,22 @@ import SentimentVerySatisfiedIcon from "@material-ui/icons/SentimentVerySatisfie
 import PlaceIcon from "@material-ui/icons/Place";
 import EventIcon from "@material-ui/icons/Event";
 import AlarmIcon from "@material-ui/icons/Alarm";
-import FavoriteIcon from "@material-ui/icons/Favorite";
 import PeopleAltIcon from "@material-ui/icons/PeopleAlt";
 import ContactSupportIcon from "@material-ui/icons/ContactSupport";
-import ShareIcon from "@material-ui/icons/Share";
 import sports from "../Constant/Sports";
 import ages from "../Constant/Ages";
+import MapContainer from "../Components/staticMap";
+import ToggleIcon from "material-ui-toggle-icon";
+import { AuthContext } from "../auth/Auth";
+
+const IconButton = require("@material-ui/core/IconButton").default;
+const FavBorder = require("@material-ui/icons/FavoriteBorder").default;
+const Fav = require("@material-ui/icons/Favorite").default;
 
 const useStyles = makeStyles((theme) => ({
   card: {
     display: "flex",
-    marginLeft: "8vh",
+    margin: 'auto',
     borderRadius: 16,
     width: "60vw",
     marginBottom: 15,
@@ -41,9 +48,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "grey",
     borderRadius: 12,
     boxShadow: "0 2px 8px 0 #c1c9d7, 0 -2px 8px 0 #cce1e9",
-  },
-  rating: {
-    verticalAlign: "text-top",
   },
   content: {
     padding: 2,
@@ -110,6 +114,17 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
     flexDirection: "row",
   },
+  mapCont: {
+    height: 300,
+    width: 510,
+    position: "relative",
+    margin: 7,
+  },
+  rating: {
+    margin: 3,
+    top: 5,
+    verticalAlign: "text-top",
+  },
 }));
 
 const customIcons = {
@@ -140,14 +155,27 @@ function IconContainer(props) {
   return <span {...other}>{customIcons[value].icon}</span>;
 }
 
-export default function MatchCard2(props) {
+export default function (props) {
   const classes = useStyles();
   const match = props.match;
   const [open, setOpen] = React.useState(false);
+  const [displayJoin, setJoin] = React.useState("join");
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
+  const { currentUser } = useContext(AuthContext);
+
+  // console.log("user", currentUser.email)
+
+  // console.log("user", match.roster)
   const handleClose = () => {
     setOpen(false);
   };
+
+  const [state, setState] = useState({
+    favToggle: false,
+  });
 
   var date =
     /-\d\d-\d\d/.exec(match.time)[0] + "/" + /\d\d\d\d/.exec(match.time)[0];
@@ -156,6 +184,7 @@ export default function MatchCard2(props) {
 
   var time = /T\d\d:\d\d/.exec(match.time)[0];
   time = time.replace("T", "");
+
 
   return (
     <Card className={classes.card} elevation={0}>
@@ -167,11 +196,19 @@ export default function MatchCard2(props) {
             </Grid>
             <Grid item xs={9}>
               <Rating
-                name="customized-icons"
-                defaultValue={2}
-                getLabelText={(value) => customIcons[value].label}
+                name="minSkill"
+                defaultValue={match.minSkill === 0 ? 1 : match.minSkill}
                 IconContainerComponent={IconContainer}
                 className={classes.rating}
+                readOnly
+              />
+              {" - "}
+              <Rating
+                name="maxSkill"
+                defaultValue={match.maxSkill === 0 ? 5 : match.maxSkill}
+                IconContainerComponent={IconContainer}
+                className={classes.rating}
+                readOnly
               />
             </Grid>
             <Grid item xs={12}>
@@ -182,6 +219,13 @@ export default function MatchCard2(props) {
               </p>
             </Grid>
             <Grid item xs={2}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleClickOpen}
+              >
+                View
+              </Button>
               <Dialog
                 open={open}
                 onClose={handleClose}
@@ -219,6 +263,20 @@ export default function MatchCard2(props) {
                       </div>{" "}
                       <div className={classes.matchContent}>
                         {sports[match.type]}
+                      </div>
+                    </div>
+                  </Typography>
+                  <Typography gutterBottom display="flex">
+                    <div className={classes.matchdetail}>
+                      <div className={classes.matchLabel}>
+                        <label>
+                          <b>Skill: </b>
+                        </label>
+                      </div>{" "}
+                      <div className={classes.matchContent}>
+                        {`${match.minSkill + 1}` +
+                          " - " +
+                          `${match.maxSkill + 1}`}
                       </div>
                     </div>
                   </Typography>
@@ -310,12 +368,25 @@ export default function MatchCard2(props) {
                       </div>
                     </div>
                   </Typography>
+                  <div className={classes.mapCont}>
+                    <MapContainer center={{ lat: match.lat, lng: match.lon }} />
+                  </div>
                 </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleClose} color="primary">
+                    Close
+                  </Button>
+                </DialogActions>
               </Dialog>
             </Grid>
             <Grid item xs={4}>
-              <ShareIcon color="secondary" className={classes.icon} />
-              <FavoriteIcon color="secondary" className={classes.icon} />
+              <IconButton onClick={() => setState({ on: !state.on })}>
+                <ToggleIcon
+                  on={state.on}
+                  onIcon={<Fav color="secondary" />}
+                  offIcon={<FavBorder />}
+                />
+              </IconButton>
             </Grid>
           </Grid>
 
@@ -344,17 +415,39 @@ export default function MatchCard2(props) {
                 className={classes.heading}
                 style={{ textTransform: "capitalize" }}
               >
-                {/*match.roster[0].first_name*/}
+                {match.roster[0].first_name}
               </h2>
             </div>
           </Grid>
         </CardContent>
       </Container>
       <Container className={classes.outerRight}>
-        <CardMedia
-          className={classes.media}
-          image={require("../Assets/soccer.jpg")}
-        />
+        {match.type === "SC" ? (
+          <CardMedia
+            className={classes.media}
+            image={require("../Assets/soccer.jpg")}
+          />
+        ) : match.type === "BK" ? (
+          <CardMedia
+            className={classes.media}
+            image={require("../Assets/basketball.jpg")}
+          />
+        ) : match.type === "BS" ? (
+          <CardMedia
+            className={classes.media}
+            image={require("../Assets/baseball.jpg")}
+          />
+        ) : match.type === "FB" ? (
+          <CardMedia
+            className={classes.media}
+            image={require("../Assets/football.jpg")}
+          />
+        ) : match.type === "VB" ? (
+          <CardMedia
+            className={classes.media}
+            image={require("../Assets/volleyball.jpg")}
+          />
+        ) : null}
       </Container>
     </Card>
   );

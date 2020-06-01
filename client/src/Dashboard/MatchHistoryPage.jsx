@@ -2,23 +2,19 @@ import React, { useContext, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import MatchCard2 from "./MatchCard2";
 import MatchCard3 from "./MatchCard3";
+import MatchCard from "./MatchCard";
+import { Grid } from "@material-ui/core";
 import { AuthContext } from "../auth/Auth";
+import { GridList } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import Typography from "../Landing/modules/components/Typography";
 
-const useStyles = makeStyles((theme) => ({
-  h2: {
-    fontFamily: "Open Sans",
-    color: "gray",
-    lineHeight: 1.5,
-    fontWeight: 400,
-    letterSpacing: "3px",
-    margin: "50px",
-  },
-  matchBox: {
-    marginLeft: 150,
-  },
+const styles = makeStyles((theme) => ({
 }));
 
-export default function MatchHistoryPage(props) {
+function MatchHistoryPage(props) {
+  const { classes } = props;
   const { currentUser } = useContext(AuthContext);
   const match = props.match;
   const [state, setState] = useState({
@@ -37,8 +33,8 @@ export default function MatchHistoryPage(props) {
   if (mm < 10) {
     mm = "0" + mm;
   }
-  today = mm + "-" + dd + "-" + yyyy;
-  const names = [];
+  today = mm + '-' + dd + '-' + yyyy;
+  const pastMatch = [];
   const activeMatch = [];
   var date;
   var time;
@@ -66,7 +62,7 @@ export default function MatchHistoryPage(props) {
     ) {
       for (let j = 0; j < match[i].roster.length; j++) {
         if (match[i].roster[j].email === currentUser.email) {
-          names.push(<MatchCard2 match={match[i]} />);
+          pastMatch.push(match[i]);
         }
       }
     }
@@ -85,35 +81,72 @@ export default function MatchHistoryPage(props) {
     day = day.toString().replace("/", "");
     month = /\d\d/.exec(date);
 
-    if (
-      parseInt(year) >= parseInt(yyyy) &&
-      (parseInt(month) > parseInt(mm) ||
-        (parseInt(month) === parseInt(mm) && parseInt(day) > parseInt(dd)))
-    ) {
+    if (parseInt(year) >= parseInt(yyyy) && (parseInt(month) > parseInt(mm) || (parseInt(month) == parseInt(mm) && parseInt(day) >= parseInt(dd)))) {
+      //names.push(<p>{match[i].name}</p>)
+      // eslint-disable-next-line no-unused-expressions
       for (let j = 0; j < match[i].roster.length; j++) {
         if (match[i].roster[j].email === currentUser.email) {
-          activeMatch.push(<MatchCard3 match={match[i]} />);
+          console.log("match found");
+          activeMatch.push(match[i]);
+          console.log("match details", match[i]);
+          // activeMatch.push(<MatchCard match={match[i]}/>);
         }
       }
     }
   }
 
   return (
-    <div>
-      {/* <h2 className={classes.h2}>Active Matches</h2>
-            <MatchCard />
-            <h2 className={classes.h2}>Past Matches</h2>
-            <MatchCard />
-            <MatchCard /> */}
 
+    <div className={classes.root}>
       <p>
         Current Date : {today} Current User Email: {currentUser.email}
       </p>
-      <h1>Active Match</h1>
+      <Typography
+        variant="h4"
+        marked="center"
+        align="center"
+        component="h2"
+        color="inherit"
+        border="auto"
+        style={{ paddingBottom: 50, paddingTop: 25 }}
+      >
+        Active Matches
+        </Typography>
+      <Grid container direction="row" justify="center" alignItems="center">
+        {activeMatch.map((match) => {
+          return (
+            <div key={match.id}>
+              <MatchCard3 match={match} disabled={true} />
+            </div>
+          );
+        })}
+      </Grid>
+      <Typography
+        variant="h4"
+        marked="center"
+        align="center"
+        component="h2"
+        color="inherit"
+        border="auto"
+        style={{ paddingBottom: 50, paddingTop: 25 }}
+      >
+        Past Matches
+        </Typography>
+      <Grid container direction="row" justify="center" alignItems="center">
+        <Grid item xs={12}>
+          {pastMatch.map((match) => {
+            return (
+              <div key={match.id}>
 
-      {activeMatch}
-      <h1>Old Match</h1>
-      {names}
+                <MatchCard2 match={match} disabled={true} />
+
+              </div>
+            );
+          })}
+        </Grid>
+      </Grid>
     </div>
   );
 }
+
+export default withStyles(styles)(MatchHistoryPage);
