@@ -34,7 +34,7 @@ export default function MatchSearch(props) {
   });
 
   const [value, setValue] = useState(options[0]);
-  let filter_match = props.match;
+  let filter_match = match ? match : props.match;
   filter_match = filter_match.filter((filter_match) => {
     return props.type == "" || props.type == filter_match.type;
   });
