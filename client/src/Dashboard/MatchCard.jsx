@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { makeStyles } from "@material-ui/styles";
 import {
   Card,
@@ -28,6 +28,12 @@ import ContactSupportIcon from "@material-ui/icons/ContactSupport";
 import ShareIcon from "@material-ui/icons/Share";
 import sports from "../Constant/Sports";
 import ages from "../Constant/Ages";
+import MapContainer from "../Components/staticMap";
+import ToggleIcon from "material-ui-toggle-icon";
+
+const IconButton = require('@material-ui/core/IconButton').default;
+const FavBorder = require('@material-ui/icons/FavoriteBorder').default;
+const Fav = require('@material-ui/icons/Favorite').default;
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -112,6 +118,12 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
     flexDirection: "row",
   },
+  mapCont: {
+    height: 300,
+    width: 510,
+    position: 'relative',
+    margin: 7
+  }
 }));
 
 const customIcons = {
@@ -154,6 +166,10 @@ export default function (props) {
     setOpen(false);
   };
 
+  const [state,setState] = useState({
+    favToggle: false
+  })
+
   var date =
     /-\d\d-\d\d/.exec(match.time)[0] + "/" + /\d\d\d\d/.exec(match.time)[0];
   date = date.replace("-", "");
@@ -192,7 +208,7 @@ export default function (props) {
                 color="primary"
                 onClick={handleClickOpen}
               >
-                Join
+                View
               </Button>
               <Dialog
                 open={open}
@@ -322,20 +338,46 @@ export default function (props) {
                       </div>
                     </div>
                   </Typography>
+                  <div className={classes.mapCont}>
+                        <MapContainer
+                          center={{ lat: match.lat, lng: match.lon }}
+                        />
+                  </div>
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={handleClose} color="primary">
-                    Cancel
+                    Close
                   </Button>
-                  <Button onClick={handleClose} color="primary">
+                  {/* <Button onClick={handleClose} color="primary">
                     Confirm
-                  </Button>
+                  </Button> */}
                 </DialogActions>
               </Dialog>
             </Grid>
+            <Grid item xs={2}>
+              <Button
+                  variant="contained"
+                  color="primary"
+                >
+                  Join
+              </Button>
+            </Grid>
             <Grid item xs={4}>
-              <ShareIcon color="secondary" className={classes.icon} />
-              <FavoriteIcon color="secondary" className={classes.icon} />
+            <IconButton
+              onClick={() => setState({ on: !state.on })}
+            >
+              <ToggleIcon
+                on={state.on}
+                onIcon={<Fav color="secondary"/>}
+                offIcon={<FavBorder  />}
+              />
+            </IconButton>
+              {/* <Button>
+                <ShareIcon color="secondary" className={classes.icon} />
+              </Button>
+              <Button>
+                <FavoriteIcon color="secondary" className={classes.icon} />
+              </Button> */}
             </Grid>
           </Grid>
 
