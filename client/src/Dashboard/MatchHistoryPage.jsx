@@ -1,45 +1,16 @@
 import React, { useContext, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import MatchCard2 from "./MatchCard2";
+import MatchCard3 from "./MatchCard3";
 import MatchCard from "./MatchCard";
-import {Grid} from "@material-ui/core";
-import {AuthContext} from "../auth/Auth";
+import { Grid } from "@material-ui/core";
+import { AuthContext } from "../auth/Auth";
 import { GridList } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Typography from "../Landing/modules/components/Typography";
 
 const styles = makeStyles((theme) => ({
-  root: {
-    display: "stretch",
-    backgroundColor: theme.palette.common.white,
-    // overflow: "hidden",
-  },
-  container: {
-    // display: "stretch",
-    // marginTop: theme.spacing(6),
-    // marginBottom: theme.spacing(4),
-    position: "relative",
-    alignSelf: "left",
-    justifyContent: "left",
-    height: "50%",
-    flexDirection: "column",
-  },
-  gridContainer: {
-    align: "left",
-    // flexWrap: "nowrap",
-    // height: 275,
-    justifyContent: "center",
-  },
-  cardContainer: {
-    align: "left",
-    // flexWrap: "nowrap",
-    height: 275,
-    justifyContent: "center",
-    marginTop: "40px",
-    marginBottom: "40px",
-    // overflowY: "hidden",
-  }
 }));
 
 function MatchHistoryPage(props) {
@@ -62,7 +33,7 @@ function MatchHistoryPage(props) {
   if (mm < 10) {
     mm = "0" + mm;
   }
-  today = mm+'-'+dd+'-'+yyyy;
+  today = mm + '-' + dd + '-' + yyyy;
   const pastMatch = [];
   const activeMatch = [];
   var date;
@@ -89,8 +60,8 @@ function MatchHistoryPage(props) {
       (parseInt(month) < parseInt(mm) ||
         (parseInt(month) === parseInt(mm) && parseInt(day) < parseInt(dd)))
     ) {
-        for (let j = 0; j < match[i].roster.length; j++) {
-          if (match[i].roster[j].email === currentUser.email) {
+      for (let j = 0; j < match[i].roster.length; j++) {
+        if (match[i].roster[j].email === currentUser.email) {
           pastMatch.push(match[i]);
         }
       }
@@ -126,51 +97,55 @@ function MatchHistoryPage(props) {
 
   return (
 
-      <Container className={classes.container}>
-        <p>
-          Current Date : {today} Current User Email: {currentUser.email}
-        </p>
-        <Typography
-          variant="h4"
-          marked="center"
-          align="center"
-          component="h2"
-          color="inherit"
-          border="auto"
-          style={{ paddingBottom: 50, paddingTop: 25 }}
-        >
-          Active Matches
+    <div className={classes.root}>
+      <p>
+        Current Date : {today} Current User Email: {currentUser.email}
+      </p>
+      <Typography
+        variant="h4"
+        marked="center"
+        align="center"
+        component="h2"
+        color="inherit"
+        border="auto"
+        style={{ paddingBottom: 50, paddingTop: 25 }}
+      >
+        Active Matches
         </Typography>
-        <GridList className={classes.gridContainer} cols={1}>
-          {activeMatch.map((match) => {
-            return (
-              <div key={match.id}>
-                <MatchCard className={classes.cardContainer} match={match} disabled={true} />
-              </div>
-            );
-          })}
-        </GridList>
-        <Typography
-          variant="h4"
-          marked="center"
-          align="center"
-          component="h2"
-          color="inherit"
-          border="auto"
-          style={{ paddingBottom: 50, paddingTop: 25 }}
-        >
-          Past Matches
+      <Grid container direction="row" justify="center" alignItems="center">
+        {activeMatch.map((match) => {
+          return (
+            <div key={match.id}>
+              <MatchCard3 match={match} disabled={true} />
+            </div>
+          );
+        })}
+      </Grid>
+      <Typography
+        variant="h4"
+        marked="center"
+        align="center"
+        component="h2"
+        color="inherit"
+        border="auto"
+        style={{ paddingBottom: 50, paddingTop: 25 }}
+      >
+        Past Matches
         </Typography>
-        <GridList className={classes.gridContainer} cols={1}>
+      <Grid container direction="row" justify="center" alignItems="center">
+        <Grid item xs={12}>
           {pastMatch.map((match) => {
             return (
               <div key={match.id}>
-                <MatchCard2 className={classes.cardContainer} match={match} disabled={true} />
+
+                <MatchCard2 match={match} disabled={true} />
+
               </div>
             );
           })}
-        </GridList>
-      </Container>
+        </Grid>
+      </Grid>
+    </div>
   );
 }
 

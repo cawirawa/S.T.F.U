@@ -37,7 +37,7 @@ const Fav = require("@material-ui/icons/Favorite").default;
 const useStyles = makeStyles((theme) => ({
   card: {
     display: "flex",
-    marginLeft: 450,
+    margin: 'auto',
     borderRadius: 16,
     width: "60vw",
     marginBottom: 15,

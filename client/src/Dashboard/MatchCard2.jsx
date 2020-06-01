@@ -37,7 +37,7 @@ const Fav = require("@material-ui/icons/Favorite").default;
 const useStyles = makeStyles((theme) => ({
   card: {
     display: "flex",
-    marginLeft: 450,
+    margin: 'auto',
     borderRadius: 16,
     width: "60vw",
     marginBottom: 15,
@@ -198,7 +198,6 @@ export default function (props) {
               <Rating
                 name="minSkill"
                 defaultValue={match.minSkill === 0 ? 1 : match.minSkill}
-                // getLabelText={(value) => customIcons[value].label}
                 IconContainerComponent={IconContainer}
                 className={classes.rating}
                 readOnly
@@ -207,7 +206,6 @@ export default function (props) {
               <Rating
                 name="maxSkill"
                 defaultValue={match.maxSkill === 0 ? 5 : match.maxSkill}
-                // getLabelText={(value) => customIcons[value].label}
                 IconContainerComponent={IconContainer}
                 className={classes.rating}
                 readOnly
@@ -389,12 +387,6 @@ export default function (props) {
                   offIcon={<FavBorder />}
                 />
               </IconButton>
-              {/* <Button>
-                <ShareIcon color="secondary" className={classes.icon} />
-              </Button>
-              <Button>
-                <FavoriteIcon color="secondary" className={classes.icon} />
-              </Button> */}
             </Grid>
           </Grid>
 
