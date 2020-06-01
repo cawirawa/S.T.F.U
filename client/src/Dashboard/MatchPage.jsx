@@ -463,7 +463,7 @@ export default function MatchPage(props) {
                       />
                       <Autocomplete
                         required
-                        multiple
+                        multiple 
                         margin="dense"
                         id="tags-outlined"
                         options={userList.map(option => option)}

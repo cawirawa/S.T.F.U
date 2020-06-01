@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useContext, useEffect} from "react";
 import { makeStyles } from "@material-ui/styles";
 import {
   Card,
@@ -30,6 +30,8 @@ import sports from "../Constant/Sports";
 import ages from "../Constant/Ages";
 import MapContainer from "../Components/staticMap";
 import ToggleIcon from "material-ui-toggle-icon";
+import { AuthContext } from "../auth/Auth";
+import firebase from "../base";
 
 const IconButton = require('@material-ui/core/IconButton').default;
 const FavBorder = require('@material-ui/icons/FavoriteBorder').default;
@@ -158,10 +160,19 @@ export default function (props) {
   const classes = useStyles();
   const match = props.match;
   const [open, setOpen] = React.useState(false);
+  const [displayJoin, setJoin] = React.useState("join");
   const handleClickOpen = () => {
     setOpen(true);
   };
 
+  const { currentUser } = useContext(AuthContext);
+
+
+
+
+  // console.log("user", currentUser.email)
+
+  // console.log("user", match.roster)
   const handleClose = () => {
     setOpen(false);
   };
@@ -177,6 +188,107 @@ export default function (props) {
 
   var time = /T\d\d:\d\d/.exec(match.time)[0];
   time = time.replace("T", "");
+  
+  useEffect(() => {
+    for(let b = 0; b < match.roster.length; b++){
+      if (currentUser.email === match.roster[b].email){
+        setJoin("quit");
+      }
+    };  
+  }, [])
+
+
+  // console.log("join value", displayJoin);
+
+  const handleJoin = () => {
+    let userEmail = currentUser.email;
+    let ros = match.roster;
+    ros.push({"email": userEmail})
+
+    const updateMatchData = {
+      id: match.id,
+      name: match.name,
+      description: match.description,
+      type: match.type,
+      age: match.age,
+      lat: match.lat,
+      lon: match.lon,
+      time: match.time,
+      roster: ros,
+      maxPlayers: match.maxPlayers,
+      minSkill: match.minSkill,
+      maxSkill: match.maxSkill
+    }
+
+    console.log(updateMatchData);
+    fetch("http://35.163.180.234/api/match/update_match/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updateMatchData),
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success: ', data)
+      })
+      .catch((error) => {
+        console.error('Error: ', error)
+      })
+    
+  }
+
+  const handleQuit = () => {
+    let userEmail = currentUser.email;
+    console.log("roster before", match.roster);
+    let ros = match.roster.filter(e => e.email !== userEmail) ;
+    console.log("roster after", ros);
+
+    
+    const updateMatchData = {
+      id: match.id,
+      name: match.name,
+      description: match.description,
+      type: match.type,
+      age: match.age,
+      lat: match.lat,
+      lon: match.lon,
+      time: match.time,
+      roster: ros,
+      maxPlayers: match.maxPlayers,
+      minSkill: match.minSkill,
+      maxSkill: match.maxSkill
+    }
+
+    console.log(updateMatchData);
+    fetch("http://35.163.180.234/api/match/update_match/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updateMatchData),
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success: ', data)
+      })
+      .catch((error) => {
+        console.error('Error: ', error)
+      })
+    
+  }
+
+  //wrapper
+  const handleUpdate = () => {
+    if (displayJoin === "join"){
+      handleJoin();
+    }
+    else {
+      handleQuit();
+    }
+    window.location.reload(false);
+  }
+
 
   return (
     <Card className={classes.card} elevation={0}>
@@ -348,18 +460,16 @@ export default function (props) {
                   <Button onClick={handleClose} color="primary">
                     Close
                   </Button>
-                  {/* <Button onClick={handleClose} color="primary">
-                    Confirm
-                  </Button> */}
                 </DialogActions>
               </Dialog>
             </Grid>
             <Grid item xs={2}>
               <Button
                   variant="contained"
-                  color="primary"
+                  color={displayJoin === "join" ? "primary" : "secondary"}
+                  onClick={handleUpdate}
                 >
-                  Join
+                  {displayJoin}
               </Button>
             </Grid>
             <Grid item xs={4}>
