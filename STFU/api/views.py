@@ -20,7 +20,7 @@ class MatchViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['POST'])
     def create_match(self, request, pk=None):
-        if 'roster'  in request.data and 'name' in request.data and 'type' in request.data and 'age' in request.data and 'lat' in request.data and 'lon' in request.data and 'time' in request.data and 'maxPlayers' in request.data and 'description' in request.data and 'skill' in request.data:
+        if 'roster'  in request.data and 'name' in request.data and 'type' in request.data and 'age' in request.data and 'lat' in request.data and 'lon' in request.data and 'time' in request.data and 'maxPlayers' in request.data and 'description' in request.data and 'minSkill' in request.data and 'maxSkill' in request.data:
             obj = Match.objects.create()
             obj.name = request.data['name']
             obj.type = request.data['type']
@@ -31,14 +31,19 @@ class MatchViewSet(viewsets.ModelViewSet):
             obj.description = request.data['description']
             obj.maxPlayers = request.data['maxPlayers']
             obj.location = Point(float(request.data['lat']), float(request.data['lon']))
-            obj.skill = request.data['skill']
+            obj.minSkill = request.data['minSkill']
+            obj.maxSkill = request.data['maxSkill']
             geolocator = Nominatim(user_agent="api")
+            # print(str(request.data['lat']) + ", " + str(request.data['lon']))
             city = geolocator.reverse(str(request.data['lat']) + ", " + str(request.data['lon']))
             city = city.raw
             try:
+                # print(city)
                 city = city['address']['city']
             except KeyError:
+                # print(city)
                 city = city['address']['state']
+                
 
             obj.city = city
             for i in range(len (request.data['roster'])):
@@ -59,7 +64,7 @@ class MatchViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['POST'])
     def update_match(self, request, pk=None):
-        if 'id'  in request.data and 'roster'  in request.data and 'name' in request.data and 'type' in request.data and 'age' in request.data and 'lat' in request.data and 'lon' in request.data and 'time' in request.data and 'maxPlayers' in request.data and 'description' in request.data and 'skill' in request.data:
+        if 'id'  in request.data and 'roster'  in request.data and 'name' in request.data and 'type' in request.data and 'age' in request.data and 'lat' in request.data and 'lon' in request.data and 'time' in request.data and 'maxPlayers' in request.data and 'description' in request.data and 'minSkill' in request.data and 'maxSkill' in request.data:
             try:
                 print(request.data['id'])
                 obj = Match.objects.get(id=request.data['id'])
@@ -84,7 +89,8 @@ class MatchViewSet(viewsets.ModelViewSet):
             obj.description = request.data['description']
             obj.maxPlayers = request.data['maxPlayers']
             obj.location = Point(float(request.data['lat']), float(request.data['lon']))
-            obj.skill = request.data['skill']
+            obj.minSkill = request.data['minSkill']
+            obj.maxSkill = request.data['maxSkill']
             geolocator = Nominatim(user_agent="api")
             city = geolocator.reverse(str(request.data['lat']) + ", " + str(request.data['lon']))
             city = city.raw
@@ -169,14 +175,17 @@ class ProfileViewSet(viewsets.ModelViewSet):
                     response = {'message': 'email used!'}
                     return Response(response, status=status.HTTP_400_BAD_REQUEST)
                 except User.DoesNotExist:
-                    user = User.objects.create(username=request.data['username'], email=request.data['email'])
-                    user.first_name = request.data['name']
-                    user.save()
-                    obj = Profile.objects.create(user=user)
+                    newUser = User.objects.create(username=request.data['username'], email=request.data['email'])
+                    print("woiks")
+                    newUser.first_name = request.data['name']
+                    newUser.save()
+                    obj = Profile.objects.create(user=newUser)
+                    obj.save()
                     serializer = ProfileSerializer(obj, many=False)
-                    token = Token.objects.create(user=user)
-                    response = {'message': 'Successfully created User', 'result': serializer.data, 'token': token.key }
+                    response = {'message': 'Successfully created User', 'result': serializer.data}
                     return Response(response, status=status.HTTP_200_OK)
+            response = {'message': 'error!'}
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
         else:
             response = {'message': 'Please provide all attributes!'}
             return Response(response, status=status.HTTP_400_BAD_REQUEST)
@@ -188,8 +197,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
                 user = User.objects.get(email=request.headers['email'])
                 obj = Profile.objects.get(user=user)
                 serializer = ProfileSerializer(obj, many=False)
-                token = Token.objects.get(user=user)
-                response = {'message': 'Successfully fetched User', 'result': serializer.data, 'token': token.key }
+                response = {'message': 'Successfully fetched User', 'result': serializer.data}
                 return Response(response, status=status.HTTP_200_OK)
             except User.DoesNotExist:
                 response = {'message': 'User does not exist!'}
