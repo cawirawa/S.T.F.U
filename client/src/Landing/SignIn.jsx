@@ -71,7 +71,7 @@ function SignIn({ history }) {
   };
 
   if (currentUser) {
-    getToken();
+    // getToken();
     return <Redirect to="/dashboard" token={token} />;
   }
 

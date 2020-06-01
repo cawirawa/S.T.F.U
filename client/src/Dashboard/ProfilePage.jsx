@@ -198,7 +198,7 @@ class ProfilePage extends React.Component {
   }
 
   handleSubmit() {
-    const updateProfileData = {
+    const requestProfileData = {
       username: this.state.username,
       first_name: this.state.firstName,
       email: this.state.email,
@@ -211,7 +211,23 @@ class ProfilePage extends React.Component {
       profile_image: this.state.profile_image,
       skill: this.state.skill,
     };
+
+    fetch("http://35.163.180.234/api/profile/update_profile/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestProfileData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success: ", data);
+      })
+      .catch((error) => {
+        console.error("Error: ", error);
+      });
   }
+
   handleUploadClick(event) {
     var file = event.target.files[0];
     const reader = new FileReader();
