@@ -49,14 +49,13 @@ export default function MatchSearch(props) {
 
     // filter sport type
     const [value, setValue] = useState(options[0]);
-    let filter_match = props.match;
-    let filter_sort_match = props.match;
-    filter_match = filter_match.filter(filter_match=>{
+    let filter_match = match ? match : props.match;
+    filter_match = filter_match.filter((filter_match) =>{
         return props.type == '' || props.type == filter_match.type;
     });
 
     // filter skill level
-    filter_match = filter_match.filter(filter_match=>{
+    filter_match = filter_match.filter((filter_match) =>{
         return props.level == 0 || (props.level >= filter_match.minSkill && props.level <= filter_match.maxSkill);
     });
 

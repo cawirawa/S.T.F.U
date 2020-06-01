@@ -134,7 +134,6 @@ export default function MatchPage(props) {
     maxPlayers: "",
     description: "",
     type: "",
-    skillLevel: 2,
     f_sportsType: '',
     f_skilllevel: 0,
     f_distance: 50,
@@ -264,7 +263,7 @@ export default function MatchPage(props) {
   return (
     <Fragment>
       <Grid container className={classes.outer}>
-        <Grid item xs={5}>
+        <Grid item xs={6}>
           <MatchSearch
             match={props.match}
             type={state.f_sportsType}
