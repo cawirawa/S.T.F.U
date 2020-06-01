@@ -102,29 +102,30 @@ function SignUp({ history }) {
 
   const handleSignup = (event) => {
     event.preventDefault();
-    const { Email, Password, confPassword, FullName, Username } = event.target.elements;
+    const {
+      Email,
+      Password,
+      confPassword,
+      FullName,
+      Username,
+    } = event.target.elements;
 
-    if (Password.value == confPassword.value){
-
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(Email.value, Password.value)
-      .catch((error) => {
-        alert(
-          "Please check on the following conditions: \nAll fields are filled out \nEmail is properly formatted"
-        );
-      });
-    createUser(Username.value, FullName.value, Email.value);
-    return <Redirect to="/dashboard" token={token} />;
-
+    if (Password.value == confPassword.value) {
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(Email.value, Password.value)
+        .catch((error) => {
+          console.log(error);
+          alert(
+            "Please check on the following conditions: \nAll fields are filled out \nEmail is properly formatted \nPassword matches and at least six characters"
+          );
+        });
+      createUser(Username.value, FullName.value, Email.value);
+      return <Redirect to="/dashboard" token={token} />;
+    } else {
+      alert("Password does not match");
+      return <Redirect to="/signup" />;
     }
-    else{
-        alert(
-          "Password does not match"
-        );
-      return <Redirect to="/signup"/>;
-    }
-
   };
 
   return (
