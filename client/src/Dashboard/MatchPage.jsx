@@ -196,10 +196,7 @@ export default function MatchPage(props) {
       userIndex = i;
     }
   };
-  console.log("current user", currentUser.email);
-  console.log("userlist", userList);
-  console.log("userlist at 1", userList[1]);
-  console.log("userid", userIndex);
+  console.log("userlist at curr user in list", userList[userIndex]);
   //get userIndex --End
 
   function handleSubmit() {
@@ -207,6 +204,12 @@ export default function MatchPage(props) {
     for (let i = 0; i < roster.length; i++) {
       ros.push({ "email": roster[i] })
     }
+    // let ros = [userList[userIndex]]
+    // for (let i = 0; i < roster.length; i++) {
+    //   if (roster[i]!== currentUser.email){
+    //     ros.push({ "email": roster[i] });
+    //   }
+    // }
 
     const createMatchData = {
       name: state.name,
@@ -299,6 +302,7 @@ export default function MatchPage(props) {
     setOpenSnack(false);
   };
 
+  console.log("state", state);
   return (
     <Fragment>
       <Grid container className={classes.outer}>

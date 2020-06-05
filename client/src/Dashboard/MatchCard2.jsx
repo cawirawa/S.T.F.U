@@ -166,9 +166,6 @@ export default function (props) {
 
   const { currentUser } = useContext(AuthContext);
 
-  // console.log("user", currentUser.email)
-
-  // console.log("user", match.roster)
   const handleClose = () => {
     setOpen(false);
   };

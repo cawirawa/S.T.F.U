@@ -232,9 +232,8 @@ export default function (props) {
 
   const handleQuit = () => {
     let userEmail = currentUser.email;
-    console.log("roster before", match.roster);
     let ros = match.roster.filter((e) => e.email !== userEmail);
-    console.log("roster after", ros);
+
 
     const updateMatchData = {
       id: match.id,

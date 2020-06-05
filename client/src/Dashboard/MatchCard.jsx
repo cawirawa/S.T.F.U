@@ -213,7 +213,6 @@ export default function (props) {
       maxSkill: match.maxSkill,
     };
 
-    console.log(updateMatchData);
     fetch("http://35.163.180.234/api/match/update_match/", {
       method: "POST",
       headers: {
@@ -481,21 +480,6 @@ export default function (props) {
               >
                 {displayJoin}
               </Button>
-            </Grid>
-            <Grid item xs={4}>
-              <IconButton onClick={() => setState({ on: !state.on })}>
-                <ToggleIcon
-                  on={state.on}
-                  onIcon={<Fav color="secondary" />}
-                  offIcon={<FavBorder />}
-                />
-              </IconButton>
-              {/* <Button>
-                <ShareIcon color="secondary" className={classes.icon} />
-              </Button>
-              <Button>
-                <FavoriteIcon color="secondary" className={classes.icon} />
-              </Button> */}
             </Grid>
           </Grid>
 

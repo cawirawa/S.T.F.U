@@ -23,6 +23,7 @@ function MatchHistoryPage(props) {
 
   var mm = today.getMonth() + 1;
   var yyyy = today.getFullYear();
+
   if (dd < 10) {
     dd = "0" + dd;
   }
@@ -83,9 +84,7 @@ function MatchHistoryPage(props) {
       // eslint-disable-next-line no-unused-expressions
       for (let j = 0; j < match[i].roster.length; j++) {
         if (match[i].roster[j].email === currentUser.email) {
-          console.log("match found");
           activeMatch.push(match[i]);
-          console.log("match details", match[i]);
           // activeMatch.push(<MatchCard match={match[i]}/>);
         }
       }

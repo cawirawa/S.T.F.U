@@ -58,7 +58,6 @@ export default function MatchSearch(props) {
   var day;
 
   const defMatch = props.match;
-  console.log("available Matches", defMatch)
   for (let i = 0; i < defMatch.length; i++) {
     date =
       /-\d\d-\d\d/.exec(defMatch[i].time) + "/" + /\d\d\d\d/.exec(defMatch[i].time);
@@ -74,13 +73,11 @@ export default function MatchSearch(props) {
 
     if (parseInt(year) >= parseInt(yyyy) && (parseInt(month) > parseInt(mm) || (parseInt(month) == parseInt(mm) && parseInt(day) >= parseInt(dd)))) {
       availableMatch.push(defMatch[i]);
-      console.log("cur match", defMatch[i]);
     }
   }
 
   // get future matches -- END
 
-  console.log("available match array", availableMatch);
 
   var test_lat = 32.8801;
   var test_lon = -117.2361;

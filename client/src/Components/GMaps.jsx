@@ -55,8 +55,6 @@ export class MapContainer extends Component {
         Geocode.fromLatLng( this.state.loc.lat , this.state.loc.lng ).then(
             response => {
                 const address = response.results[0].formatted_address;
-                console.log('address in didmount', address);
-                console.log('address', address);
                 this.setState( {
                     address: ( address ) ? address : '',
                 } )
@@ -81,7 +79,6 @@ export class MapContainer extends Component {
             Geocode.fromLatLng( lat , lng ).then(
                 response => {
                     const address = response.results[0].formatted_address;
-                    console.log('address change on shouldComponentUpdate', address);
                     this.setState( {
                         address: ( address ) ? address : '',
                         loc: {
@@ -95,12 +92,10 @@ export class MapContainer extends Component {
                     console.error(error);
                 }
             );
-            console.log('props updates nextstate', nextState);
             return true
         }
         else if (this.state.address !== nextState.address) {
             this.props.callback(nextState.address, nextState.loc.lat, nextState.loc.lng);
-            console.log('state updates', nextState);
             return true
         }
         else{
@@ -112,8 +107,6 @@ export class MapContainer extends Component {
         const { latLng } = three;
         const lat = latLng.lat();
         const lng = latLng.lng();
-        console.log('markerdrag lat', lat);
-        console.log('markerdrag lng', lng);
         let url = "https://www.google.com/maps/search/?api=1&query=";
         url += lat;
         url += ",";
@@ -121,7 +114,6 @@ export class MapContainer extends Component {
         Geocode.fromLatLng( lat , lng ).then(
             response => {
                 const address = response.results[0].formatted_address;
-                console.log('address change on marker drag', address);
                 this.setState( {
                     address: ( address ) ? address : '',
                     loc: {
@@ -154,7 +146,6 @@ export class MapContainer extends Component {
     }
 
     render(){
-        console.log('state of Gmaps', this.state);
         return (
             <Map
                 google={this.props.google}
