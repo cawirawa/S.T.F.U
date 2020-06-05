@@ -2,12 +2,9 @@ import React, { useContext, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import MatchCard2 from "./MatchCard2";
 import MatchCard3 from "./MatchCard3";
-import MatchCard from "./MatchCard";
 import { Grid } from "@material-ui/core";
 import { AuthContext } from "../auth/Auth";
-import { GridList } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
 import Typography from "../Landing/modules/components/Typography";
 
 const styles = makeStyles((theme) => ({

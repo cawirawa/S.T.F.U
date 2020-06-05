@@ -36,6 +36,51 @@ export default function MatchSearch(props) {
     distance: false,
     anchorEl: null,
   });
+  // get future matches -- START
+  var today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth() + 1;
+  var yyyy = today.getFullYear();
+  if (dd < 10) {
+    dd = "0" + dd;
+  }
+
+  if (mm < 10) {
+    mm = "0" + mm;
+  }
+
+  today = mm + '-' + dd + '-' + yyyy;
+  const availableMatch = [];
+  var date;
+  var time;
+  var year;
+  var month;
+  var day;
+
+  const defMatch = props.match;
+  console.log("available Matches", defMatch)
+  for (let i = 0; i < defMatch.length; i++) {
+    date =
+      /-\d\d-\d\d/.exec(defMatch[i].time) + "/" + /\d\d\d\d/.exec(defMatch[i].time);
+    date = date.toString().replace("-", "");
+    date = date.toString().replace("-", "/");
+    time = /T\d\d:\d\d/.exec(defMatch[i].time);
+    time = time.toString().replace("T", "");
+    date = date.toString().replace("-", "/");
+    year = /\d\d\d\d/.exec(date);
+    day = /\/\d\d/.exec(date);
+    day = day.toString().replace("/", "");
+    month = /\d\d/.exec(date);
+
+    if (parseInt(year) >= parseInt(yyyy) && (parseInt(month) > parseInt(mm) || (parseInt(month) == parseInt(mm) && parseInt(day) >= parseInt(dd)))) {
+      availableMatch.push(defMatch[i]);
+      console.log("cur match", defMatch[i]);
+    }
+  }
+
+  // get future matches -- END
+
+  console.log("available match array", availableMatch);
 
   var test_lat = 32.8801;
   var test_lon = -117.2361;
@@ -49,7 +94,8 @@ export default function MatchSearch(props) {
 
     // filter sport type
     const [value, setValue] = useState(options[0]);
-    let filter_match = match ? match : props.match;
+    let filter_match = match ? match : availableMatch;
+
     filter_match = filter_match.filter((filter_match) =>{
         return props.type == '' || props.type == filter_match.type;
     });

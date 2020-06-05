@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useRef, useEffect, useMemo } from "react";
+import React, { Fragment, useState, useRef, useEffect, useContext } from "react";
 import { makeStyles } from "@material-ui/styles";
 import {
   Button,
@@ -37,6 +37,7 @@ import MapContainer from '../Components/GMaps';
 import useForceUpdate from 'use-force-update';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import MuiAlert from '@material-ui/lab/Alert';
+import { AuthContext } from "../auth/Auth";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -133,6 +134,7 @@ export default function MatchPage(props) {
   const [open, setOpen] = useState(false);
   const [openSnack, setOpenSnack] = useState(false);
   const [createSuccess, setCreateSuccess] = useState(false);
+  const { currentUser } = useContext(AuthContext);
   const [state, setState] = useState({
     name: "",
     minSkill: null,
@@ -159,6 +161,7 @@ export default function MatchPage(props) {
   const [userList, setUserList] = useState([]);
   const [roster, setRoster] = useState([]);
 
+  
   const forceUpdate = useForceUpdate();
   const mapCallbackLatLng = (mapAddress, mapLat, mapLng) => {
     setState({
@@ -185,6 +188,19 @@ export default function MatchPage(props) {
         console.error('Error: ', error)
       })
   }, []);
+
+  //get user index in list -- start
+  let userIndex;
+  for(let i=0; i< userList.length; i++){
+    if (userList[i]===currentUser.email){
+      userIndex = i;
+    }
+  };
+  console.log("current user", currentUser.email);
+  console.log("userlist", userList);
+  console.log("userlist at 1", userList[1]);
+  console.log("userid", userIndex);
+  //get userIndex --End
 
   function handleSubmit() {
     let ros = []
@@ -488,6 +504,7 @@ export default function MatchPage(props) {
                         multiple
                         margin="dense"
                         id="tags-outlined"
+                        defaultValue={[userList[userIndex]]}
                         options={userList.map(option => option)}
                         freeSolo
                         renderTags={(value, getTagProps) =>
