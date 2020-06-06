@@ -149,7 +149,7 @@ export default function MatchPage(props) {
     type: "",
     f_sportsType: '',
     f_skilllevel: 0,
-    f_distance: 50,
+    f_distance: 999999,
     f_time1: false,
     f_time2: false,
     f_time3: false,
@@ -297,7 +297,6 @@ export default function MatchPage(props) {
     });
   };
 
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -333,6 +332,8 @@ export default function MatchPage(props) {
         <Grid item xs={6}>
           <MatchSearch
             match={props.match}
+            lat={props.lat}
+            lon={props.lon}
             type={state.f_sportsType}
             level={state.f_skilllevel}
             dist={state.f_distance}
