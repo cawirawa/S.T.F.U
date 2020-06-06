@@ -123,7 +123,7 @@ class ProfilePage extends React.Component {
       bio: "",
       profile_image: null,
       sports: [],
-      skill: [0, 0, 0, 0, 0],
+      skill: [3, 0, 0, 0, 0],
     },
 
     address: "",
@@ -132,13 +132,13 @@ class ProfilePage extends React.Component {
     currentUser: firebase.auth().currentUser,
     imageUploaded: 0,
     sport: {
-      SC: false,
+      SC: true,
       BK: false,
       BS: false,
       VB: false,
       FB: false,
     },
-  }
+  };
   constructor(props) {
     super(props);
     this.setState({
@@ -155,7 +155,7 @@ class ProfilePage extends React.Component {
         sports: [],
         skill: [0, 0, 0, 0, 0],
       },
-  
+
       address: "",
       mainState: 0,
       selectedFile: null,
@@ -203,31 +203,30 @@ class ProfilePage extends React.Component {
       })
       .then((res) => {
         console.log(res);
-          this.setState({
-            output: {
-              firstName: res.result.user.first_name,
-              email: res.result.user.email,
-              username: res.result.user.username,
-              phone: res.result.phone,
-              age: res.result.age,
-              lat: res.result.lat,
-              lon: res.result.lon,
-              sports: res.result.sports,
-              skill:
-                res.result.skill.length === 0
-                  ? [1, 1, 1, 1, 1]
-                  : res.result.skill,
-              lat: res.result.lat,
-              bio: res.result.bio,
-              selectedFile: "http://35.163.180.234" + res.result.profile_image,
-            }
-          });
+        this.setState({
+          output: {
+            firstName: res.result.user.first_name,
+            email: res.result.user.email,
+            username: res.result.user.username,
+            phone: res.result.phone,
+            age: res.result.age,
+            lat: res.result.lat,
+            lon: res.result.lon,
+            sports: res.result.sports,
+            skill:
+              res.result.skill.length === 0
+                ? [1, 1, 1, 1, 1]
+                : res.result.skill,
+            lat: res.result.lat,
+            bio: res.result.bio,
+            selectedFile: "http://35.163.180.234" + res.result.profile_image,
+          },
+        });
         console.log("state: ", this.state);
       })
       .catch((error) => {
         console.error("Error: ", error);
       });
-      
   }
 
   handleSubmit() {
@@ -245,39 +244,31 @@ class ProfilePage extends React.Component {
       skill: this.state.output.skill,
     };
     const form = new FormData();
-    form.set('email', this.state.output.email);
+    form.set("email", this.state.output.email);
     // const formImage = new FormData();
-    form.append('profile_image', this.state.selectedFile);
-    console.log("image: ",this.state.selectedFile)
-    
+    form.append("profile_image", this.state.selectedFile);
+    console.log("image: ", this.state.selectedFile);
+
     // const profile_image = {
     //   profile_image: this.state.profile_image,
     // }
     console.log(requestProfileData);
-    console.log(this.state.output.skill[1])
-    console.log(this.state.selectedFile)
-    fetch("http://35.163.180.234/api/profile/update_profile/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-
-      },
-      body: JSON.stringify(requestProfileData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Success: ", data);
-      })
-      .catch((error) => {
-        console.error("Error: ", error);
-      });
-    // if (this.state.selectedFile) {
-      fetch("http://35.163.180.234/api/profile/update_image/", {
+    console.log(this.state.output.skill[1]);
+    console.log(this.state.selectedFile);
+    //user select at least 1 sport
+    if (
+      this.state.sport.SC ||
+      this.state.sport.SC ||
+      this.state.sport.SC ||
+      this.state.sport.SC ||
+      this.state.sport.SC
+    ) {
+      fetch("http://35.163.180.234/api/profile/update_profile/", {
         method: "POST",
-        // headers: {
-        //   "Content-Type" : 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'
-        // },
-        body:  form
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestProfileData),
       })
         .then((response) => response.json())
         .then((data) => {
@@ -286,7 +277,25 @@ class ProfilePage extends React.Component {
         .catch((error) => {
           console.error("Error: ", error);
         });
-    // }
+      // if (this.state.selectedFile) {
+      fetch("http://35.163.180.234/api/profile/update_image/", {
+        method: "POST",
+        // headers: {
+        //   "Content-Type" : 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'
+        // },
+        body: form,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Success: ", data);
+        })
+        .catch((error) => {
+          console.error("Error: ", error);
+        });
+      // }
+    } else {
+      alert("You must select at least 1 sport");
+    }
   }
 
   handleUploadClick(event) {
@@ -297,7 +306,7 @@ class ProfilePage extends React.Component {
 
     reader.onloadend = function (e) {
       image = reader.result;
-    }
+    };
     console.log(url);
     console.log(file);
     // this.setState({ selectedFile: image })
@@ -638,7 +647,7 @@ class ProfilePage extends React.Component {
                               bio: value,
                             },
                           };
-                        })
+                        });
                       }}
                     />
                   </Grid>
