@@ -138,7 +138,39 @@ class ProfilePage extends React.Component {
       VB: false,
       FB: false,
     },
-  };
+  }
+  constructor(props) {
+    super(props);
+    this.setState({
+      output: {
+        firstName: "",
+        username: "",
+        email: "",
+        phone: "",
+        lat: "",
+        lon: "",
+        age: "",
+        bio: "",
+        profile_image: null,
+        sports: [],
+        skill: [0, 0, 0, 0, 0],
+      },
+  
+      address: "",
+      mainState: 0,
+      selectedFile: null,
+      currentUser: firebase.auth().currentUser,
+      imageUploaded: 0,
+      sport: {
+        SC: false,
+        BK: false,
+        BS: false,
+        VB: false,
+        FB: false,
+      },
+    });
+  }
+
   mapCallbackLatLng(mapAddress, mapLat, mapLng) {
     this.setState({
       address: mapAddress,
@@ -159,7 +191,7 @@ class ProfilePage extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.setState.currentUser);
+    console.log(this.state.currentUser);
     fetch("http://35.163.180.234/api/profile/get_profile/", {
       method: "GET",
       headers: {
@@ -171,51 +203,64 @@ class ProfilePage extends React.Component {
       })
       .then((res) => {
         console.log(res);
-        this.setState({
-          output: {
-            firstName: res.result.user.first_name,
-            email: res.result.user.email,
-            username: res.result.user.username,
-            phone: res.result.phone,
-            age: res.result.age,
-            lat: res.result.lat,
-            lon: res.result.lon,
-            sports: res.result.sports,
-            skill:
-              res.result.skill.length === 0
-                ? [0, 0, 0, 0, 0]
-                : res.result.skill,
-            lat: res.result.lat,
-            bio: res.result.bio,
-            selectedFile: res.result.profile_image,
-          },
-        });
+          this.setState({
+            output: {
+              firstName: res.result.user.first_name,
+              email: res.result.user.email,
+              username: res.result.user.username,
+              phone: res.result.phone,
+              age: res.result.age,
+              lat: res.result.lat,
+              lon: res.result.lon,
+              sports: res.result.sports,
+              skill:
+                res.result.skill.length === 0
+                  ? [1, 1, 1, 1, 1]
+                  : res.result.skill,
+              lat: res.result.lat,
+              bio: res.result.bio,
+              selectedFile: "http://35.163.180.234" + res.result.profile_image,
+            }
+          });
         console.log("state: ", this.state);
       })
       .catch((error) => {
         console.error("Error: ", error);
       });
+      
   }
 
   handleSubmit() {
+    console.log(this.state);
     const requestProfileData = {
-      username: this.state.username,
-      first_name: this.state.firstName,
-      email: this.state.email,
-      phone: this.state.phone,
-      age: this.state.age,
-      lat: this.state.lat,
-      lon: this.state.lon,
-      sports: this.state.sports,
-      bio: this.state.bio,
-      profile_image: this.state.profile_image,
-      skill: this.state.skill,
+      username: this.state.output.username,
+      name: this.state.output.firstName,
+      email: this.state.output.email,
+      phone: this.state.output.phone,
+      age: this.state.output.age,
+      lat: this.state.output.lat,
+      lon: this.state.output.lon,
+      sports: this.state.output.sports,
+      bio: this.state.output.bio,
+      skill: this.state.output.skill,
     };
-
+    const form = new FormData();
+    form.set('email', this.state.output.email);
+    // const formImage = new FormData();
+    form.append('profile_image', this.state.selectedFile);
+    console.log("image: ",this.state.selectedFile)
+    
+    // const profile_image = {
+    //   profile_image: this.state.profile_image,
+    // }
+    console.log(requestProfileData);
+    console.log(this.state.output.skill[1])
+    console.log(this.state.selectedFile)
     fetch("http://35.163.180.234/api/profile/update_profile/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+
       },
       body: JSON.stringify(requestProfileData),
     })
@@ -226,17 +271,36 @@ class ProfilePage extends React.Component {
       .catch((error) => {
         console.error("Error: ", error);
       });
+    // if (this.state.selectedFile) {
+      fetch("http://35.163.180.234/api/profile/update_image/", {
+        method: "POST",
+        // headers: {
+        //   "Content-Type" : 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'
+        // },
+        body:  form
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Success: ", data);
+        })
+        .catch((error) => {
+          console.error("Error: ", error);
+        });
+    // }
   }
 
   handleUploadClick(event) {
     var file = event.target.files[0];
     const reader = new FileReader();
     var url = reader.readAsDataURL(file);
+    var image = null;
 
     reader.onloadend = function (e) {
-      this.setState({ selectedFile: reader.result });
-    }.bind(this);
+      image = reader.result;
+    }
     console.log(url);
+    console.log(file);
+    // this.setState({ selectedFile: image })
 
     this.setState({ mainState: "uploaded" });
     this.setState({ imageUploaded: 1 });
@@ -270,7 +334,7 @@ class ProfilePage extends React.Component {
         >
           {({ handleSubmit, submitting }) => (
             <form
-              onSubmit={this.handleSubmit}
+              // onSubmit={this.handleSubmit}
               className={classes.form}
               noValidate
             >
@@ -282,7 +346,7 @@ class ProfilePage extends React.Component {
                         <div className={classes.details}>
                           <div>
                             <Typography gutterBottom variant="h4">
-                              {"Hello " + this.state.firstName + " !"}
+                              {"Hello " + this.state.output.firstName + " !"}
                             </Typography>
                           </div>
                           <input
@@ -291,7 +355,7 @@ class ProfilePage extends React.Component {
                             id="contained-button-file"
                             multiple
                             type="file"
-                            onChange={this.handleUploadClick}
+                            onChange={this.handleUploadClick.bind(this)}
                           />
                           {this.state.mainState === "initial" ? (
                             <label
@@ -574,7 +638,7 @@ class ProfilePage extends React.Component {
                               bio: value,
                             },
                           };
-                        });
+                        })
                       }}
                     />
                   </Grid>
@@ -586,7 +650,8 @@ class ProfilePage extends React.Component {
                   color="primary"
                   variant="contained"
                   startIcon={<SaveIcon />}
-                  type="submit"
+                  // type="submit"
+                  onClick={this.handleSubmit.bind(this)}
                 >
                   Save
                 </Button>
