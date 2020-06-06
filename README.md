@@ -50,7 +50,11 @@ For Mac:
     
 Type in command:
     
+<<<<<<< HEAD
+    pip install django djangorestframework django-cors-headers pillow django-image-cropping easy-thumbnails django_mysql  django-phonenumber-field django-multiselectfield psycopg2-binary psycopg2 GDAL
+=======
     pip install django djangorestframework django-cors-headers pillow django-image-cropping easy-thumbnails django_mysql  django-phonenumber-field django-multiselectfield psycopg2-binary psycopg2
+>>>>>>> 46c8cdaab29208c5bad886aec48ccd7b605e3e2b
 
 4. Change your directory:
 

@@ -27,7 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '52.25.207.161',
-    '127.0.0.1'
+    '127.0.0.1',
+    'localhost',
+    '35.163.180.234'
 ]
 
 
@@ -57,6 +59,7 @@ AUTH_USER_MODEL="api.User"
 
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
+    'http://localhost:3001'
     
 )
 
@@ -65,6 +68,8 @@ CORS_ALLOW_HEADERS = [
     'lat',
     'lon',
     'dist',
+    'email',
+    'content-type'
 ]
 
 from easy_thumbnails.conf import Settings as thumbnail_settings
@@ -105,7 +110,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'STFU.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -115,14 +119,24 @@ WSGI_APPLICATION = 'STFU.wsgi.application'
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.contrib.gis.db.backends.postgis',
+#         'NAME': 'stfu',
+#         'USER': 'docker',
+#         'PASSWORD': 'docker',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'stfu',
-        'USER': 'myprojectuser',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',
-        'PORT': '',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'db',
+        'PORT': 5432,
     }
 }
 
@@ -163,6 +177,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = 'media'
+
+REST_FRAMEWORK = {
+   'DEFAULT_AUTHENTICATION_CLASSES': (
+       'rest_framework.authentication.TokenAuthentication',
+   )
+}
