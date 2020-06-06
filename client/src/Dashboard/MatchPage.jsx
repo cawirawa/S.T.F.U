@@ -130,6 +130,7 @@ function IconContainer(props) {
 }
 
 export default function MatchPage(props) {
+  const [userIndex, setUserIndex] = useState(null);
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [openSnack, setOpenSnack] = useState(false);
@@ -182,30 +183,37 @@ export default function MatchPage(props) {
         return response.json();
       })
       .then((res) => {
+        console.log("woiks", res)
+        for(let i=0; i< res.length; i++){
+          console.log(res[i]["email"] )
+          if (res[i]["email"] === currentUser.email){
+            setUserIndex(i);
+          }
+        };
+        console.log("userlist at curr user in list", res[userIndex]);
         setUserList(res.map(info => info.email));
       })
       .catch((error) => {
         console.error('Error: ', error)
       })
+
+    
+    
   }, []);
 
   //get user index in list -- start
-  let userIndex;
-  for(let i=0; i< userList.length; i++){
-    if (userList[i]===currentUser.email){
-      userIndex = i;
-    }
-  };
-  console.log("current user", currentUser.email);
-  console.log("userlist", userList);
-  console.log("userlist at 1", userList[1]);
-  console.log("userid", userIndex);
   //get userIndex --End
 
   function handleSubmit() {
-    let ros = []
+    // let ros = []
+    // for (let i = 0; i < roster.length; i++) {
+    //   ros.push({ "email": roster[i] })
+    // }
+    let ros = [{"email" : currentUser.email}]
     for (let i = 0; i < roster.length; i++) {
-      ros.push({ "email": roster[i] })
+      if (roster[i]!== currentUser.email){
+        ros.push({ "email": roster[i] });
+      }
     }
 
     const createMatchData = {
@@ -299,6 +307,7 @@ export default function MatchPage(props) {
     setOpenSnack(false);
   };
 
+  
   return (
     <Fragment>
       <Grid container className={classes.outer}>
