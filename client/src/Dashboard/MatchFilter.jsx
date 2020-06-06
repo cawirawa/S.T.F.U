@@ -149,13 +149,13 @@ export default function MatchFilter(props) {
   const [state, setState] = React.useState({
     f_sportsType: "",
     f_skilllevel: 0,
-    f_distance: 50,
+    f_distance: 999999,
     f_time1: false,
     f_time2: false,
     f_time3: false,
     f_time4: false,
     f_time5: false,
-    disabled: false,
+    disabled: true,
     previous: 50,
   });
 
@@ -164,7 +164,7 @@ export default function MatchFilter(props) {
   };
 
   const handleDistanceChange = (name) => (event, newValue) => {
-    setState({ ...state, [name]: newValue });
+    setState({ ...state, [name]: newValue, previous:newValue});
     props.onDist(name, newValue);
   };
 
@@ -203,14 +203,13 @@ export default function MatchFilter(props) {
     if (state.disabled === false) {
       setState({
         ...state,
-        previous: state.f_distance,
         f_distance: 999999,
         disabled: true,
       });
       props.onDist(name, 999999);
     } else {
       setState({ ...state, f_distance: state.previous, disabled: false });
-      props.onDist(name, state.f_distance);
+      props.onDist(name, state.previous);
     }
   };
 
@@ -320,7 +319,7 @@ export default function MatchFilter(props) {
               name="f_distance"
               disabled={state.disabled}
               onChange={handleDistanceChange("f_distance")}
-              defaultValue={state.f_distance}
+              defaultValue={50}
               marks={marks}
               valueLabelDisplay="on"
             />

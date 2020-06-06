@@ -82,10 +82,8 @@ export default function MatchSearch(props) {
 
   console.log("available match array", availableMatch);
 
-  var test_lat = 32.8801;
-  var test_lon = -117.2361;
-  let lat = props.lat;
-  let lon = props.lon;
+  var test_lat = props.lat;
+  var test_lon = props.lon;
 
   let options = props.match.map((a) => {
     let username = a.roster[0] ? " - " + a.roster[0].username : "";
@@ -194,6 +192,7 @@ export default function MatchSearch(props) {
     });
 
     let card = filter_match.sort((a,b) => {
+        // sort by time
         if(state.reset === true) {
             return;
         } else if(state.recent === true) {
@@ -242,10 +241,13 @@ export default function MatchSearch(props) {
             match_date2.setMonth(month2-1);
     
             return match_date1.getTime() - match_date2.getTime();
-        } else if (state.level === true) {
+        }
+        // sort by skill level
+        else if (state.level === true) {
             return a.maxSkill - b.maxSkill;
-        } else if (state.distance === true) {
-
+        } 
+        // sort by distance
+        else if (state.distance === true) {
             var lat_a1 = test_lat * (Math.PI/180);
             var lat_a2= a.lat * (Math.PI/180);
             var long_a1 = test_lon * (Math.PI/180);
@@ -261,9 +263,9 @@ export default function MatchSearch(props) {
     
             dist_a = dist_a * radius;
 
-            var lat_b1 = test_lat.lat * (Math.PI/180);
+            var lat_b1 = test_lat * (Math.PI/180);
             var lat_b2= b.lat * (Math.PI/180);
-            var long_b1 = test_lon.lon * (Math.PI/180);
+            var long_b1 = test_lon * (Math.PI/180);
             var long_b2 = b.lon * (Math.PI/180);
     
             var dlat_b = lat_b2 - lat_b1;
@@ -271,10 +273,11 @@ export default function MatchSearch(props) {
     
             var dist_b = Math.pow(Math.sin(dlat_b/2),2) + Math.cos(lat_b1) * Math.cos(lat_b2) * Math.pow(Math.sin(dlong_b/2), 2);
             dist_b = 2 * Math.asin(Math.sqrt(dist_b));
+
+            dist_b = dist_b * radius;
             
             return dist_a - dist_b;
         }
-
 
     }).map((match) => {
         return (

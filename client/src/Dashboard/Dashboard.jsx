@@ -111,12 +111,12 @@ class Dashboard extends Component {
   state = {
     open: true,
     content: "1",
-    lat: "",
-    lon: "",
+    lat: "asdfasdf",
+    lon: "asdfsadf",
     match: [],
     options: [],
   };
-
+  
   componentDidMount() {
     fetch(
       "http://api.ipstack.com/check?access_key=8f0af5c4d95ea86b0ae3944323331ad0",
@@ -128,8 +128,8 @@ class Dashboard extends Component {
         return response.json();
       })
       .then((res) => {
-        this.setState({ lat: toString(res.latitude) });
-        this.setState({ lon: toString(res.longitude) });
+        this.setState({ lat: res.latitude });
+        this.setState({ lon: res.longitude });
       })
       .catch((err) => console.error("Problem fetching my IP", err));
     fetch("http://35.163.180.234/api/match/", {
