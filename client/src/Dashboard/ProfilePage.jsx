@@ -123,7 +123,7 @@ class ProfilePage extends React.Component {
       bio: "",
       profile_image: null,
       sports: [],
-      skill: [0, 0, 0, 0, 0],
+      skill: [3, 0, 0, 0, 0],
     },
 
     address: "",
@@ -132,7 +132,7 @@ class ProfilePage extends React.Component {
     currentUser: firebase.auth().currentUser,
     imageUploaded: 0,
     sport: {
-      SC: false,
+      SC: true,
       BK: false,
       BS: false,
       VB: false,
@@ -211,7 +211,8 @@ class ProfilePage extends React.Component {
       profile_image: this.state.profile_image,
       skill: this.state.skill,
     };
-
+    //user select at least 1 sport
+    if (this.state.sport.SC || this.state.sport.SC || this.state.sport.SC || this.state.sport.SC || this.state.sport.SC){
     fetch("http://35.163.180.234/api/profile/update_profile/", {
       method: "POST",
       headers: {
@@ -226,6 +227,10 @@ class ProfilePage extends React.Component {
       .catch((error) => {
         console.error("Error: ", error);
       });
+    }
+    else {
+      alert("You must select at least 1 sport")
+    }
   }
 
   handleUploadClick(event) {
