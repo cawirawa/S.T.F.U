@@ -317,6 +317,7 @@ export default function MatchPage(props) {
 
     setOpenSnack(false);
   };
+  
   const handleCloseCapacitySnackBar = (event, reason) => {
     if (reason === 'clickaway') {
       return;

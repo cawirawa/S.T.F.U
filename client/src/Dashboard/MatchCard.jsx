@@ -188,7 +188,11 @@ export default function (props) {
   useEffect(() => {
     for (let b = 0; b < match.roster.length; b++) {
       if (currentUser.email === match.roster[b].email) {
-        setJoin("quit");
+        if(match.roster.length ===1){
+          setJoin("Quit and Delete");
+        }else {
+          setJoin("quit");
+        }
       }
     }
   }, []);
@@ -480,7 +484,7 @@ export default function (props) {
                 </DialogActions>
               </Dialog>
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={6}>
               <Button
                 variant="contained"
                 color={displayJoin === "join" ? "primary" : "secondary"}
