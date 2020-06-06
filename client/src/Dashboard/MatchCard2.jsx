@@ -376,15 +376,6 @@ export default function (props) {
                 </DialogActions>
               </Dialog>
             </Grid>
-            <Grid item xs={4}>
-              <IconButton onClick={() => setState({ on: !state.on })}>
-                <ToggleIcon
-                  on={state.on}
-                  onIcon={<Fav color="secondary" />}
-                  offIcon={<FavBorder />}
-                />
-              </IconButton>
-            </Grid>
           </Grid>
 
           <Grid container className={classes.right}>

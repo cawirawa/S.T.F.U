@@ -188,7 +188,11 @@ export default function (props) {
   useEffect(() => {
     for (let b = 0; b < match.roster.length; b++) {
       if (currentUser.email === match.roster[b].email) {
-        setJoin("quit");
+        if(match.roster.length ===1){
+          setJoin("Quit and Delete");
+        }else {
+          setJoin("quit");
+        }
       }
     }
   }, []);
@@ -270,11 +274,22 @@ export default function (props) {
   //wrapper
   const handleUpdate = () => {
     if (displayJoin === "join") {
-      handleJoin();
+      if ( match.roster.length >= match.maxPlayers){
+        console.log("roster is full");
+      } else{
+        handleJoin();
+        window.location.reload(false);
+      }
     } else {
-      handleQuit();
+      if ( match.roster.length === 1){
+        console.log("you are the last player in the roster, if you quit the match will be deleted. please confirm");
+        //call dialog
+      }else{
+        handleQuit();
+        window.location.reload(false);
+      }
     }
-    window.location.reload(false);
+
   };
 
   return (
@@ -472,7 +487,7 @@ export default function (props) {
                 </DialogActions>
               </Dialog>
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={6}>
               <Button
                 variant="contained"
                 color={displayJoin === "join" ? "primary" : "secondary"}
@@ -480,21 +495,7 @@ export default function (props) {
               >
                 {displayJoin}
               </Button>
-            </Grid>
-            <Grid item xs={4}>
-              <IconButton onClick={() => setState({ on: !state.on })}>
-                <ToggleIcon
-                  on={state.on}
-                  onIcon={<Fav color="secondary" />}
-                  offIcon={<FavBorder />}
-                />
-              </IconButton>
-              {/* <Button>
-                <ShareIcon color="secondary" className={classes.icon} />
-              </Button>
-              <Button>
-                <FavoriteIcon color="secondary" className={classes.icon} />
-              </Button> */}
+              
             </Grid>
           </Grid>
 

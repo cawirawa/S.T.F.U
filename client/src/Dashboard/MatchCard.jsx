@@ -188,7 +188,11 @@ export default function (props) {
   useEffect(() => {
     for (let b = 0; b < match.roster.length; b++) {
       if (currentUser.email === match.roster[b].email) {
-        setJoin("quit");
+        if(match.roster.length ===1){
+          setJoin("Quit and Delete");
+        }else {
+          setJoin("quit");
+        }
       }
     }
   }, []);
@@ -270,9 +274,17 @@ export default function (props) {
   //wrapper
   const handleUpdate = () => {
     if (displayJoin === "join") {
-      handleJoin();
+      if ( match.roster.length >= match.maxPlayers){
+        console.log("roster is full");
+      } else{
+        handleJoin();
+      }
     } else {
-      handleQuit();
+      if ( match.roster.length === 1){
+        console.log("you are the last player in the roster, if you quit the match will be deleted. please confirm");
+      }else{
+        handleQuit();
+      }
     }
     window.location.reload(false);
   };
@@ -472,7 +484,7 @@ export default function (props) {
                 </DialogActions>
               </Dialog>
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={6}>
               <Button
                 variant="contained"
                 color={displayJoin === "join" ? "primary" : "secondary"}
