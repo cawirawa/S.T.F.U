@@ -130,6 +130,7 @@ function IconContainer(props) {
 }
 
 export default function MatchPage(props) {
+  const [userIndex, setUserIndex] = useState(null);
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [openSnack, setOpenSnack] = useState(false);
@@ -182,34 +183,38 @@ export default function MatchPage(props) {
         return response.json();
       })
       .then((res) => {
+        console.log("woiks", res)
+        for(let i=0; i< res.length; i++){
+          console.log(res[i]["email"] )
+          if (res[i]["email"] === currentUser.email){
+            setUserIndex(i);
+          }
+        };
+        console.log("userlist at curr user in list", res[userIndex]);
         setUserList(res.map(info => info.email));
       })
       .catch((error) => {
         console.error('Error: ', error)
       })
+
+    
+    
   }, []);
 
   //get user index in list -- start
-  let userIndex;
-  for(let i=0; i< userList.length; i++){
-    if (userList[i]===currentUser.email){
-      userIndex = i;
-    }
-  };
-  console.log("userlist at curr user in list", userList[userIndex]);
   //get userIndex --End
 
   function handleSubmit() {
-    let ros = []
-    for (let i = 0; i < roster.length; i++) {
-      ros.push({ "email": roster[i] })
-    }
-    // let ros = [userList[userIndex]]
+    // let ros = []
     // for (let i = 0; i < roster.length; i++) {
-    //   if (roster[i]!== currentUser.email){
-    //     ros.push({ "email": roster[i] });
-    //   }
+    //   ros.push({ "email": roster[i] })
     // }
+    let ros = [{"email" : currentUser.email}]
+    for (let i = 0; i < roster.length; i++) {
+      if (roster[i]!== currentUser.email){
+        ros.push({ "email": roster[i] });
+      }
+    }
 
     const createMatchData = {
       name: state.name,
@@ -218,7 +223,7 @@ export default function MatchPage(props) {
       age: state.age,
       lat: state.lat,
       lon: state.lon,
-      time: selectedDate,
+      time: selectedDatpe,
       roster: ros,
       maxPlayers: state.maxPlayers,
       minSkill: state.minSkill,
@@ -302,7 +307,7 @@ export default function MatchPage(props) {
     setOpenSnack(false);
   };
 
-  console.log("state", state);
+  
   return (
     <Fragment>
       <Grid container className={classes.outer}>
