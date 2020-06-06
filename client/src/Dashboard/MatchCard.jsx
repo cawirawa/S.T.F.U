@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { makeStyles } from "@material-ui/styles";
 import {
   Card,
@@ -27,12 +27,7 @@ import ContactSupportIcon from "@material-ui/icons/ContactSupport";
 import sports from "../Constant/Sports";
 import ages from "../Constant/Ages";
 import MapContainer from "../Components/staticMap";
-import ToggleIcon from "material-ui-toggle-icon";
 import { AuthContext } from "../auth/Auth";
-
-const IconButton = require("@material-ui/core/IconButton").default;
-const FavBorder = require("@material-ui/icons/FavoriteBorder").default;
-const Fav = require("@material-ui/icons/Favorite").default;
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -166,16 +161,9 @@ export default function (props) {
 
   const { currentUser } = useContext(AuthContext);
 
-  // console.log("user", currentUser.email)
-
-  // console.log("user", match.roster)
   const handleClose = () => {
     setOpen(false);
   };
-
-  const [state, setState] = useState({
-    favToggle: false,
-  });
 
   var date =
     /-\d\d-\d\d/.exec(match.time)[0] + "/" + /\d\d\d\d/.exec(match.time)[0];
@@ -188,14 +176,14 @@ export default function (props) {
   useEffect(() => {
     for (let b = 0; b < match.roster.length; b++) {
       if (currentUser.email === match.roster[b].email) {
-        if(match.roster.length ===1){
+        if (match.roster.length === 1) {
           setJoin("Quit and Delete");
-        }else {
+        } else {
           setJoin("quit");
         }
       }
     }
-  }, []);
+  }, [currentUser.email, match.roster]);
 
   const handleJoin = () => {
     let userEmail = currentUser.email;
@@ -274,15 +262,17 @@ export default function (props) {
   //wrapper
   const handleUpdate = () => {
     if (displayJoin === "join") {
-      if ( match.roster.length >= match.maxPlayers){
+      if (match.roster.length >= match.maxPlayers) {
         console.log("roster is full");
-      } else{
+      } else {
         handleJoin();
       }
     } else {
-      if ( match.roster.length === 1){
-        console.log("you are the last player in the roster, if you quit the match will be deleted. please confirm");
-      }else{
+      if (match.roster.length === 1) {
+        console.log(
+          "you are the last player in the roster, if you quit the match will be deleted. please confirm"
+        );
+      } else {
         handleQuit();
       }
     }
@@ -301,7 +291,6 @@ export default function (props) {
               <Rating
                 name="minSkill"
                 defaultValue={match.minSkill === 0 ? 1 : match.minSkill}
-                // getLabelText={(value) => customIcons[value].label}
                 IconContainerComponent={IconContainer}
                 className={classes.rating}
                 readOnly
@@ -310,7 +299,6 @@ export default function (props) {
               <Rating
                 name="maxSkill"
                 defaultValue={match.maxSkill === 0 ? 5 : match.maxSkill}
-                // getLabelText={(value) => customIcons[value].label}
                 IconContainerComponent={IconContainer}
                 className={classes.rating}
                 readOnly
@@ -345,7 +333,7 @@ export default function (props) {
                         <label>
                           <b>Name: </b>
                         </label>
-                      </div>{" "}
+                      </div>
                       <div className={classes.matchContent}>{match.name}</div>
                     </div>
                   </Typography>
@@ -355,7 +343,7 @@ export default function (props) {
                         <label>
                           <b>ID: </b>
                         </label>
-                      </div>{" "}
+                      </div>
                       <div className={classes.matchContent}>{match.id}</div>
                     </div>
                   </Typography>
@@ -365,7 +353,7 @@ export default function (props) {
                         <label>
                           <b>Type: </b>
                         </label>
-                      </div>{" "}
+                      </div>
                       <div className={classes.matchContent}>
                         {sports[match.type]}
                       </div>
@@ -377,7 +365,7 @@ export default function (props) {
                         <label>
                           <b>Skill: </b>
                         </label>
-                      </div>{" "}
+                      </div>
                       <div className={classes.matchContent}>
                         {`${match.minSkill + 1}` +
                           " - " +
@@ -391,7 +379,7 @@ export default function (props) {
                         <label>
                           <b>Age: </b>
                         </label>
-                      </div>{" "}
+                      </div>
                       <div className={classes.matchContent}>
                         {ages[match.age]}
                       </div>
@@ -403,7 +391,7 @@ export default function (props) {
                         <label>
                           <b>Location: </b>
                         </label>
-                      </div>{" "}
+                      </div>
                       <div className={classes.matchContent}>{match.city}</div>
                     </div>
                   </Typography>
@@ -413,7 +401,7 @@ export default function (props) {
                         <label>
                           <b>Date: </b>
                         </label>
-                      </div>{" "}
+                      </div>
                       <div className={classes.matchContent}>{date}</div>
                     </div>
                   </Typography>
@@ -423,7 +411,7 @@ export default function (props) {
                         <label>
                           <b>Time: </b>
                         </label>
-                      </div>{" "}
+                      </div>
                       <div className={classes.matchContent}>{time}</div>
                     </div>
                   </Typography>
@@ -433,7 +421,7 @@ export default function (props) {
                         <label>
                           <b>Players: </b>
                         </label>
-                      </div>{" "}
+                      </div>
                       <div className={classes.matchContent}>
                         {match.roster.length}/{match.maxPlayers}
                       </div>
@@ -445,7 +433,7 @@ export default function (props) {
                         <label>
                           <b>Roster: </b>
                         </label>
-                      </div>{" "}
+                      </div>
                       <div className={classes.matchContent}>
                         <ol>
                           {match.roster.map((user) => {

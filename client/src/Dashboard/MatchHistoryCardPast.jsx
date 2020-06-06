@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/styles";
 import {
   Card,
@@ -27,17 +27,11 @@ import ContactSupportIcon from "@material-ui/icons/ContactSupport";
 import sports from "../Constant/Sports";
 import ages from "../Constant/Ages";
 import MapContainer from "../Components/staticMap";
-import ToggleIcon from "material-ui-toggle-icon";
-import { AuthContext } from "../auth/Auth";
-
-const IconButton = require("@material-ui/core/IconButton").default;
-const FavBorder = require("@material-ui/icons/FavoriteBorder").default;
-const Fav = require("@material-ui/icons/Favorite").default;
 
 const useStyles = makeStyles((theme) => ({
   card: {
     display: "flex",
-    margin: 'auto',
+    margin: "auto",
     borderRadius: 16,
     width: "60vw",
     marginBottom: 15,
@@ -159,20 +153,13 @@ export default function (props) {
   const classes = useStyles();
   const match = props.match;
   const [open, setOpen] = React.useState(false);
-  const [displayJoin, setJoin] = React.useState("join");
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  const { currentUser } = useContext(AuthContext);
-
   const handleClose = () => {
     setOpen(false);
   };
-
-  const [state, setState] = useState({
-    favToggle: false,
-  });
 
   var date =
     /-\d\d-\d\d/.exec(match.time)[0] + "/" + /\d\d\d\d/.exec(match.time)[0];
@@ -181,7 +168,6 @@ export default function (props) {
 
   var time = /T\d\d:\d\d/.exec(match.time)[0];
   time = time.replace("T", "");
-
 
   return (
     <Card className={classes.card} elevation={0}>

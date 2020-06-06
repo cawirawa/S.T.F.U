@@ -12,7 +12,7 @@ import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import TimelineIcon from "@material-ui/icons/Timeline";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import firebase from "../base";
+import db from "../base";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -75,7 +75,7 @@ export default function ListItems({ onClick }) {
         <ListItemText
           primary="Log out"
           onClick={() => {
-            firebase.auth().signOut();
+            db.auth().signOut();
           }}
         />
       </ListItem>

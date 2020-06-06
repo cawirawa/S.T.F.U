@@ -1,22 +1,18 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import MatchCard2 from "./MatchCard2";
-import MatchCard3 from "./MatchCard3";
+import MatchCard2 from "./MatchHistoryCardPast";
+import MatchCard3 from "./MatchHistoryCardActive";
 import { Grid } from "@material-ui/core";
 import { AuthContext } from "../auth/Auth";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "../Landing/modules/components/Typography";
 
-const styles = makeStyles((theme) => ({
-}));
+const styles = makeStyles((theme) => ({}));
 
 function MatchHistoryPage(props) {
   const { classes } = props;
   const { currentUser } = useContext(AuthContext);
   const match = props.match;
-  const [state, setState] = useState({
-    curTime: new Date().toLocaleString(),
-  });
 
   var today = new Date();
   var dd = today.getDate();
@@ -31,7 +27,7 @@ function MatchHistoryPage(props) {
   if (mm < 10) {
     mm = "0" + mm;
   }
-  today = mm + '-' + dd + '-' + yyyy;
+  today = mm + "-" + dd + "-" + yyyy;
   const pastMatch = [];
   const activeMatch = [];
   var date;
@@ -79,20 +75,20 @@ function MatchHistoryPage(props) {
     day = day.toString().replace("/", "");
     month = /\d\d/.exec(date);
 
-    if (parseInt(year) >= parseInt(yyyy) && (parseInt(month) > parseInt(mm) || (parseInt(month) == parseInt(mm) && parseInt(day) >= parseInt(dd)))) {
-      //names.push(<p>{match[i].name}</p>)
-      // eslint-disable-next-line no-unused-expressions
+    if (
+      parseInt(year) >= parseInt(yyyy) &&
+      (parseInt(month) > parseInt(mm) ||
+        (parseInt(month) === parseInt(mm) && parseInt(day) >= parseInt(dd)))
+    ) {
       for (let j = 0; j < match[i].roster.length; j++) {
         if (match[i].roster[j].email === currentUser.email) {
           activeMatch.push(match[i]);
-          // activeMatch.push(<MatchCard match={match[i]}/>);
         }
       }
     }
   }
 
   return (
-
     <div className={classes.root}>
       <p>
         Current Date : {today} Current User Email: {currentUser.email}
@@ -107,7 +103,7 @@ function MatchHistoryPage(props) {
         style={{ paddingBottom: 50, paddingTop: 25 }}
       >
         Active Matches
-        </Typography>
+      </Typography>
       <Grid container direction="row" justify="center" alignItems="center">
         {activeMatch.map((match) => {
           return (
@@ -127,15 +123,13 @@ function MatchHistoryPage(props) {
         style={{ paddingBottom: 50, paddingTop: 25 }}
       >
         Past Matches
-        </Typography>
+      </Typography>
       <Grid container direction="row" justify="center" alignItems="center">
         <Grid item xs={12}>
           {pastMatch.map((match) => {
             return (
               <div key={match.id}>
-
                 <MatchCard2 match={match} disabled={true} />
-
               </div>
             );
           })}

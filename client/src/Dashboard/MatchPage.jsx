@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useRef, useEffect, useContext } from "react";
+import React, { Fragment, useState, useEffect, useContext } from "react";
 import { makeStyles } from "@material-ui/styles";
 import {
   Button,
@@ -14,7 +14,7 @@ import {
   CardContent,
   FormGroup,
   Chip,
-  Snackbar
+  Snackbar,
 } from "@material-ui/core";
 import MatchSearch from "./MatchSearch";
 import MatchFilter from "./MatchFilter";
@@ -31,14 +31,17 @@ import {
   KeyboardTimePicker,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
-import GooglePlacesAutocomplete, { geocodeByPlaceId, geocodeByAddress, getLatLng } from 'react-google-places-autocomplete';
-import 'react-google-places-autocomplete/dist/index.min.css';
-import MapContainer from '../Components/GMaps';
-import useForceUpdate from 'use-force-update';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import MuiAlert from '@material-ui/lab/Alert';
+import GooglePlacesAutocomplete, {
+  geocodeByPlaceId,
+  getLatLng,
+} from "react-google-places-autocomplete";
+import "react-google-places-autocomplete/dist/index.min.css";
+import MapContainer from "../Components/GMaps";
+import useForceUpdate from "use-force-update";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import MuiAlert from "@material-ui/lab/Alert";
 import { AuthContext } from "../auth/Auth";
-import { Typography } from '@material-ui/core';
+import { Typography } from "@material-ui/core";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -70,10 +73,10 @@ const useStyles = makeStyles((theme) => ({
   rating: {
     marginLeft: 10,
     top: -3,
-    marginRight: 15
+    marginRight: 15,
   },
   skillLevel: {
-    margin: 7
+    margin: 7,
   },
   root: {
     marginTop: 35,
@@ -97,9 +100,9 @@ const useStyles = makeStyles((theme) => ({
   mapCont: {
     height: 300,
     width: 510,
-    position: 'relative',
-    margin: 7
-  }
+    position: "relative",
+    margin: 7,
+  },
 }));
 
 const customIcons = {
@@ -136,7 +139,6 @@ export default function MatchPage(props) {
   const [open, setOpen] = useState(false);
   const [openCapacitySnack, setOpenCapacitySnack] = useState(false);
   const [openSnack, setOpenSnack] = useState(false);
-  const [createSuccess, setCreateSuccess] = useState(false);
   const { currentUser } = useContext(AuthContext);
   const [state, setState] = useState({
     name: "",
@@ -147,7 +149,7 @@ export default function MatchPage(props) {
     maxPlayers: 1,
     description: "",
     type: "",
-    f_sportsType: '',
+    f_sportsType: "",
     f_skilllevel: 0,
     f_distance: 999999,
     f_time1: false,
@@ -156,8 +158,8 @@ export default function MatchPage(props) {
     f_time4: false,
     f_time5: false,
     lat: 32.8801,
-    lon: -117.2340,
-    address: '',
+    lon: -117.234,
+    address: "",
     roster: [],
   });
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -165,58 +167,45 @@ export default function MatchPage(props) {
   const [roster, setRoster] = useState([]);
   const [successBool, setSuccessBool] = useState(false);
 
-  
   const forceUpdate = useForceUpdate();
   const mapCallbackLatLng = (mapAddress, mapLat, mapLng) => {
     setState({
       ...state,
       address: mapAddress,
       lat: mapLat,
-      lon: mapLng
-    })
-  }
+      lon: mapLng,
+    });
+  };
 
   useEffect(() => {
-    fetch("http://35.163.180.234/api/user/",
-      {
-        method: "GET",
-      }
-    )
-      .then(response => {
+    fetch("http://35.163.180.234/api/user/", {
+      method: "GET",
+    })
+      .then((response) => {
         return response.json();
       })
       .then((res) => {
-        console.log("woiks", res)
-        for(let i=0; i< res.length; i++){
-          console.log(res[i]["email"] )
-          if (res[i]["email"] === currentUser.email){
+        console.log("woiks", res);
+        for (let i = 0; i < res.length; i++) {
+          console.log(res[i]["email"]);
+          if (res[i]["email"] === currentUser.email) {
             setUserIndex(i);
           }
-        };
+        }
         console.log("userlist at curr user in list", res[userIndex]);
-        let userListTemp= res.map(info => info.email);
+        let userListTemp = res.map((info) => info.email);
         setUserList(userListTemp.filter((e) => e !== currentUser.email));
       })
       .catch((error) => {
-        console.error('Error: ', error)
-      })
-
-    
-    
-  }, []);
-
-  //get user index in list -- start
-  //get userIndex --End
+        console.error("Error: ", error);
+      });
+  }, [currentUser.email, userIndex]);
 
   function handleSubmit() {
-    // let ros = []
-    // for (let i = 0; i < roster.length; i++) {
-    //   ros.push({ "email": roster[i] })
-    // }
-    let ros = [{"email" : currentUser.email}]
+    let ros = [{ email: currentUser.email }];
     for (let i = 0; i < roster.length; i++) {
-      if (roster[i]!== currentUser.email){
-        ros.push({ "email": roster[i] });
+      if (roster[i] !== currentUser.email) {
+        ros.push({ email: roster[i] });
       }
     }
 
@@ -231,12 +220,20 @@ export default function MatchPage(props) {
       roster: ros,
       maxPlayers: state.maxPlayers,
       minSkill: state.minSkill,
-      maxSkill: state.maxSkill
-    }
+      maxSkill: state.maxSkill,
+    };
 
-    if (createMatchData.name === "" || createMatchData.description === "" || createMatchData.type === "" || createMatchData.age === "" || createMatchData.maxPlayers === "" || createMatchData.maxSkill === null || createMatchData.minSkill === null || createMatchData.roster > createMatchData.maxPlayers){
+    if (
+      createMatchData.name === "" ||
+      createMatchData.description === "" ||
+      createMatchData.type === "" ||
+      createMatchData.age === "" ||
+      createMatchData.maxPlayers === "" ||
+      createMatchData.maxSkill === null ||
+      createMatchData.minSkill === null ||
+      createMatchData.roster > createMatchData.maxPlayers
+    ) {
       console.log("please check inputs");
-
     } else {
       setSuccessBool(true);
       console.log(createMatchData);
@@ -247,31 +244,31 @@ export default function MatchPage(props) {
         },
         body: JSON.stringify(createMatchData),
       })
-        .then(response => response.json())
-        .then(data => {
-          console.log('Success: ', data);
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Success: ", data);
           handleClose();
-          window.location.reload(false); 
+          window.location.reload(false);
         })
         .catch((error) => {
-          console.error('Error: ', error)
-        })
+          console.error("Error: ", error);
+        });
     }
   }
 
   const handleSelect = (description) => {
     geocodeByPlaceId(description.place_id)
-      .then(results => getLatLng(results[0]))
+      .then((results) => getLatLng(results[0]))
       .then(({ lat, lng }) => {
-        console.log('Lat Lng: ', { lat, lng });
+        console.log("Lat Lng: ", { lat, lng });
         setState({
           ...state,
           lat: lat,
-          lon: lng
+          lon: lng,
         });
         forceUpdate();
-      })
-  }
+      });
+  };
 
   const onTypeSubmit = (name, type) => {
     setState({ ...state, [name]: type });
@@ -310,22 +307,22 @@ export default function MatchPage(props) {
   };
 
   const handleCloseSnackBar = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
 
     setOpenSnack(false);
   };
-  
+
   const handleCloseCapacitySnackBar = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
 
     setOpenCapacitySnack(false);
   };
 
-  console.log("state", state)
+  console.log("state", state);
   return (
     <Fragment>
       <Grid container className={classes.outer}>
@@ -535,23 +532,27 @@ export default function MatchPage(props) {
                         multiple
                         margin="dense"
                         id="tags-outlined"
-                        options={userList.map(option => option)}
+                        options={userList.map((option) => option)}
                         renderTags={(value, getTagProps) =>
                           value.map((option, index) => {
-                            return <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+                            return (
+                              <Chip
+                                variant="outlined"
+                                label={option}
+                                {...getTagProps({ index })}
+                              />
+                            );
                           })
                         }
                         onChange={(event, value) => {
                           setRoster(value);
-                          if (value.length > state.maxPlayers - 1){
+                          if (value.length > state.maxPlayers - 1) {
                             setOpenCapacitySnack(true);
-                          }else{
+                          } else {
                             setOpenCapacitySnack(false);
                           }
-
-                        }
-                        }
-                        renderInput={params => (
+                        }}
+                        renderInput={(params) => (
                           <TextField
                             {...params}
                             variant="outlined"
@@ -561,23 +562,45 @@ export default function MatchPage(props) {
                           />
                         )}
                       />
-                      <Typography> Roster capacity: {roster.length + 1}/{state.maxPlayers}</Typography>
-                      <Typography style={{fontSize:10}}> *Host is by default in the roster </Typography>
-                      <Snackbar open={openCapacitySnack} autoHideDuration={2000} onClose={handleCloseCapacitySnackBar}>
-                        <Alert onClose={handleCloseSnackBar} severity={"warning"}>
+                      <Typography>
+                        {" "}
+                        Roster capacity: {roster.length + 1}/{state.maxPlayers}
+                      </Typography>
+                      <Typography style={{ fontSize: 10 }}>
+                        {" "}
+                        *Host is by default in the roster{" "}
+                      </Typography>
+                      <Snackbar
+                        open={openCapacitySnack}
+                        autoHideDuration={2000}
+                        onClose={handleCloseCapacitySnackBar}
+                      >
+                        <Alert
+                          onClose={handleCloseSnackBar}
+                          severity={"warning"}
+                        >
                           Over roster Capacity
                         </Alert>
                       </Snackbar>
                     </CardContent>
                     <Divider />
                     <DialogActions>
-                      <Button type="submit" color="primary" variant="contained" onClick={handleClickSnackBar}
+                      <Button
+                        type="submit"
+                        color="primary"
+                        variant="contained"
+                        onClick={handleClickSnackBar}
                       >
                         Create
                       </Button>
                       <Snackbar open={openSnack} onClose={handleCloseSnackBar}>
-                        <Alert onClose={handleCloseSnackBar} severity={successBool ? "success" : "error"}>
-                          { successBool ? "Your match is successfully created!" : "Please check if inputs are all properly filled in or roster is withing capacity"}
+                        <Alert
+                          onClose={handleCloseSnackBar}
+                          severity={successBool ? "success" : "error"}
+                        >
+                          {successBool
+                            ? "Your match is successfully created!"
+                            : "Please check if inputs are all properly filled in or roster is withing capacity"}
                         </Alert>
                       </Snackbar>
                       <Button onClick={handleClose} color="primary">

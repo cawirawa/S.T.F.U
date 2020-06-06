@@ -29,7 +29,7 @@ const styles = (theme) => ({
     display: "flex",
   },
   toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
+    paddingRight: 24,
   },
   toolbarIcon: {
     display: "flex",
@@ -116,7 +116,7 @@ class Dashboard extends Component {
     match: [],
     options: [],
   };
-  
+
   componentDidMount() {
     fetch(
       "http://api.ipstack.com/check?access_key=8f0af5c4d95ea86b0ae3944323331ad0",
@@ -132,6 +132,7 @@ class Dashboard extends Component {
         this.setState({ lon: res.longitude });
       })
       .catch((err) => console.error("Problem fetching my IP", err));
+
     fetch("http://35.163.180.234/api/match/", {
       method: "GET",
     })
@@ -145,6 +146,7 @@ class Dashboard extends Component {
   handleDrawerOpen = () => {
     this.setState({ open: true });
   };
+
   handleDrawerClose = () => {
     this.setState({ open: false });
   };
@@ -155,7 +157,6 @@ class Dashboard extends Component {
 
   render() {
     const { classes } = this.props;
-    // const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
 
     return (
       <div className={classes.root}>

@@ -51,9 +51,6 @@ function SignUp({ history }) {
       body: JSON.stringify(data),
     })
       .then((resp) => resp.json())
-      // .then((res) => {
-      //   setToken(res.token);
-      // })
       .catch((error) => {
         console.log("AIUEO");
         console.log(error.message);
@@ -77,7 +74,6 @@ function SignUp({ history }) {
   };
 
   if (currentUser) {
-    // getToken();
     return <Redirect to="/dashboard" token={token} />;
   }
 
@@ -93,10 +89,6 @@ function SignUp({ history }) {
         errors.email = email(values.email, values);
       }
     }
-
-    // if (password != confPassword){
-
-    // }
 
     return errors;
   };

@@ -71,9 +71,8 @@ function ProductHowItWorks(props) {
                   Create or Join Match
                 </Typography>
                 <Typography variant="h5" style={{ textAlign: "justify" }}>
-                  {"From the latest trendy matches to the just-for-fun games"}
                   {
-                    ", break a sweat and meet new friends within the range of your feet."
+                    "From the latest trendy matches to the just-for-fun games, break a sweat and meet new friends within the range of your feet."
                   }
                 </Typography>
               </div>

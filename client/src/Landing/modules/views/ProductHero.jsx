@@ -38,7 +38,6 @@ function ProductHero(props) {
 
   return (
     <ProductHeroLayout backgroundClassName={classes.background}>
-      {/* Increase the network loading priority of the background image. */}
       <img alt="" style={{ display: "none" }} src={backgroundImage} />
       <Typography color="inherit" align="center" variant="h2" marked="center">
         SPORTS TEAMMATES FOR U

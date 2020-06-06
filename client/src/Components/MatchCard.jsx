@@ -50,7 +50,6 @@ const styles = (theme) => ({
   },
 });
 
-// https://developers.google.com/maps/documentation/geocoding/intro
 class MatchCard extends Component {
   state = {
     redirect: false,
@@ -143,27 +142,21 @@ class MatchCard extends Component {
         <Card className={classes.card}>
           <h3 className={classes.matchName}>{match.name}</h3>
           <label>
-            {" "}
-            <b>Type:</b> {sports[match.type]}{" "}
+            <b>Type:</b> {sports[match.type]}
           </label>
           <label>
-            {" "}
-            <b>Location:</b> {match.city}{" "}
+            <b>Location:</b> {match.city}
           </label>
           <label>
-            {" "}
-            <b>Date:</b> {time}{" "}
+            <b>Date:</b> {time}
           </label>
           <label>
-            {" "}
-            <b>Players:</b> {match.roster.length}/{match.maxPlayers}{" "}
+            <b>Players:</b> {match.roster.length}/{match.maxPlayers}
           </label>
           <div>
-            {" "}
             <label>
-              {" "}
               <b>Host:</b>
-            </label>{" "}
+            </label>
             <label>{match.roster[0].first_name}</label>
           </div>
         </Card>

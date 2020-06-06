@@ -1,18 +1,18 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import db from "../base";
 
 export const AuthContext = React.createContext();
 
-export const AuthProvider = ({children}) => {
-    const [currentUser, setCurrentUser] = useState(null);
+export const AuthProvider = ({ children }) => {
+  const [currentUser, setCurrentUser] = useState(null);
 
-    useEffect(() => {
-        db.auth().onAuthStateChanged(setCurrentUser);
-    }, []);
+  useEffect(() => {
+    db.auth().onAuthStateChanged(setCurrentUser);
+  }, []);
 
-    return(
-        <AuthContext.Provider value={{currentUser}}>
-            {children}
-        </AuthContext.Provider>
-    );
+  return (
+    <AuthContext.Provider value={{ currentUser }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };

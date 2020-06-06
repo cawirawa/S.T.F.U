@@ -1,8 +1,6 @@
 import React, { Fragment } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import { FormLabel, Typography } from "@material-ui/core";
-import MatchSearch from "./MatchSearch";
-import { Form } from "react-final-form";
 import Rating from "@material-ui/lab/Rating";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
@@ -26,15 +24,6 @@ import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-
-const StyledRating = withStyles({
-  iconFilled: {
-    color: "#ff6d75",
-  },
-  iconHover: {
-    color: "#ff3d47",
-  },
-})(Rating);
 
 const customIcons = {
   1: {
@@ -85,12 +74,10 @@ const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: 10,
     margin: "0 auto",
+    width: 250,
   },
   icon: {
     marginRight: 2,
-  },
-  root: {
-    width: 250,
   },
   input: {
     width: 42,
@@ -164,7 +151,7 @@ export default function MatchFilter(props) {
   };
 
   const handleDistanceChange = (name) => (event, newValue) => {
-    setState({ ...state, [name]: newValue, previous:newValue});
+    setState({ ...state, [name]: newValue, previous: newValue });
     props.onDist(name, newValue);
   };
 
@@ -175,11 +162,11 @@ export default function MatchFilter(props) {
 
   const handleLevelChange = (name) => (event, newValue) => {
     if (
-      newValue != 1 &&
-      newValue != 2 &&
-      newValue != 3 &&
-      newValue != 4 &&
-      newValue != 5
+      newValue !== 1 &&
+      newValue !== 2 &&
+      newValue !== 3 &&
+      newValue !== 4 &&
+      newValue !== 5
     ) {
       setState({ ...state, [name]: 0 });
       props.onSkill(name, 0);

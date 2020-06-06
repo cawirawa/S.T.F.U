@@ -37,7 +37,6 @@ class Home extends React.Component {
             lon: res.longitude,
           },
         });
-        // fetch.log("http://api.ipstack.com/check?access_key=8f0af5c4d95ea86b0ae3944323331ad0")
       })
       .catch((err) => console.error("Problem fetching my IP", err))
       .then((res) => {

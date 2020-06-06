@@ -15,7 +15,6 @@ const styles = (theme) => ({
     backgroundPosition: "center",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
-    // backgroundSize: '100% 100%',
     padding: "5%",
     display: "stretch",
   },
