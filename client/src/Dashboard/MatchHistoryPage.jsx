@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import MatchCard2 from "./MatchHistoryCardPast";
-import MatchCard3 from "./MatchHistoryCardActive";
+import MatchHistoryCardPast from "./MatchHistoryCardPast";
+import MatchHistoryCardActive from "./MatchHistoryCardActive";
 import { Grid } from "@material-ui/core";
 import { AuthContext } from "../auth/Auth";
 import { withStyles } from "@material-ui/core/styles";
@@ -108,7 +108,7 @@ function MatchHistoryPage(props) {
         {activeMatch.map((match) => {
           return (
             <div key={match.id}>
-              <MatchCard3 match={match} disabled={true} />
+              <MatchHistoryCardActive match={match} disabled={true} />
             </div>
           );
         })}
@@ -129,7 +129,7 @@ function MatchHistoryPage(props) {
           {pastMatch.map((match) => {
             return (
               <div key={match.id}>
-                <MatchCard2 match={match} disabled={true} />
+                <MatchHistoryCardPast match={match} disabled={true} />
               </div>
             );
           })}
