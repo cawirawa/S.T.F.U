@@ -270,11 +270,21 @@ export default function (props) {
   //wrapper
   const handleUpdate = () => {
     if (displayJoin === "join") {
-      handleJoin();
+      if ( match.roster.length >= match.maxPlayers){
+        console.log("roster is full");
+      } else{
+        handleJoin();
+        window.location.reload(false);
+      }
     } else {
-      handleQuit();
+      if ( match.roster.length === 1){
+        console.log("you are the last player in the roster, if you quit the match will be deleted. please confirm");
+      }else{
+        handleQuit();
+        window.location.reload(false);
+      }
     }
-    window.location.reload(false);
+
   };
 
   return (
@@ -480,21 +490,6 @@ export default function (props) {
               >
                 {displayJoin}
               </Button>
-            </Grid>
-            <Grid item xs={4}>
-              <IconButton onClick={() => setState({ on: !state.on })}>
-                <ToggleIcon
-                  on={state.on}
-                  onIcon={<Fav color="secondary" />}
-                  offIcon={<FavBorder />}
-                />
-              </IconButton>
-              {/* <Button>
-                <ShareIcon color="secondary" className={classes.icon} />
-              </Button>
-              <Button>
-                <FavoriteIcon color="secondary" className={classes.icon} />
-              </Button> */}
             </Grid>
           </Grid>
 
