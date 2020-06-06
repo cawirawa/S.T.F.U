@@ -223,7 +223,7 @@ export default function MatchPage(props) {
       age: state.age,
       lat: state.lat,
       lon: state.lon,
-      time: selectedDatpe,
+      time: selectedDate,
       roster: ros,
       maxPlayers: state.maxPlayers,
       minSkill: state.minSkill,
