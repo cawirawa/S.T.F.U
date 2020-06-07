@@ -77,7 +77,7 @@ class MatchCard extends Component {
 
   handleClose = () => {
     this.setState({ open: false });
-    window.location.reload();
+    window.location.reload(false);
   };
 
   render() {

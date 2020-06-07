@@ -108,6 +108,10 @@ const styles = (theme) => ({
 });
 
 class Dashboard extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   state = {
     open: true,
     content: "1",
@@ -157,7 +161,6 @@ class Dashboard extends Component {
 
   render() {
     const { classes } = this.props;
-
     return (
       <div className={classes.root}>
         <CssBaseline />
