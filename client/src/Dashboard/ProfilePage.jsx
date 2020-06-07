@@ -30,13 +30,6 @@ import SentimentSatisfiedAltIcon from "@material-ui/icons/SentimentSatisfiedAltO
 import SentimentVerySatisfiedIcon from "@material-ui/icons/SentimentVerySatisfied";
 import SaveIcon from "@material-ui/icons/Save";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import GooglePlacesAutocomplete, {
-  geocodeByPlaceId,
-  geocodeByAddress,
-  getLatLng,
-} from "react-google-places-autocomplete";
-import "react-google-places-autocomplete/dist/index.min.css";
-import MapContainer from "../Components/GMaps";
 import { withStyles } from "@material-ui/core/styles";
 import db from "../base";
 
@@ -111,37 +104,9 @@ function IconContainer(props) {
 }
 
 class ProfilePage extends React.Component {
-  state = {
-    output: {
-      firstName: "",
-      username: "",
-      email: "",
-      phone: "",
-      lat: "",
-      lon: "",
-      age: "",
-      bio: "",
-      profile_image: null,
-      sports: [],
-      skill: [3, 0, 0, 0, 0],
-    },
-
-    address: "",
-    mainState: 0,
-    selectedFile: null,
-    currentUser: db.auth().currentUser,
-    imageUploaded: 0,
-    sport: {
-      SC: true,
-      BK: false,
-      BS: false,
-      VB: false,
-      FB: false,
-    },
-  };
   constructor(props) {
     super(props);
-    this.setState({
+    this.state ={
       output: {
         firstName: "",
         username: "",
@@ -152,8 +117,8 @@ class ProfilePage extends React.Component {
         age: "",
         bio: "",
         profile_image: null,
-        sports: [],
-        skill: [0, 0, 0, 0, 0],
+        sports: [false, false, false, false, false],
+        skill: [1, 1, 1, 1, 1],
       },
 
       address: "",
@@ -161,33 +126,7 @@ class ProfilePage extends React.Component {
       selectedFile: null,
       currentUser: db.auth().currentUser,
       imageUploaded: 0,
-      sport: {
-        SC: false,
-        BK: false,
-        BS: false,
-        VB: false,
-        FB: false,
-      },
-    });
-  }
-
-  mapCallbackLatLng(mapAddress, mapLat, mapLng) {
-    this.setState({
-      address: mapAddress,
-      lat: mapLat,
-      lon: mapLng,
-    });
-  }
-
-  handleSelect(description) {
-    geocodeByPlaceId(description.place_id)
-      .then((results) => getLatLng(results[0]))
-      .then(({ lat, lng }) => {
-        this.setState({
-          lat: lat,
-          lon: lng,
-        });
-      });
+    };
   }
 
   componentDidMount() {
@@ -256,13 +195,13 @@ class ProfilePage extends React.Component {
     console.log(this.state.output.skill[1]);
     console.log(this.state.selectedFile);
     //user select at least 1 sport
-    if (
-      this.state.sport.SC ||
-      this.state.sport.SC ||
-      this.state.sport.SC ||
-      this.state.sport.SC ||
-      this.state.sport.SC
-    ) {
+    // if (
+    //   this.state.sport.SC ||
+    //   this.state.sport.SC ||
+    //   this.state.sport.SC ||
+    //   this.state.sport.SC ||
+    //   this.state.sport.SC
+    // ) {
       fetch("http://35.163.180.234/api/profile/update_profile/", {
         method: "POST",
         headers: {
@@ -293,10 +232,11 @@ class ProfilePage extends React.Component {
           console.error("Error: ", error);
         });
       // }
-    } else {
-      alert("You must select at least 1 sport");
-    }
-  }
+    } 
+    // else {
+    //   alert("You must select at least 1 sport");
+    // }
+  // }
 
   handleUploadClick(event) {
     var file = event.target.files[0];
@@ -320,14 +260,87 @@ class ProfilePage extends React.Component {
     const errors = required(["firstName", "age"], values);
     return errors;
   }
-  handleCheck = (event) => {
-    let name = event.target.name;
-    let value = event.target.checked;
-    this.setState((prev) => {
-      prev["sport"][name] = value;
-      return prev;
-    });
-  };
+  // handleCheck = (event) => {
+  //   let name = event.target.name;
+  //   let value = event.target.checked;
+  //   this.setState((prev) => {
+  //     prev["sport"][name] = value;
+  //     return prev;
+  //   });
+  // };
+
+  handleSportSC = (event) => {
+    this.setState({
+      ...this.state.output,
+      [this.state.output.sports[0]]: event.target.checked
+    })
+    console.log('----stateeee', this.state)
+  }
+
+  handleSportBK = (event) => {
+    this.setState({
+      ...this.state.output,
+      [this.state.output.sports[1]]: event.target.checked
+    })
+  }
+
+  handleSportFB = (event) => {
+    this.setState({
+      ...this.state.output,
+      [this.state.output.sports[2]]: event.target.checked
+    })
+  }
+
+  handleSportVB = (event) => {
+    this.setState({
+      ...this.state.output,
+      [this.state.output.sports[3]]: event.target.checked
+    })
+  }
+
+  handleSportBS = (event) => {
+    this.setState({
+      ...this.state.output,
+      [this.state.output.sports[4]]: event.target.checked
+    })
+  }
+
+  handleSkillSC = (event) => {
+    this.setState({
+      ...this.state.output,
+      [this.state.output.skill[0]]: event.target.value
+    })
+  }
+
+  handleSkillBK = (event) => {
+    this.setState({
+      ...this.state.output,
+      [this.state.output.skill[1]]: event.target.value
+    })
+  }
+
+  handleSkillFB = (event) => {
+    this.setState({
+      ...this.state.output,
+      [this.state.output.skill[2]]: event.target.value
+    })
+  }
+
+  handleSkillVB = (event) => {
+    this.setState({
+      ...this.state.output,
+      [this.state.output.skill[3]]: event.target.value
+    })
+  }
+
+  handleSkillBS = (event) => {
+    this.setState({
+      ...this.state.output,
+      [this.state.output.skill[4]]: event.target.value
+    })
+  }
+
+  
 
   render() {
     const { classes } = this.props;
@@ -500,21 +513,6 @@ class ProfilePage extends React.Component {
                       <MenuItem value="5">30+</MenuItem>
                     </TextField>
                   </Grid>
-                  {/* <Grid item xs={12}>
-                    <div className={classes.gmap}>
-                      <GooglePlacesAutocomplete
-                        initialValue={this.state.address}
-                        placeholder={this.state.address}
-                        onSelect={this.handleSelect}
-                      />
-                    </div>
-                    <div className={classes.mapCont}>
-                      <MapContainer
-                        center={{ lat: this.state.lat, lng: this.state.lon }}
-                        callback={this.mapCallbackLatLng}
-                      />
-                    </div>
-                  </Grid> */}
                   <Grid item xs={12}>
                     <Grid container>
                       <FormControl
@@ -529,8 +527,8 @@ class ProfilePage extends React.Component {
                             control={
                               <Checkbox
                                 color="primary"
-                                checked={this.state.sport.SC}
-                                onChange={this.handleCheck}
+                                checked={this.state.output.sports[0]}
+                                onChange={this.handleSportSC}
                                 name="SC"
                               />
                             }
@@ -539,6 +537,8 @@ class ProfilePage extends React.Component {
                           <Rating
                             name="SC"
                             defaultValue={this.state.output.skill[0]}
+                            // value={this.state.output.skill[0]}
+                            onChange={this.handleSkillSC}
                             getLabelText={(value) => customIcons[value].label}
                             IconContainerComponent={IconContainer}
                             className={classes.rating}
@@ -549,8 +549,8 @@ class ProfilePage extends React.Component {
                             control={
                               <Checkbox
                                 color="primary"
-                                checked={this.state.sport.BK}
-                                onChange={this.handleCheck}
+                                checked={this.state.output.sports[1]}
+                                onChange={this.handleSportBK}
                                 name="BK"
                               />
                             }
@@ -559,6 +559,8 @@ class ProfilePage extends React.Component {
                           <Rating
                             name="BK"
                             defaultValue={this.state.output.skill[1]}
+                            // value={this.state.output.skill[1]}
+                            onChange={this.handleSkillBK}
                             getLabelText={(value) => customIcons[value].label}
                             IconContainerComponent={IconContainer}
                             className={classes.rating}
@@ -569,8 +571,8 @@ class ProfilePage extends React.Component {
                             control={
                               <Checkbox
                                 color="primary"
-                                checked={this.state.sport.FB}
-                                onChange={this.handleCheck}
+                                checked={this.state.output.sports[2]}
+                                onChange={this.handleSportFB}
                                 name="FB"
                               />
                             }
@@ -578,7 +580,9 @@ class ProfilePage extends React.Component {
                           />
                           <Rating
                             name="FB"
-                            defaultValue={this.state.output.skill[3]}
+                            defaultValue={this.state.output.skill[2]}
+                            // value={this.state.output.skill[2]}
+                            onChange={this.handleSkillFB}
                             getLabelText={(value) => customIcons[value].label}
                             IconContainerComponent={IconContainer}
                             className={classes.rating}
@@ -589,8 +593,8 @@ class ProfilePage extends React.Component {
                             control={
                               <Checkbox
                                 color="primary"
-                                checked={this.state.sport.VB}
-                                onChange={this.handleCheck}
+                                checked={this.state.output.sports[3]}
+                                onChange={this.handleSportVB}
                                 name="VB"
                               />
                             }
@@ -598,7 +602,9 @@ class ProfilePage extends React.Component {
                           />
                           <Rating
                             name="VB"
-                            defaultValue={this.state.output.skill[4]}
+                            defaultValue={this.state.output.skill[3]}
+                            // value={this.state.output.skill[3]}
+                            onChange={this.handleSkillVB}
                             getLabelText={(value) => customIcons[value].label}
                             IconContainerComponent={IconContainer}
                             className={classes.rating}
@@ -609,8 +615,8 @@ class ProfilePage extends React.Component {
                             control={
                               <Checkbox
                                 color="primary"
-                                checked={this.state.sport.BS}
-                                onChange={this.handleCheck}
+                                checked={this.state.output.sports[4]}
+                                onChange={this.handleSpor}
                                 name="BS"
                               />
                             }
@@ -618,7 +624,9 @@ class ProfilePage extends React.Component {
                           />
                           <Rating
                             name="BS"
-                            defaultValue={this.state.output.skill[2]}
+                            defaultValue={this.state.output.skill[4]}
+                            value={this.state.output.skill[4]}
+                            // onChange={this.handleSkillBS}
                             getLabelText={(value) => customIcons[value].label}
                             IconContainerComponent={IconContainer}
                             className={classes.rating}
