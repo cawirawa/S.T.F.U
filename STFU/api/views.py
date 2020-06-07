@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
+from rest_framework.parsers import FileUploadParser
 from .models import Match, Profile, User
 from .serializer import MatchSerializer, ProfileSerializer, UserSerializer
 from django.contrib.gis.geos import *
@@ -11,6 +12,7 @@ from django.contrib.gis.measure import D
 from django.contrib.gis.db.models.functions import Distance
 from geopy.geocoders import Nominatim
 from datetime import *
+from .forms import *
 
 class MatchViewSet(viewsets.ModelViewSet):
     queryset = Match.objects.all()
@@ -61,6 +63,20 @@ class MatchViewSet(viewsets.ModelViewSet):
         else:
             response = {'message': 'Please provide all attributes!'}
             return Response(response, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=['POST'])
+    def delete_match(self,request,pk=None):
+        if 'id' in request.data:
+            try:
+                obj = Match.objects.get(id=request.data['id'])
+            except Match.DoesNotExist:
+                response = {'message': 'Match does not exist!'}
+                return Response(response, status=status.HTTP_404_NOT_FOUND)
+            obj.delete()
+            response = {'message': 'Successfully deleted match', 'result': request.data['id']}
+            return Response(response, status=status.HTTP_200_OK)  
+
+
 
     @action(detail=False, methods=['POST'])
     def update_match(self, request, pk=None):
@@ -142,6 +158,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
     serializer_class = ProfileSerializer
     authentication_classes = (TokenAuthentication, )
     permission_classes = (permissions.AllowAny, )
+    parser_class = (FileUploadParser,)
 
     @action(detail=False, methods=['GET'])
     def get_profile(self, request, pk=None):
@@ -206,55 +223,52 @@ class ProfileViewSet(viewsets.ModelViewSet):
             response = {'message': 'Please provide all attributes!'}
             return Response(response, status=status.HTTP_400_BAD_REQUEST)
             
-    @action(detail=False, methods=['POST'])
+    @action(detail=False, methods=['POST'], permission_classes=[permissions.AllowAny])
     def update_profile(self, request, pk=None):
-        if 'email' in request.data and 'name' in request.data and 'phone' in request.data and 'age' in request.data and 'lat' in request.data and 'lon' in request.data and 'sports' in request.data and 'bio' in request.data  and 'skill' in request.data and 'favoriteMatch' in request.data:
-            try: 
+        if 'email' in request.data and 'name' in request.data and 'phone' in request.data and 'age' in request.data and 'lat' in request.data and 'lon' in request.data and 'sports' in request.data and 'bio' in request.data  and 'skill' in request.data:
+            try:
                 user = User.objects.get(email=request.data['email'])
-                profile = Profile.objects.get(user=user)
-                user.first_name = request.data['name']
-                profile.phone = request.data['phone']
-                profile.age = request.data['age']
-                profile.lon = request.data['lon']
-                profile.lat = request.data['lat']
-                profile.sports = request.data['sports']
-                profile.bio = request.data['bio']
-                profile.profile_image = request.FILES['profile_image']
-                profile.skill = request.data['skill']
-                profile.favoriteMatch = request.data['favoriteMatch']
-                user.save()
-                profile.save()
-                serializer = ProfileSerializer(profile, many=False)
-                response = {'message': 'Successfully updated profile with profile image', 'result': serializer.data}
-                return Response(response, status=status.HTTP_200_OK)  
-
             except User.DoesNotExist:
                 response = {'message': 'User does not exist!'}
                 return Response(response, status=status.HTTP_400_BAD_REQUEST)
-        elif 'email' in request.data and 'phone' in request.data and 'age' in request.data and 'zip_code' in request.data and 'sports' in request.data and 'bio' in request.data:
-            try: 
-                user = User.objects.get(email=request.data['email'])
-                profile = Profile.objects.get(user=user)
-                profile.phone = request.data['phone']
-                profile.age = request.data['age']
-                profile.lat = request.data['lat']
-                profile.lon = request.data['lon']
-                profile.sports = request.data['sports']
-                profile.bio = request.data['bio']
-                profile.save()
-                serializer = ProfileSerializer(obj, many=False)
-                response = {'message': 'Successfully updated profile', 'result': serializer.data}
-                return Response(response, status=status.HTTP_200_OK)  
+            profile = Profile.objects.get(user=user)
+            user.first_name = request.data['name']
+            profile.phone = request.data['phone']
+            profile.age = request.data['age']
+            profile.lon = request.data['lon']
+            profile.lat = request.data['lat']
+            profile.sports = request.data['sports']
+            profile.bio = request.data['bio']
+            profile.skill = request.data['skill']
+            user.save()
+            profile.save()
+            serializer = ProfileSerializer(profile, many=False)
+            response = {'message': 'Successfully updated profile', 'result': serializer.data}
+            return Response(response, status=status.HTTP_200_OK)  
+        else:
+            response = {'message': 'Please provide all attributes!'}
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)    
 
+    @action(detail=False, methods=['POST'], permission_classes=[permissions.AllowAny])
+    def update_image(self, request, pk=None):
+        data = request.data
+        if "email" in data:
+            try:
+                user = User.objects.get(email=data.get("email"))
             except User.DoesNotExist:
                 response = {'message': 'User does not exist!'}
                 return Response(response, status=status.HTTP_400_BAD_REQUEST)
+            profile = Profile.objects.get(user=user)
+            profile.profile_image = data.get("profile_image")
+            profile.save()
+            serializer = ProfileSerializer(profile, many=False)
+            response = {'message': 'Successfully updated profile image', 'result': serializer.data}
+            return Response(response, status=status.HTTP_200_OK)  
         else:
             response = {'message': 'Please provide all attributes!'}
             return Response(response, status=status.HTTP_400_BAD_REQUEST)    
 
 
-       
 
 
 class UserViewSet(viewsets.ModelViewSet):
