@@ -230,7 +230,7 @@ export default function MatchPage(props) {
       createMatchData.minSkill === null ||
       createMatchData.roster.length > createMatchData.maxPlayers
     ) {
-      alert("Please check inputs");
+      setSuccessBool(false);
     } else {
       setSuccessBool(true);
       fetch("http://35.163.180.234/api/match/create_match/", {
@@ -594,7 +594,7 @@ export default function MatchPage(props) {
                         >
                           {successBool
                             ? "Your match is successfully created!"
-                            : "Please check if inputs are all properly filled in or roster is withing capacity"}
+                            : "Please check if inputs are all properly filled in or roster is within capacity"}
                         </Alert>
                       </Snackbar>
                       <Button onClick={handleClose} color="primary">
