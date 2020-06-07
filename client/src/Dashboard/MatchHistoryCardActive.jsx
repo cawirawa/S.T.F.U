@@ -283,10 +283,9 @@ export default function (props) {
       }
     } else {
       if (match.roster.length === 1) {
+        console.log("you are the last player in the roster, if you quit the match will be deleted. please confirm");
         handleDelete();
-        // alert(
-        //   "You are the last player in the roster, if you quit the match will be deleted. please confirm"
-        // );
+        window.location.reload(false);
       } else {
         handleQuit();
         window.location.reload(false);
