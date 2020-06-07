@@ -256,6 +256,23 @@ export default function (props) {
       });
   };
 
+  const handleDelete = () => {
+    fetch("http://35.163.180.234/api/match/delete_match/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({id : match.id}),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success: ", data);
+      })
+      .catch((error) => {
+        console.error("Error: ", error);
+      });
+  };
+
   const handleUpdate = () => {
     if (displayJoin === "join") {
       if (match.roster.length >= match.maxPlayers) {
@@ -266,9 +283,10 @@ export default function (props) {
       }
     } else {
       if (match.roster.length === 1) {
-        alert(
-          "You are the last player in the roster, if you quit the match will be deleted. please confirm"
-        );
+        handleDelete();
+        // alert(
+        //   "You are the last player in the roster, if you quit the match will be deleted. please confirm"
+        // );
       } else {
         handleQuit();
         window.location.reload(false);
