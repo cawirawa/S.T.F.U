@@ -51,7 +51,6 @@ function SignUp({ history }) {
     })
       .then((resp) => resp.json())
       .catch((error) => {
-        console.log("AIUEO");
         console.log(error.message);
       });
   };
@@ -90,7 +89,6 @@ function SignUp({ history }) {
       db.auth()
         .createUserWithEmailAndPassword(Email.value, Password.value)
         .catch((error) => {
-          console.log(error);
           alert(
             "Please check on the following conditions: \nAll fields are filled out \nEmail is properly formatted \nPassword matches and at least six characters"
           );

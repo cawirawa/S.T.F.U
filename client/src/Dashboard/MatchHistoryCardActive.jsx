@@ -259,14 +259,14 @@ export default function (props) {
   const handleUpdate = () => {
     if (displayJoin === "join") {
       if (match.roster.length >= match.maxPlayers) {
-        console.log("Roster is full");
+        alert("Roster is full");
       } else {
         handleJoin();
         window.location.reload(false);
       }
     } else {
       if (match.roster.length === 1) {
-        console.log(
+        alert(
           "You are the last player in the roster, if you quit the match will be deleted. please confirm"
         );
       } else {

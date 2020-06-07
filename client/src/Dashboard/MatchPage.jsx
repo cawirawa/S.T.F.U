@@ -185,14 +185,11 @@ export default function MatchPage(props) {
         return response.json();
       })
       .then((res) => {
-        console.log("woiks", res);
         for (let i = 0; i < res.length; i++) {
-          console.log(res[i]["email"]);
           if (res[i]["email"] === currentUser.email) {
             setUserIndex(i);
           }
         }
-        console.log("userlist at curr user in list", res[userIndex]);
         let userListTemp = res.map((info) => info.email);
         setUserList(userListTemp.filter((e) => e !== currentUser.email));
       })
@@ -233,10 +230,9 @@ export default function MatchPage(props) {
       createMatchData.minSkill === null ||
       createMatchData.roster.length > createMatchData.maxPlayers
     ) {
-      console.log("please check inputs");
+      alert("Please check inputs");
     } else {
       setSuccessBool(true);
-      console.log(createMatchData);
       fetch("http://35.163.180.234/api/match/create_match/", {
         method: "POST",
         headers: {
@@ -260,7 +256,6 @@ export default function MatchPage(props) {
     geocodeByPlaceId(description.place_id)
       .then((results) => getLatLng(results[0]))
       .then(({ lat, lng }) => {
-        console.log("Lat Lng: ", { lat, lng });
         setState({
           ...state,
           lat: lat,
@@ -322,7 +317,6 @@ export default function MatchPage(props) {
     setOpenCapacitySnack(false);
   };
 
-  console.log("state", state);
   return (
     <Fragment>
       <Grid container className={classes.outer}>
