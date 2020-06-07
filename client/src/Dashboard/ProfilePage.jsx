@@ -221,6 +221,8 @@ class ProfilePage extends React.Component {
     form.append("profile_image", this.state.selectedFile);
     console.log("image: ", this.state.selectedFile);
 
+
+    if (this.state.sports[0] || this.state.sports[1] || this.state.sports[2] || this.state.sports[3] || this.state.sports[4]){
     console.log("reqProfile", requestProfileData);
     fetch("http://35.163.180.234/api/profile/update_profile/", {
       method: "POST",
@@ -236,6 +238,12 @@ class ProfilePage extends React.Component {
       .catch((error) => {
         console.error("Error: ", error);
       });
+
+    }
+    else{
+      alert("You must select at least 1 sport");
+    }
+
     fetch("http://35.163.180.234/api/profile/update_image/", {
       method: "POST",
       body: form,
