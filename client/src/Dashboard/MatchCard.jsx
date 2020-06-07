@@ -161,6 +161,12 @@ export default function (props) {
 
   const { currentUser } = useContext(AuthContext);
 
+  useEffect(() => {
+    if (match.roster.length === 0){
+      handleDelete();
+    }
+  }, [])
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -291,7 +297,7 @@ export default function (props) {
       }else{
         handleQuit();
         window.location.reload(false);
-      }
+      } 
     }
   };
 
