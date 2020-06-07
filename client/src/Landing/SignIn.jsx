@@ -170,7 +170,7 @@ function SignIn({ history }) {
         >
           <DialogContent>
             <DialogContentText id="alert-dialog-slide-description">
-              Please make sure there is an account associatedwith that email.
+              Please make sure there is an account associated with that email.
               Otherwise, please input the correct password (case matters).
             </DialogContentText>
           </DialogContent>
