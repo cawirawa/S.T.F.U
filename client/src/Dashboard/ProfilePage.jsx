@@ -1,6 +1,4 @@
-import React, { useState, Fragment, useContext, useEffect } from "react";
-import clsx from "clsx";
-import { makeStyles } from "@material-ui/styles";
+import React, { Fragment } from "react";
 import {
   Card,
   CardHeader,
@@ -21,7 +19,6 @@ import {
 } from "@material-ui/core";
 import { TextField } from "mui-rff";
 import { Form } from "react-final-form";
-import { email, required } from "../Landing/modules/form/validation";
 import Rating from "@material-ui/lab/Rating";
 import SentimentVeryDissatisfiedIcon from "@material-ui/icons/SentimentVeryDissatisfied";
 import SentimentDissatisfiedIcon from "@material-ui/icons/SentimentDissatisfied";
@@ -130,7 +127,6 @@ class ProfilePage extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.state.currentUser);
     fetch("http://35.163.180.234/api/profile/get_profile/", {
       method: "GET",
       headers: {
@@ -142,21 +138,21 @@ class ProfilePage extends React.Component {
       })
       .then((res) => {
         console.log(res);
-        let boolSports = [false, false, false, false, false]
+        let boolSports = [false, false, false, false, false];
         if (res.result.sports.includes("SC")) {
-          boolSports[0] = true
+          boolSports[0] = true;
         }
         if (res.result.sports.includes("BK")) {
-          boolSports[1] = true
+          boolSports[1] = true;
         }
         if (res.result.sports.includes("FB")) {
-          boolSports[2] = true
+          boolSports[2] = true;
         }
         if (res.result.sports.includes("VB")) {
-          boolSports[3] = true
+          boolSports[3] = true;
         }
         if (res.result.sports.includes("BS")) {
-          boolSports[4] = true
+          boolSports[4] = true;
         }
 
         this.setState({
@@ -174,9 +170,7 @@ class ProfilePage extends React.Component {
           sports: boolSports,
           sportsArray: res.result.sports,
           skill:
-            res.result.skill.length === 0
-              ? [1, 1, 1, 1, 1]
-              : res.result.skill,
+            res.result.skill.length === 0 ? [1, 1, 1, 1, 1] : res.result.skill,
         });
         console.log("state: ", this.state);
       })
@@ -186,22 +180,21 @@ class ProfilePage extends React.Component {
   }
 
   handleSubmit() {
-    console.log(this.state);
-    let sportsArr = []
+    let sportsArr = [];
     if (!!this.state.sports[0]) {
-      sportsArr.push("SC")
+      sportsArr.push("SC");
     }
     if (!!this.state.sports[1]) {
-      sportsArr.push("BK")
+      sportsArr.push("BK");
     }
     if (!!this.state.sports[2]) {
-      sportsArr.push("FB")
+      sportsArr.push("FB");
     }
     if (!!this.state.sports[3]) {
-      sportsArr.push("VB")
+      sportsArr.push("VB");
     }
     if (!!this.state.sports[4]) {
-      sportsArr.push("BS")
+      sportsArr.push("BS");
     }
 
     const requestProfileData = {
@@ -216,151 +209,138 @@ class ProfilePage extends React.Component {
       bio: this.state.output.bio,
       skill: this.state.skill,
     };
+
     const form = new FormData();
     form.set("email", this.state.output.email);
     form.append("profile_image", this.state.selectedFile);
-    console.log("image: ", this.state.selectedFile);
 
-
-    if (this.state.sports[0] || this.state.sports[1] || this.state.sports[2] || this.state.sports[3] || this.state.sports[4]){
-    console.log("reqProfile", requestProfileData);
-    fetch("http://35.163.180.234/api/profile/update_profile/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestProfileData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Success: ", data);
+    if (
+      this.state.sports[0] ||
+      this.state.sports[1] ||
+      this.state.sports[2] ||
+      this.state.sports[3] ||
+      this.state.sports[4]
+    ) {
+      fetch("http://35.163.180.234/api/profile/update_profile/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestProfileData),
       })
-      .catch((error) => {
-        console.error("Error: ", error);
-      });
-
-    }
-    else{
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Success: ", data);
+        })
+        .catch((error) => {
+          console.error("Error: ", error);
+        });
+    } else {
       alert("You must select at least 1 sport");
     }
 
-    fetch("http://35.163.180.234/api/profile/update_image/", {
-      method: "POST",
-      body: form,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Success: ", data);
-        window.location.reload(false);
+    if (this.state.selectedFile) {
+      fetch("http://35.163.180.234/api/profile/update_image/", {
+        method: "POST",
+        body: form,
       })
-      .catch((error) => {
-        console.error("Error: ", error);
-      });
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Success: ", data);
+          window.location.reload(false);
+        })
+        .catch((error) => {
+          console.error("Error: ", error);
+        });
+    }
   }
 
   handleUploadClick(event) {
-    var file = event.target.files[0];
-    const reader = new FileReader();
-    var url = reader.readAsDataURL(file);
-    var image = null;
-
-    reader.onloadend = function (e) {
-      image = reader.result;
-    };
-    console.log('urlnyaaaaaaaaaaa', url);
-    console.log(file);
-    this.setState({ profile_image: url })
     this.setState({ mainState: "uploaded" });
     this.setState({ imageUploaded: 1 });
     this.setState({ selectedFile: event.target.files[0] });
+    alert("Profile pic will be updated after save");
   }
-
-  // validate(values) {
-  //   const errors = required(["firstName", "age"], values);
-  //   return errors;
-  // }
 
   handleSportSC = (event) => {
     let value = event.target.checked;
     this.setState((prev) => {
       prev["sports"][0] = value;
       return prev;
-    })
-  }
+    });
+  };
 
   handleSportBK = (event) => {
     let value = event.target.checked;
     this.setState((prev) => {
       prev["sports"][1] = value;
       return prev;
-    })
-  }
+    });
+  };
 
   handleSportFB = (event) => {
     let value = event.target.checked;
     this.setState((prev) => {
       prev["sports"][2] = value;
       return prev;
-    })
-  }
+    });
+  };
 
   handleSportVB = (event) => {
     let value = event.target.checked;
     this.setState((prev) => {
       prev["sports"][3] = value;
       return prev;
-    })
-  }
+    });
+  };
 
   handleSportBS = (event) => {
     let value = event.target.checked;
     this.setState((prev) => {
       prev["sports"][4] = value;
       return prev;
-    })
-  }
+    });
+  };
 
   handleSkillSC = (event) => {
     let value = event.target.value;
     this.setState((prev) => {
       prev["skill"][0] = value;
       return prev;
-    })
-  }
+    });
+  };
 
   handleSkillBK = (event) => {
     let value = event.target.value;
     this.setState((prev) => {
       prev["skill"][1] = value;
       return prev;
-    })
-  }
+    });
+  };
 
   handleSkillFB = (event) => {
     let value = event.target.value;
     this.setState((prev) => {
       prev["skill"][2] = value;
       return prev;
-    })
-  }
+    });
+  };
 
   handleSkillVB = (event) => {
     let value = event.target.value;
     this.setState((prev) => {
       prev["skill"][3] = value;
       return prev;
-    })
-  }
+    });
+  };
 
   handleSkillBS = (event) => {
     let value = event.target.value;
     this.setState((prev) => {
       prev["skill"][4] = value;
       return prev;
-    })
-  }
-
-
+    });
+  };
 
   render() {
     const { classes } = this.props;
@@ -409,19 +389,18 @@ class ProfilePage extends React.Component {
                               </Fab>
                             </label>
                           ) : (
-                              <label
-                                htmlFor="contained-button-file"
-                                className={classes.avatar}
-                              >
-                                <Fab component="span">
-                                  <img
-                                    width="150%"
-                                    height="150%"
-                                    src={this.state.output.profile_image}
-                                  />
-                                </Fab>
-                              </label>
-                            )}
+                            <label
+                              htmlFor="contained-button-file"
+                              className={classes.avatar}
+                            >
+                              <Fab component="span">
+                                <Avatar
+                                  alt=""
+                                  src={this.state.output.profile_image}
+                                />
+                              </Fab>
+                            </label>
+                          )}
                         </div>
                       </CardContent>
                       <Divider className={classes.divider} />
@@ -556,7 +535,11 @@ class ProfilePage extends React.Component {
                           <Rating
                             name="SC"
                             defaultValue={this.state.skill[0]}
-                            value={!!this.state.sports[0] ? this.state.skill[0] : null}
+                            value={
+                              !!this.state.sports[0]
+                                ? this.state.skill[0]
+                                : null
+                            }
                             onChange={this.handleSkillSC}
                             disabled={this.state.sports[0] === false}
                             IconContainerComponent={IconContainer}
@@ -578,7 +561,11 @@ class ProfilePage extends React.Component {
                           <Rating
                             name="BK"
                             defaultValue={this.state.skill[1]}
-                            value={!!this.state.sports[1] ? this.state.skill[1] : null}
+                            value={
+                              !!this.state.sports[1]
+                                ? this.state.skill[1]
+                                : null
+                            }
                             onChange={this.handleSkillBK}
                             disabled={this.state.sports[1] === false}
                             IconContainerComponent={IconContainer}
@@ -600,7 +587,11 @@ class ProfilePage extends React.Component {
                           <Rating
                             name="FB"
                             defaultValue={this.state.skill[2]}
-                            value={!!this.state.sports[2] ? this.state.skill[2] : null}
+                            value={
+                              !!this.state.sports[2]
+                                ? this.state.skill[2]
+                                : null
+                            }
                             onChange={this.handleSkillFB}
                             disabled={this.state.sports[2] === false}
                             IconContainerComponent={IconContainer}
@@ -622,7 +613,11 @@ class ProfilePage extends React.Component {
                           <Rating
                             name="VB"
                             defaultValue={this.state.skill[3]}
-                            value={!!this.state.sports[3] ? this.state.skill[3] : null}
+                            value={
+                              !!this.state.sports[3]
+                                ? this.state.skill[3]
+                                : null
+                            }
                             onChange={this.handleSkillVB}
                             disabled={this.state.sports[3] === false}
                             IconContainerComponent={IconContainer}
@@ -644,7 +639,11 @@ class ProfilePage extends React.Component {
                           <Rating
                             name="BS"
                             defaultValue={this.state.skill[4]}
-                            value={!!this.state.sports[4] ? this.state.skill[4] : null}
+                            value={
+                              !!this.state.sports[4]
+                                ? this.state.skill[4]
+                                : null
+                            }
                             onChange={this.handleSkillBS}
                             disabled={this.state.sports[4] === false}
                             IconContainerComponent={IconContainer}
