@@ -240,7 +240,6 @@ export default function (props) {
       maxSkill: match.maxSkill,
     };
 
-    console.log(updateMatchData);
     fetch("http://35.163.180.234/api/match/update_match/", {
       method: "POST",
       headers: {
