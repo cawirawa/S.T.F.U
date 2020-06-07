@@ -230,7 +230,7 @@ export default function MatchPage(props) {
       createMatchData.minSkill === null ||
       createMatchData.roster.length > createMatchData.maxPlayers
     ) {
-      alert("Please check inputs");
+      setSuccessBool(false);
     } else {
       setSuccessBool(true);
       fetch("http://35.163.180.234/api/match/create_match/", {
