@@ -223,9 +223,7 @@ export default function (props) {
 
   const handleQuit = () => {
     let userEmail = currentUser.email;
-    console.log("roster before", match.roster);
     let ros = match.roster.filter((e) => e.email !== userEmail);
-    console.log("roster after", ros);
 
     const updateMatchData = {
       id: match.id,
@@ -269,7 +267,7 @@ export default function (props) {
       }
     } else {
       if (match.roster.length === 1) {
-        console.log(
+        alert(
           "you are the last player in the roster, if you quit the match will be deleted. please confirm"
         );
       } else {

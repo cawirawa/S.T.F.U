@@ -205,7 +205,6 @@ export default function (props) {
       maxSkill: match.maxSkill,
     };
 
-    console.log(updateMatchData);
     fetch("http://35.163.180.234/api/match/update_match/", {
       method: "POST",
       headers: {
@@ -241,7 +240,6 @@ export default function (props) {
       maxSkill: match.maxSkill,
     };
 
-    console.log(updateMatchData);
     fetch("http://35.163.180.234/api/match/update_match/", {
       method: "POST",
       headers: {
@@ -261,7 +259,7 @@ export default function (props) {
   const handleUpdate = () => {
     if (displayJoin === "join") {
       if (match.roster.length >= match.maxPlayers) {
-        console.log("roster is full");
+        console.log("Roster is full");
       } else {
         handleJoin();
         window.location.reload(false);
@@ -269,7 +267,7 @@ export default function (props) {
     } else {
       if (match.roster.length === 1) {
         console.log(
-          "you are the last player in the roster, if you quit the match will be deleted. please confirm"
+          "You are the last player in the roster, if you quit the match will be deleted. please confirm"
         );
       } else {
         handleQuit();

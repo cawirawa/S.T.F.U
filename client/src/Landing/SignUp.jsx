@@ -15,7 +15,7 @@ import RFTextField from "./modules/form/RFTextField";
 import FormButton from "./modules/form/FormButton";
 import FormFeedback from "./modules/form/FormFeedback";
 import { AuthContext } from "../auth/Auth";
-import firebase from "../base";
+import db from "../base";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -104,8 +104,7 @@ function SignUp({ history }) {
     } = event.target.elements;
 
     if (Password.value === confPassword.value) {
-      firebase
-        .auth()
+      db.auth()
         .createUserWithEmailAndPassword(Email.value, Password.value)
         .catch((error) => {
           console.log(error);

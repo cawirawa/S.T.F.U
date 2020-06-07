@@ -61,7 +61,6 @@ export class MapContainer extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     if (nextProps.center.lat !== this.state.loc.lat) {
-      console.log("props updates", nextProps.center);
       const lat = nextProps.center.lat;
       const lng = nextProps.center.lng;
       let url = "https://www.google.com/maps/search/?api=1&query=";

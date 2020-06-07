@@ -70,9 +70,9 @@ function SignIn({ history }) {
       });
   };
 
-  if (currentUser) {
-    return <Redirect to="/dashboard" token={token} />;
-  }
+  // if (currentUser) {
+  //   return <Redirect to="/dashboard" token={token} />;
+  // }
 
   const validate = (values) => {
     const errors = required(["email", "password"], values);
