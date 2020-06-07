@@ -566,7 +566,6 @@ export default function MatchPage(props) {
                       </Typography>
                       <Snackbar
                         open={openCapacitySnack}
-                        autoHideDuration={2000}
                         onClose={handleCloseCapacitySnackBar}
                       >
                         <Alert
@@ -590,6 +589,7 @@ export default function MatchPage(props) {
                       <Snackbar open={openSnack} onClose={handleCloseSnackBar}>
                         <Alert
                           onClose={handleCloseSnackBar}
+                          autoHideDuration={2000}
                           severity={successBool ? "success" : "error"}
                         >
                           {successBool
