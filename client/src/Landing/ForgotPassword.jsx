@@ -11,7 +11,6 @@ import { email, required } from "./modules/form/validation";
 import RFTextField from "./modules/form/RFTextField";
 import FormButton from "./modules/form/FormButton";
 import FormFeedback from "./modules/form/FormFeedback";
-import * as firebase from "firebase";
 import { Redirect } from "react-router-dom";
 import db from "../base";
 

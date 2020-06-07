@@ -108,15 +108,11 @@ const styles = (theme) => ({
 });
 
 class Dashboard extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   state = {
     open: true,
     content: "1",
-    lat: "asdfasdf",
-    lon: "asdfsadf",
+    lat: "",
+    lon: "",
     match: [],
     options: [],
   };

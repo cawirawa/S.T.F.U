@@ -33,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
 function SignUp({ history }) {
   const classes = useStyles();
   const [sent] = React.useState(false);
-  const [token, setToken] = React.useState("");
 
   const { currentUser } = useContext(AuthContext);
 
@@ -57,24 +56,8 @@ function SignUp({ history }) {
       });
   };
 
-  const getToken = () => {
-    fetch("http://35.163.180.234/api/profile/log_in/", {
-      method: "GET",
-      headers: {
-        email: currentUser.email,
-      },
-    })
-      .then((resp) => resp.json())
-      .then((res) => {
-        setToken(res.token);
-      })
-      .catch((error) => {
-        console.log(error.message);
-      });
-  };
-
   if (currentUser) {
-    return <Redirect to="/dashboard" token={token} />;
+    return <Redirect to="/dashboard" />;
   }
 
   const validate = (values) => {
@@ -113,7 +96,7 @@ function SignUp({ history }) {
           );
         });
       createUser(Username.value, FullName.value, Email.value);
-      return <Redirect to="/dashboard" token={token} />;
+      return <Redirect to="/dashboard" />;
     } else {
       alert("Password does not match");
       return <Redirect to="/signup" />;
