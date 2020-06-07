@@ -23,7 +23,7 @@ import Button from "@material-ui/core/Button";
 import FormFeedback from "./modules/form/FormFeedback";
 import "../App.css";
 import { AuthContext } from "../auth/Auth";
-import firebase from "../base";
+import db from "../base";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -62,7 +62,7 @@ function SignIn({ history }) {
         setToken(res.token);
         if (res.message === "User does not exist!") {
           handleClickOpen();
-          firebase.auth().signOut();
+          db.auth().signOut();
         }
       })
       .catch((error) => {
@@ -98,8 +98,7 @@ function SignIn({ history }) {
 
     try {
       setSent(true);
-      firebase
-        .auth()
+      db.auth()
         .signInWithEmailAndPassword(Email.value, Password.value)
         .catch((error) => {
           handleClickOpen();

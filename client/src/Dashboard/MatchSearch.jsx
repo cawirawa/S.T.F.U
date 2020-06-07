@@ -386,10 +386,14 @@ export default function MatchSearch(props) {
                 let matchId = /\d\d\d-\d\d\d\d/.exec(newValue);
                 let filteredMatch;
                 if (newValue) {
+                  console.log("aiueo");
+                  console.log(match);
+                  console.log(matchId);
                   filteredMatch = props.match.filter(
-                    (match) => matchId === match.id
+                    (match) => matchId[0] === match.id
                   );
                 }
+                console.log(filteredMatch);
                 setMatch(filteredMatch);
               }}
               id="controllable-states-demo"

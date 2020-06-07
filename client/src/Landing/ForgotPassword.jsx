@@ -13,6 +13,7 @@ import FormButton from "./modules/form/FormButton";
 import FormFeedback from "./modules/form/FormFeedback";
 import * as firebase from "firebase";
 import { Redirect } from "react-router-dom";
+import db from "../base";
 
 const useStyles = makeStyles((theme) => ({
   form: {
@@ -51,7 +52,7 @@ function ForgotPassword() {
   const handleSubmit2 = (event) => {
     alert("A password reset link has been sent to your email address");
     const { Email } = event.target.elements;
-    firebase.auth().sendPasswordResetEmail(Email.value);
+    db.auth().sendPasswordResetEmail(Email.value);
   };
 
   const handlePage = () => {

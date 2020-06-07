@@ -263,7 +263,7 @@ export default function (props) {
   const handleUpdate = () => {
     if (displayJoin === "join") {
       if (match.roster.length >= match.maxPlayers) {
-        console.log("roster is full");
+        alert("Roster is full");
       } else {
         handleJoin();
       }

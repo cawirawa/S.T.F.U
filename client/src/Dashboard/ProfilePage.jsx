@@ -38,7 +38,7 @@ import GooglePlacesAutocomplete, {
 import "react-google-places-autocomplete/dist/index.min.css";
 import MapContainer from "../Components/GMaps";
 import { withStyles } from "@material-ui/core/styles";
-import firebase from "../base";
+import db from "../base";
 
 const styles = {
   root: {},
@@ -129,7 +129,7 @@ class ProfilePage extends React.Component {
     address: "",
     mainState: 0,
     selectedFile: null,
-    currentUser: firebase.auth().currentUser,
+    currentUser: db.auth().currentUser,
     imageUploaded: 0,
     sport: {
       SC: true,
@@ -159,7 +159,7 @@ class ProfilePage extends React.Component {
       address: "",
       mainState: 0,
       selectedFile: null,
-      currentUser: firebase.auth().currentUser,
+      currentUser: db.auth().currentUser,
       imageUploaded: 0,
       sport: {
         SC: false,

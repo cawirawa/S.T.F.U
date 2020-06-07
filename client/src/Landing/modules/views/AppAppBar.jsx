@@ -42,7 +42,7 @@ function AppAppBar(props) {
             variant="h6"
             underline="none"
             color="inherit"
-            href="/dashboard"
+            href="/"
             font="tahoma"
           >
             <img
