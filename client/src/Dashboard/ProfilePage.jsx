@@ -1,6 +1,4 @@
-import React, { useState, Fragment, useContext, useEffect } from "react";
-import clsx from "clsx";
-import { makeStyles } from "@material-ui/styles";
+import React, { Fragment } from "react";
 import {
   Card,
   CardHeader,
@@ -10,7 +8,8 @@ import {
   Grid,
   Button,
   Typography,
-  Avatar,
+  Input,
+  InputLabel,
   MenuItem,
   Checkbox,
   FormGroup,
@@ -21,7 +20,7 @@ import {
 } from "@material-ui/core";
 import { TextField } from "mui-rff";
 import { Form } from "react-final-form";
-import { email, required } from "../Landing/modules/form/validation";
+import { required } from "../Landing/modules/form/validation";
 import Rating from "@material-ui/lab/Rating";
 import SentimentVeryDissatisfiedIcon from "@material-ui/icons/SentimentVeryDissatisfied";
 import SentimentDissatisfiedIcon from "@material-ui/icons/SentimentDissatisfied";
@@ -32,6 +31,7 @@ import SaveIcon from "@material-ui/icons/Save";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { withStyles } from "@material-ui/core/styles";
 import db from "../base";
+import MaskedInput from 'react-text-mask';
 
 const styles = {
   root: {},
@@ -111,7 +111,7 @@ class ProfilePage extends React.Component {
         firstName: "",
         username: "",
         email: "",
-        phone: "",
+        phone: "(1  )    -    ",
         lat: "",
         lon: "",
         age: "",
@@ -130,7 +130,6 @@ class ProfilePage extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.state.currentUser);
     fetch("http://35.163.180.234/api/profile/get_profile/", {
       method: "GET",
       headers: {
@@ -141,7 +140,6 @@ class ProfilePage extends React.Component {
         return response.json();
       })
       .then((res) => {
-        console.log(res);
         let boolSports = [false, false, false, false, false]
         if (res.result.sports.includes("SC")) {
           boolSports[0] = true
@@ -178,7 +176,6 @@ class ProfilePage extends React.Component {
               ? [1, 1, 1, 1, 1]
               : res.result.skill,
         });
-        console.log("state: ", this.state);
       })
       .catch((error) => {
         console.error("Error: ", error);
@@ -186,7 +183,6 @@ class ProfilePage extends React.Component {
   }
 
   handleSubmit() {
-    console.log(this.state);
     let sportsArr = []
     if (!!this.state.sports[0]) {
       sportsArr.push("SC")
@@ -219,28 +215,26 @@ class ProfilePage extends React.Component {
     const form = new FormData();
     form.set("email", this.state.output.email);
     form.append("profile_image", this.state.selectedFile);
-    console.log("image: ", this.state.selectedFile);
 
 
-    if (this.state.sports[0] || this.state.sports[1] || this.state.sports[2] || this.state.sports[3] || this.state.sports[4]){
-    console.log("reqProfile", requestProfileData);
-    fetch("http://35.163.180.234/api/profile/update_profile/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestProfileData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Success: ", data);
+    if (this.state.sports[0] || this.state.sports[1] || this.state.sports[2] || this.state.sports[3] || this.state.sports[4]) {
+      fetch("http://35.163.180.234/api/profile/update_profile/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestProfileData),
       })
-      .catch((error) => {
-        console.error("Error: ", error);
-      });
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Success: ", data);
+        })
+        .catch((error) => {
+          console.error("Error: ", error);
+        });
 
     }
-    else{
+    else {
       alert("You must select at least 1 sport");
     }
 
@@ -262,23 +256,20 @@ class ProfilePage extends React.Component {
     var file = event.target.files[0];
     const reader = new FileReader();
     var url = reader.readAsDataURL(file);
-    var image = null;
 
     reader.onloadend = function (e) {
-      image = reader.result;
+      var image = reader.result;
     };
-    console.log('urlnyaaaaaaaaaaa', url);
-    console.log(file);
     this.setState({ profile_image: url })
     this.setState({ mainState: "uploaded" });
     this.setState({ imageUploaded: 1 });
     this.setState({ selectedFile: event.target.files[0] });
   }
 
-  // validate(values) {
-  //   const errors = required(["firstName", "age"], values);
-  //   return errors;
-  // }
+  validate(values) {
+    const errors = required(["firstName", "age"], values);
+    return errors;
+  }
 
   handleSportSC = (event) => {
     let value = event.target.checked;
@@ -360,7 +351,21 @@ class ProfilePage extends React.Component {
     })
   }
 
+  TextMaskCustom(props) {
+    const { inputRef, ...other } = props;
 
+    return (
+      <MaskedInput
+        {...other}
+        ref={(ref) => {
+          inputRef(ref ? ref.inputElement : null);
+        }}
+        mask={['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
+        placeholderChar={'\u2000'}
+        showMask
+      />
+    );
+  }
 
   render() {
     const { classes } = this.props;
@@ -418,6 +423,7 @@ class ProfilePage extends React.Component {
                                     width="150%"
                                     height="150%"
                                     src={this.state.output.profile_image}
+                                    alt={""}
                                   />
                                 </Fab>
                               </label>
@@ -427,7 +433,7 @@ class ProfilePage extends React.Component {
                       <Divider className={classes.divider} />
                     </Fragment>
                   </Grid>
-                  <Grid item md={6} xs={12}>
+                  <Grid item xs={12}>
                     <TextField
                       value={this.state.output.firstName}
                       fullWidth
@@ -480,29 +486,6 @@ class ProfilePage extends React.Component {
                   <Grid item md={6} xs={12}>
                     <TextField
                       fullWidth
-                      autoComplete="tel"
-                      label="Phone Number"
-                      margin="dense"
-                      name="phone"
-                      type="number"
-                      variant="outlined"
-                      value={this.state.output.phone}
-                      onChange={(event) => {
-                        let value = event.target.value;
-                        this.setState((prev) => {
-                          return {
-                            output: {
-                              ...prev.output,
-                              phone: value,
-                            },
-                          };
-                        });
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      fullWidth
                       label="Age"
                       margin="dense"
                       name="age"
@@ -531,6 +514,29 @@ class ProfilePage extends React.Component {
                       <MenuItem value="4">26-30</MenuItem>
                       <MenuItem value="5">30+</MenuItem>
                     </TextField>
+                  </Grid>
+                  <Grid item md={6} xs={12}>
+                    <InputLabel htmlFor="formatted-text-mask-input">Phone Number</InputLabel>
+                    <Input
+                      fullWidth
+                      inputComponent={this.TextMaskCustom}
+                      autoComplete="tel"
+                      margin="dense"
+                      name="phone"
+                      id="formatted-text-mask-input"
+                      value={this.state.output.phone}
+                      onChange={(event) => {
+                        let value = event.target.value;
+                        this.setState((prev) => {
+                          return {
+                            output: {
+                              ...prev.output,
+                              phone: value,
+                            },
+                          };
+                        });
+                      }}
+                    />
                   </Grid>
                   <Grid item xs={12}>
                     <Grid container>
