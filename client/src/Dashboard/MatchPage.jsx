@@ -231,7 +231,7 @@ export default function MatchPage(props) {
       createMatchData.maxPlayers === "" ||
       createMatchData.maxSkill === null ||
       createMatchData.minSkill === null ||
-      createMatchData.roster > createMatchData.maxPlayers
+      createMatchData.roster.length > createMatchData.maxPlayers
     ) {
       console.log("please check inputs");
     } else {
