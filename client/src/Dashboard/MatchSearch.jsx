@@ -218,7 +218,7 @@ export default function MatchSearch(props) {
     .sort((a, b) => {
       // sort by time
       if (state.reset === true) {
-        return;
+        return true;
       } else if (state.recent === true) {
         var year1 = a.time.slice(0, 4);
         var month1 = a.time.slice(5, 7);
@@ -310,6 +310,7 @@ export default function MatchSearch(props) {
 
         return dist_a - dist_b;
       }
+      return true;
     })
     .map((match) => {
       return (
