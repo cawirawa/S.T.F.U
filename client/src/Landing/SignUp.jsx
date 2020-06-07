@@ -51,7 +51,7 @@ function SignUp({ history }) {
     })
       .then((resp) => resp.json())
       .catch((error) => {
-        console.log(error.message);
+        alert(error.message);
       });
   };
 

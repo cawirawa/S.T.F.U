@@ -140,7 +140,7 @@ class Dashboard extends Component {
       .then((res) => {
         this.setState({ match: res });
       })
-      .catch((error) => console.log(error));
+      .catch((error) => alert(error));
   }
 
   handleDrawerOpen = () => {

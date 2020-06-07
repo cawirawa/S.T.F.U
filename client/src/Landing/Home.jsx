@@ -68,7 +68,7 @@ class Home extends React.Component {
                 });
             }
           })
-          .catch((error) => console.log(error));
+          .catch((error) => alert(error));
       });
   }
 

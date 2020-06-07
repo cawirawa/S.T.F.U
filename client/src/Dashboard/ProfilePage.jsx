@@ -140,7 +140,6 @@ class ProfilePage extends React.Component {
         return response.json();
       })
       .then((res) => {
-        console.log(res);
         let boolSports = [false, false, false, false, false];
         if (res.result.sports.includes("SC")) {
           boolSports[0] = true;
@@ -231,9 +230,6 @@ class ProfilePage extends React.Component {
         body: JSON.stringify(requestProfileData),
       })
         .then((response) => response.json())
-        .then((data) => {
-          console.log("Success: ", data);
-        })
         .catch((error) => {
           console.error("Error: ", error);
         });
@@ -247,8 +243,7 @@ class ProfilePage extends React.Component {
         body: form,
       })
         .then((response) => response.json())
-        .then((data) => {
-          console.log("Success: ", data);
+        .then(() => {
           window.location.reload(false);
         })
         .catch((error) => {

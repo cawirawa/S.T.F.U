@@ -213,9 +213,6 @@ export default function (props) {
       body: JSON.stringify(updateMatchData),
     })
       .then((response) => response.json())
-      .then((data) => {
-        console.log("Success: ", data);
-      })
       .catch((error) => {
         console.error("Error: ", error);
       });
@@ -248,9 +245,6 @@ export default function (props) {
       body: JSON.stringify(updateMatchData),
     })
       .then((response) => response.json())
-      .then((data) => {
-        console.log("Success: ", data);
-      })
       .catch((error) => {
         console.error("Error: ", error);
       });
@@ -265,9 +259,6 @@ export default function (props) {
       body: JSON.stringify({id : match.id}),
     })
       .then((response) => response.json())
-      .then((data) => {
-        console.log("Success: ", data);
-      })
       .catch((error) => {
         console.error("Error: ", error);
       });
@@ -283,7 +274,7 @@ export default function (props) {
       }
     } else {
       if (match.roster.length === 1) {
-        console.log("you are the last player in the roster, if you quit the match will be deleted. please confirm");
+        alert("You are the last player in the roster, the match will be deleted.");
         handleDelete();
         window.location.reload(false);
       } else {
@@ -523,7 +514,7 @@ export default function (props) {
                 className={classes.heading}
                 style={{ textTransform: "capitalize" }}
               >
-                {match.roster[0].first_name}
+                {match.host_name}
               </h2>
             </div>
           </Grid>

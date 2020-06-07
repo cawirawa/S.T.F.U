@@ -241,8 +241,7 @@ export default function MatchPage(props) {
         body: JSON.stringify(createMatchData),
       })
         .then((response) => response.json())
-        .then((data) => {
-          console.log("Success: ", data);
+        .then(() => {
           handleClose();
           window.location.reload(false);
         })

@@ -106,9 +106,9 @@ export default function MatchSearch(props) {
         props.level <= filter_match.maxSkill)
     );
   });
-
   // filter distance
   filter_match = filter_match.filter((filter_match) => {
+    
     var lat1 = test_lat * (Math.PI / 180);
     var lat2 = filter_match.lat * (Math.PI / 180);
     var long1 = test_lon * (Math.PI / 180);
