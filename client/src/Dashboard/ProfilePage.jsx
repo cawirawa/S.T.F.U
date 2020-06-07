@@ -243,6 +243,7 @@ class ProfilePage extends React.Component {
       .then((response) => response.json())
       .then((data) => {
         console.log("Success: ", data);
+        window.location.reload(false);
       })
       .catch((error) => {
         console.error("Error: ", error);
@@ -258,8 +259,9 @@ class ProfilePage extends React.Component {
     reader.onloadend = function (e) {
       image = reader.result;
     };
-    console.log(url);
+    console.log('urlnyaaaaaaaaaaa', url);
     console.log(file);
+    this.setState({ profile_image: url })
     this.setState({ mainState: "uploaded" });
     this.setState({ imageUploaded: 1 });
     this.setState({ selectedFile: event.target.files[0] });
