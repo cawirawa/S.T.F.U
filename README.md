@@ -5,14 +5,31 @@ A web application that let users find or create any kinds of sport matches based
 _Team Members_
 
 1. Project Manager: Carlos Wirawan
-1. Business Analyst: Albert Estevan
-1. Senior System Analyst: Tiancheng Fu
-1. Software Architect: Jason Kaharudin
-1. Software Architect: Nikolas Jody
-1. Software Development Lead: Billy Kurniawan Halim
-1. Algorithm Specialist: Shih Gau Peng
-1. Database Specialist: Woosung Kim
-1. Quality Assurance Lead: Jason Wong
-1. User Interface Specialist: Gabriela Shirley
+2. Business Analyst: Albert Estevan
+3. Senior System Analyst: Tiancheng Fu
+4. Software Architect: Jason Kaharudin
+5. Software Architect: Nikolas Jody
+6. Software Development Lead: Billy Kurniawan Halim
+7. Algorithm Specialist: Shih Gau Peng
+8. Database Specialist: Woosung Kim
+9. Quality Assurance Lead: Jason Wong
+10. User Interface Specialist: Gabriela Shirley
 
 _UCSD CSE 110 SPRING 2020 - WOIKS TEAM_
+
+Two parts:
+Frontend: ./client/
+  Steps:
+  1. cd client/
+  2. npm install
+  3. npm start
+  4. access Localhost:{port}/  <- depending on the port number used (usually 3000). 
+  
+Backend:  ./STFU/
+Django model: ./STFU/api/models.py
+Note: Database deployed on http://35.163.180.234/
+to manually start development server: 
+  Steps:
+  1. cd STFU/
+  2. docker build .
+  3. docker-compose up
