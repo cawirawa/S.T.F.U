@@ -28,7 +28,7 @@
     "react-text-mask": "^5.4.3",
     "typestyle": "^2.1.0",
     "use-force-update": "^1.0.7",
-    "validator": "^13.0.0"
+    "validator": "^13.7.0"
   },
   "scripts": {
     "start": "react-scripts start",
